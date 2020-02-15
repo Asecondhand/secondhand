@@ -1,0 +1,80 @@
+plugins {
+    id 'org.springframework.boot' version '2.2.4.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'java'
+}
+
+group = 'com.secondhand'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+configurations {
+    developmentOnly
+    runtimeClasspath {
+        extendsFrom developmentOnly
+    }
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenLocal()
+    maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+    mavenCentral()
+}
+
+dependencies {
+    //shiro 权限
+    compile 'org.apache.shiro:shiro-spring-boot-web-starter:1.4.1'
+    // jwt token认证
+    implementation 'com.auth0:java-jwt:3.8.1'
+    // https://mvnrepository.com/artifact/org.aspectj/aspectjweaver  注解
+    compile group: 'org.aspectj', name: 'aspectjweaver', version: '1.8.13'
+
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+
+    // redis shiro
+    compile 'org.crazycake:shiro-redis:3.2.3'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    // jedis 客户端
+    compile group: 'redis.clients', name: 'jedis', version: '3.1.0'
+
+
+
+    // 代码生成器 mybatis-plus
+    implementation 'com.baomidou:mybatis-plus-generator:3.2.0'
+    implementation 'org.freemarker:freemarker:2.3.29'
+
+    // mybatis-plus
+    implementation 'com.baomidou:mybatis-plus-boot-starter:3.1.1'
+
+    // mysql
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    runtimeOnly 'mysql:mysql-connector-java'
+//    compile group: 'com.alibaba', name: 'druid', version: '1.1.10'
+
+    // web应用
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // 热部署
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+    // lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    // 测试用例 lombok
+    testAnnotationProcessor 'org.projectlombok:lombok'
+    testCompileOnly 'org.projectlombok:lombok'
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+
+}
+
+test {
+    useJUnitPlatform()
+}
