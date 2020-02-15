@@ -27,7 +27,6 @@ import java.util.*;
 @Service
 public class ShiroRealm extends AuthorizingRealm {
 
-    // public static final String YPZX_CRM_PERMISSION_KEY_PREFIX = "ypzx_crm_";
     public static final String SECOND_HAND_PERMISSION_KEY_PREFIX = "second_hand_";
 
     @Autowired

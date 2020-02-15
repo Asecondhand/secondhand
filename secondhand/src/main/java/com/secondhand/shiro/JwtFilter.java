@@ -25,6 +25,7 @@ import java.io.IOException;
 @Slf4j
 @Service
 public class JwtFilter extends AuthenticatingFilter {
+
     // 请求头部携带 token
     private final String TokenHeaderKey = "token";
     // 用户信息
