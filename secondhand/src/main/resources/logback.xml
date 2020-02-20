@@ -4,10 +4,21 @@
     <property name="AppName" value="second-hand"/>
     <contextName>${AppName}</contextName>
 
+    <!--    输出样式 -->
+    <property name="pattern" value="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] [%logger{10}]-[%p] %m%n"/>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%blue(%d{yyyy-MM-dd HH:mm:ss.SSS}) [%cyan(%t)] [%yellow(%logger{10})]-[%highlight(%p)] %m%n
+            </pattern>
+        </encoder>
+    </appender>
+
     <!--控制台输出-->
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>%d{HH:mm:ss.SSS} %-5level %logger{36} | %m%n</pattern>
+<!--            <pattern>${pattern}</pattern>-->
         </encoder>
     </appender>
 
@@ -23,7 +34,9 @@
         </encoder>
     </appender>
 
+<!--    让输出生效-->
     <root level="info">
+        <appender-ref ref="STDOUT"/>
         <appender-ref ref="fileAppender"/>
         <appender-ref ref="console"/>
     </root>
