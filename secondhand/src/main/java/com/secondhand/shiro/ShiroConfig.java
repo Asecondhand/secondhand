@@ -32,10 +32,10 @@ public class ShiroConfig {
         filterChainMap.put("/login", "anon");
         filterChainMap.put("/captcha", "anon");
 
-        // 要用不同的路径要保证指定了过滤器
-        filterChainMap.put("/api/**", authFilter);
+        // 指的是访问，user/api时，需要经过authFilter过滤器
+        filterChainMap.put("/user/api/**", authFilter);
 //        filterChainMap.put("api/**", "anon");
-
+        filterChainMap.put("/api/**", authFilter);
         factory.setFilterChainDefinitionMap(filterChainMap);
 
         return factory;

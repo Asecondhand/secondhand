@@ -54,7 +54,7 @@ public class ShiroRealm extends AuthorizingRealm {
             redisTool.savePermission(permKey, perms);
         }
         // Set<String> perms = getPermissionsFromDb(userId);
-        SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
+        SimpleAuthorizationInfo     simpleAuthorizationInfo = new SimpleAuthorizationInfo();
 //        simpleAuthorizationInfo.addStringPermission("admin");
         simpleAuthorizationInfo.setStringPermissions(perms);
         return simpleAuthorizationInfo;
@@ -83,6 +83,7 @@ public class ShiroRealm extends AuthorizingRealm {
         return permsSet;
     }
 
+    //第三步
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
 
@@ -104,10 +105,7 @@ public class ShiroRealm extends AuthorizingRealm {
         } else {
             throw new AuthenticationException("没有实现的认证方式");
         }
-
-
         SimpleAuthenticationInfo info;
-
         if (token instanceof JwtToken) {
             info = new SimpleAuthenticationInfo(user, pwd, user.getUserName());
         } else {

@@ -64,12 +64,10 @@ public class JwtTool {
         System.out.println(userInfo);
         System.out.println("tokenKey="+tokenKey);
         Date date = new Date();
-
         // 计算超时时间
         Calendar cl = Calendar.getInstance();
         cl.setTime(date);
         cl.add(Calendar.SECOND, ttl);
-
         return JWT.create().withSubject("shtoken").withClaim("id", tokenKey).withClaim("name", userInfo.getUserName())
                 .withClaim("user_id", userInfo.getUserId())
                 .withExpiresAt(cl.getTime()).sign(Algorithm.HMAC256(secretKey));
@@ -90,12 +88,10 @@ public class JwtTool {
             String tokeKey = des.getClaim("id").asString();
             String name = des.getClaim("name").asString();
             Long userId = des.getClaim("user_id").asLong();
-
             CurrentUserVo user = new CurrentUserVo();
             user.setTokenId(tokeKey);
             user.setUserName(name);
             user.setUserId(userId);
-
             return user;
         } catch (TokenExpiredException e) {
             log.error("token已经过期" + e.getMessage());
@@ -126,15 +122,12 @@ public class JwtTool {
         }catch (Exception e) {
             return ApiResult.fail("账号密码验证失败");
         }
-
         CurrentUserVo userInfo = (CurrentUserVo) SecurityUtils.getSubject().getPrincipal();
-
         String strTokenKey = userInfo.getTokenId();
         System.out.println(userInfo.getTokenId());
         // 将用户信息缓存到redis
         userInfo.setTokenId(strTokenKey);
         redisTool.saveUserInfoToRedis(userInfo);
-
         SecurityUtils.getSubject().hasRole("test");
         //3 生成用户token
         return ApiResult.success(this.createTokenStr(userInfo, strTokenKey));

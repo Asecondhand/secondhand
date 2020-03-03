@@ -17,7 +17,7 @@ public class ApiResult<T> {
     // // 错误代码
     // private String errorCode;
     // 错误消息
-    private String errorMessage;
+    private String Message;
     // 返回的对象
     private T returnObject;
 
@@ -25,14 +25,14 @@ public class ApiResult<T> {
         this.code = code;
         // 2位十进制数
         // this.errorCode = String.format("%02d", code);
-        this.errorMessage = errorMsg;
+        this.Message = errorMsg;
         this.returnObject = data;
     }
 
     public ApiResult(int code, String errorMsg) {
         this.code = code;
         // this.errorCode = String.format("%02d", code);
-        this.errorMessage = errorMsg;
+        this.Message = errorMsg;
     }
 
     public static <T> ApiResult fail(int code, String message) {
@@ -50,8 +50,8 @@ public class ApiResult<T> {
      * @throws
      */
     @SuppressWarnings("rawtypes")
-    public static <T> ApiResult fail(String message) {
-        return new ApiResult(500, message);
+    public static <T> ApiResult<T> fail(String message) {
+        return new ApiResult<>(500, message);
     }
 
     /**
@@ -61,12 +61,19 @@ public class ApiResult<T> {
      * @return
      */
     @SuppressWarnings("rawtypes")
-    public static <T> ApiResult success(T data) {
-        ApiResult<T> re = new ApiResult<>(0, "成功");
+    public static <T> ApiResult<T> success(T data) {
+        ApiResult<T> re = new ApiResult<>(200, "成功");
         re.returnObject = data;
         return re;
     }
 
+    public static <T> ApiResult<T> success(String msg) {
+        return new ApiResult<>(200, msg);
+    }
+
+    public static <T> ApiResult<T> success(boolean flag){
+        return  flag ? success("操作成功") : fail("操作失败");
+    }
     /**
      * 构造一个成功结果
      *

@@ -45,6 +45,7 @@ public class JwtFilter extends AuthenticatingFilter {
      * @return
      * @throws Exception
      */
+    //第二步
     @Override
     protected AuthenticationToken createToken(ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
@@ -61,10 +62,10 @@ public class JwtFilter extends AuthenticatingFilter {
      * @return
      * @throws Exception
      */
+    //第一步
     @Override
     protected boolean onAccessDenied(ServletRequest servletRequest, ServletResponse servletResponse) throws Exception {
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
-
         // 确认当前用户是否已经有token
         String tokenValue = httpRequest.getHeader(this.TokenHeaderKey);
         if (StringUtils.hasText(tokenValue)) {
@@ -77,7 +78,6 @@ public class JwtFilter extends AuthenticatingFilter {
                 return this.executeLogin(servletRequest, servletResponse);
             }
         }
-
         return writeVerfTokenFail(servletRequest, servletResponse);
     }
 

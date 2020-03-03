@@ -30,6 +30,7 @@ import java.util.*;
  * @since 2020-01-31
  */
 @RestController
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
@@ -48,7 +49,7 @@ public class UserController {
         return ApiResult.success(userService.test1());
     }
 
-    @RequestMapping("api/sys/user/test2")
+    @RequestMapping("/api/sys/user/test2")
     public PageApiResult test2(){
         Integer pageNum=1;
         Integer PageSize=10;
@@ -105,6 +106,5 @@ public class UserController {
         redisTool.clearUserInfo();
         return ApiResult.success(null);
     }
-
 
 }
