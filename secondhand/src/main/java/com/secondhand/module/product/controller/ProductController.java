@@ -1,8 +1,8 @@
-package com.secondhand.module.sys.controller;
+package com.secondhand.module.product.controller;
 
 import com.secondhand.common.basemethod.ApiResult;
-import com.secondhand.module.sys.entity.Product;
-import com.secondhand.module.sys.service.ProductService;
+import com.secondhand.module.product.entity.Product;
+import com.secondhand.module.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

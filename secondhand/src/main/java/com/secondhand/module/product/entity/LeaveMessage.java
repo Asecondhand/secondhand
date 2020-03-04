@@ -1,4 +1,4 @@
-package com.secondhand.module.sys.entity;
+package com.secondhand.module.product.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;

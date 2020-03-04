@@ -1,25 +1,23 @@
-package com.secondhand.module.sys.service.impl;
+package com.secondhand.module.product.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.AbstractWrapper;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.baomidou.mybatisplus.generator.config.querys.AbstractDbQuery;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.secondhand.module.product.entity.LeaveMessage;
+import com.secondhand.module.product.mapper.LeaveMessageMapper;
+import com.secondhand.module.product.service.LeaveMessageService;
+import com.secondhand.module.product.vo.LeaveMessageVo;
 import com.secondhand.module.sys.vo.CurrentUserVo;
-import com.secondhand.module.sys.vo.LeaveMessageVo;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import javax.annotation.Resource;
+
+import java.util.Collection;
 import java.util.List;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.secondhand.module.sys.mapper.LeaveMessageMapper;
-import com.secondhand.module.sys.entity.LeaveMessage;
-import com.secondhand.module.sys.service.LeaveMessageService;
+
 @Service
-public class LeaveMessageServiceImpl extends ServiceImpl<LeaveMessageMapper, LeaveMessage> implements LeaveMessageService{
+public class LeaveMessageServiceImpl extends ServiceImpl<LeaveMessageMapper, LeaveMessage> implements LeaveMessageService {
 
     @Override
     public IPage<LeaveMessage> searchByProductIdAndPage(Long ProductId, Page<LeaveMessage> page) {
@@ -44,4 +42,5 @@ public class LeaveMessageServiceImpl extends ServiceImpl<LeaveMessageMapper, Lea
         leaveMessage1.setUname(currentUserVo.getUserName());
         return this.save(leaveMessage1);
     }
+
 }

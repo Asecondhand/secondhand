@@ -1,7 +1,7 @@
-package com.secondhand.module.sys.vo;
+package com.secondhand.module.product.vo;
 
-import com.secondhand.module.sys.entity.LeaveMessage;
-import com.secondhand.module.sys.entity.Product;
+import com.secondhand.module.product.entity.LeaveMessage;
+import com.secondhand.module.product.entity.Product;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -15,6 +15,7 @@ import java.util.List;
  **/
 @EqualsAndHashCode(callSuper = true)
 @Data
+@EqualsAndHashCode(callSuper=false)
 public class ProductVo extends Product {
     private List<LeaveMessage> leaveMessages;
 }

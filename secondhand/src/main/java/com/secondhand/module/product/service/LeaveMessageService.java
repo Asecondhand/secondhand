@@ -1,10 +1,10 @@
-package com.secondhand.module.sys.service;
+package com.secondhand.module.product.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.secondhand.module.sys.entity.LeaveMessage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.secondhand.module.sys.vo.LeaveMessageVo;
+import com.secondhand.module.product.entity.LeaveMessage;
+import com.secondhand.module.product.vo.LeaveMessageVo;
 
 import java.util.List;
 

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.secondhand.module.product.mapper.LeaveMessageMapper">
+  <resultMap id="BaseResultMap" type="com.secondhand.module.product.entity.LeaveMessage">
+    <!--@mbg.generated-->
+    <!--@Table leave_message-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="product_id" jdbcType="INTEGER" property="productId" />
+    <result column="Message" jdbcType="VARCHAR" property="message" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="uname" jdbcType="VARCHAR" property="uname" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, product_id, Message, `uid`, uname
+  </sql>
+</mapper>

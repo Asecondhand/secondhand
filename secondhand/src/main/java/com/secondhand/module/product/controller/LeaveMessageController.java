@@ -1,9 +1,8 @@
-package com.secondhand.module.sys.controller;
+package com.secondhand.module.product.controller;
 
 import com.secondhand.common.basemethod.ApiResult;
-import com.secondhand.module.sys.entity.LeaveMessage;
-import com.secondhand.module.sys.service.LeaveMessageService;
-import com.secondhand.module.sys.vo.LeaveMessageVo;
+import com.secondhand.module.product.service.LeaveMessageService;
+import com.secondhand.module.product.vo.LeaveMessageVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

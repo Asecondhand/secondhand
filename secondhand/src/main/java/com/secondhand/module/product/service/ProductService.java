@@ -1,7 +1,7 @@
-package com.secondhand.module.sys.service;
+package com.secondhand.module.product.service;
 
-import com.secondhand.module.sys.entity.Product;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.secondhand.module.product.entity.Product;
 
 /**
  * 商品服务类

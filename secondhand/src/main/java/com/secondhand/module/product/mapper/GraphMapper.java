@@ -1,7 +1,8 @@
-package com.secondhand.module.sys.mapper;
+package com.secondhand.module.product.mapper;
+
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.secondhand.module.sys.entity.Graph;
+import com.secondhand.module.product.entity.Graph;
 
 public interface GraphMapper extends BaseMapper<Graph> {
 }

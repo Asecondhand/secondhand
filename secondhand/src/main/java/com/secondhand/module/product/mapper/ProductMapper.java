@@ -1,7 +1,7 @@
-package com.secondhand.module.sys.mapper;
+package com.secondhand.module.product.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.secondhand.module.sys.entity.Product;
+import com.secondhand.module.product.entity.Product;
 
 public interface ProductMapper extends BaseMapper<Product> {
 }

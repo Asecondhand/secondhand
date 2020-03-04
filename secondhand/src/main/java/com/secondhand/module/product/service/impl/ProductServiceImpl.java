@@ -1,27 +1,25 @@
-package com.secondhand.module.sys.service.impl;
+package com.secondhand.module.product.service.impl;
 
-import com.secondhand.module.sys.entity.LeaveMessage;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.secondhand.module.product.entity.LeaveMessage;
+import com.secondhand.module.product.entity.Product;
+import com.secondhand.module.product.mapper.ProductMapper;
+import com.secondhand.module.product.service.LeaveMessageService;
+import com.secondhand.module.product.service.ProductService;
+import com.secondhand.module.product.vo.ProductVo;
 import com.secondhand.module.sys.entity.User;
 import com.secondhand.module.sys.service.IUserService;
-import com.secondhand.module.sys.service.LeaveMessageService;
 import com.secondhand.module.sys.vo.CurrentUserVo;
-import com.secondhand.module.sys.vo.ProductVo;
 import com.secondhand.util.exception.ServiceException;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Service;
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import java.security.Security;
-import java.util.List;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.secondhand.module.sys.mapper.ProductMapper;
-import com.secondhand.module.sys.entity.Product;
-import com.secondhand.module.sys.service.ProductService;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 
 @Service
@@ -31,6 +29,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     LeaveMessageService leaveMessageService;
     @Autowired
     IUserService iUserService;
+
     @Override
     public boolean issue(Product product) {
         //检查userid 是否存在

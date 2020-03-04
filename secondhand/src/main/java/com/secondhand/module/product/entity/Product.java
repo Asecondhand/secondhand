@@ -1,14 +1,12 @@
-package com.secondhand.module.sys.entity;
+package com.secondhand.module.product.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
-
-import java.math.BigDecimal;
-import java.util.Date;
-
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.math.BigDecimal;
+import java.util.Date;
 
 @Getter
 @Setter
