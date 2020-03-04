@@ -1,4 +1,4 @@
-package com.secondhand.module.sys.vo;
+package com.secondhand.module.product.vo;
 
 import lombok.Data;
 
