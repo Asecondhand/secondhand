@@ -45,7 +45,7 @@ public class ShiroRealm extends AuthorizingRealm {
     private IMenuService iMenuService;
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
-        //todo: 这里第一次应该从数据库加载，第二次应该是从缓存中加载  但要处理一个过期的问题
+        // 这里第一次应该从数据库加载，第二次应该是从缓存中加载  但要处理一个过期的问题
         // System.out.println("执行授权");
         CurrentUserVo userInfo = (CurrentUserVo) principals.getPrimaryPrincipal();
         Long userId = userInfo.getUserId();
