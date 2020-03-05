@@ -1,7 +1,8 @@
-package com.secondhand.module.sys.service;
+package com.secondhand.module.product.service;
 
-import com.secondhand.module.sys.entity.Graph;
+
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.secondhand.module.product.entity.Graph;
 
 import java.util.List;
 

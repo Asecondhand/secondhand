@@ -15,7 +15,6 @@ import java.util.List;
  **/
 @EqualsAndHashCode(callSuper = true)
 @Data
-@EqualsAndHashCode(callSuper=false)
 public class ProductVo extends Product {
     private List<LeaveMessage> leaveMessages;
 }
