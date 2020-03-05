@@ -37,7 +37,7 @@ public class ApiResult<T> {
 
     public static <T> ApiResult fail(int code, String message) {
 
-        Assert.isTrue(code > 0, "错误结果请不要设置code值为0");
+        Assert.isTrue(code > 1, "错误结果请不要设置code值为0");
 
         return new ApiResult(code, message);
     }
@@ -62,13 +62,13 @@ public class ApiResult<T> {
      */
     @SuppressWarnings("rawtypes")
     public static <T> ApiResult<T> success(T data) {
-        ApiResult<T> re = new ApiResult<>(200, "成功");
+        ApiResult<T> re = new ApiResult<>(0, "成功");
         re.returnObject = data;
         return re;
     }
 
     public static <T> ApiResult<T> success(String msg) {
-        return new ApiResult<>(200, msg);
+        return new ApiResult<>(0, msg);
     }
 
     public static <T> ApiResult<T> success(boolean flag){
@@ -81,8 +81,8 @@ public class ApiResult<T> {
      * @return
      */
     @SuppressWarnings("rawtypes")
-    public static <T> ApiResult success(String errorMsg, T data) {
-        ApiResult<T> re = new ApiResult<>(0, errorMsg);
+    public static <T> ApiResult success(String msg, T data) {
+        ApiResult<T> re = new ApiResult<>(0, msg);
         re.returnObject = data;
         return re;
     }

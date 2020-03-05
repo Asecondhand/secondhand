@@ -33,7 +33,7 @@ public class ShiroConfig {
         filterChainMap.put("/captcha", "anon");
 
         // 指的是访问，user/api时，需要经过authFilter过滤器
-        filterChainMap.put("/user/api/**", authFilter);
+        // filterChainMap.put("/api/**", authFilter);
 //        filterChainMap.put("api/**", "anon");
         filterChainMap.put("/api/**", authFilter);
         factory.setFilterChainDefinitionMap(filterChainMap);

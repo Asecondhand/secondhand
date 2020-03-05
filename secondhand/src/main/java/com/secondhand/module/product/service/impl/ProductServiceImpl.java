@@ -28,7 +28,6 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 
     @Autowired
     LeaveMessageService leaveMessageService;
-    @Qualifier("userService")
     @Autowired
     IUserService iUserService;
 

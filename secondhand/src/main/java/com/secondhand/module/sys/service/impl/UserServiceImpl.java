@@ -21,32 +21,56 @@ import java.util.List;
  * @author Erica
  * @since 2020-02-15
  */
-@Service("userService")
+
+@Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IUserService {
-
-    @Autowired
-    private UserMapper userMapper;
-
-
+    @Override
     public List<User> test1() {
-        QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
-        userQueryWrapper.lambda()
-                .eq(User::getStatus,0);
-        List<User> list = userMapper.selectList(userQueryWrapper);
-        return list;
+            QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+            userQueryWrapper.lambda()
+                    .eq(User::getStatus,0);
+            List<User> list = this.list(userQueryWrapper);
+            return list;
     }
 
+    @Override
     public PageApiResult test2(Integer pageNum, Integer pageSize) {
         QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
-        userQueryWrapper.lambda()
-                .eq(User::getStatus,0);
-        Page<User> page = new Page<>(pageNum,pageSize);
-        IPage<User> iPage = userMapper.selectPage(page,userQueryWrapper);
-        return new PageApiResult(iPage);
+            userQueryWrapper.lambda()
+                    .eq(User::getStatus,0);
+            Page<User> page = new Page<>(pageNum,pageSize);
+            IPage<User> iPage = this.page(page,userQueryWrapper);
+            return new PageApiResult(iPage);
     }
 
-
+    @Override
     public List<String> queryAllPerms(Long userId) {
-        return this.userMapper.queryAllPerms(userId);
+        return this.queryAllPerms(userId);
     }
+
+
+    //
+    // public List<User> test1() {
+    //     QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+    //     userQueryWrapper.lambda()
+    //             .eq(User::getStatus,0);
+    //     List<User> list = userMapper.selectList(userQueryWrapper);
+    //     return list;
+    // }
+    //
+    // public PageApiResult test2(Integer pageNum, Integer pageSize) {
+    //     QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+    //     userQueryWrapper.lambda()
+    //             .eq(User::getStatus,0);
+    //     Page<User> page = new Page<>(pageNum,pageSize);
+    //     IPage<User> iPage = userMapper.selectPage(page,userQueryWrapper);
+    //     return new PageApiResult(iPage);
+    // }
+    //
+    //
+    // public List<String> queryAllPerms(Long userId) {
+    //     return this.userMapper.queryAllPerms(userId);
+    // }
+    //
+
 }

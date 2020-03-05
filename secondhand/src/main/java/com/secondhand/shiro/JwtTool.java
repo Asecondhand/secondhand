@@ -8,6 +8,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.secondhand.common.basemethod.ApiResult;
 import com.secondhand.module.sys.entity.User;
+import com.secondhand.module.sys.service.IUserService;
 import com.secondhand.module.sys.service.impl.UserServiceImpl;
 import com.secondhand.module.sys.vo.CurrentUserVo;
 import com.secondhand.redis.RedisTool;
@@ -46,12 +47,14 @@ public class JwtTool {
     private Random rnd = new Random(System.currentTimeMillis());
 
     @Autowired
-    private UserServiceImpl sysUserEntityService;
+    private IUserService iUserService;
+
     @Autowired
     private RedisTool redisTool;
 
 
     public static final String SECOND_HAND_PERMISSION_KEY_PREFIX = "second_hand_";
+
     /**
      * 生成tokenstr
      *
@@ -62,7 +65,7 @@ public class JwtTool {
     public String createTokenStr(CurrentUserVo userInfo, String tokenKey) {
         // 这里使用单向加密进行加密，如果要使用不对称加密可以使用rsa
         System.out.println(userInfo);
-        System.out.println("tokenKey="+tokenKey);
+        System.out.println("tokenKey=" + tokenKey);
         Date date = new Date();
         // 计算超时时间
         Calendar cl = Calendar.getInstance();
@@ -109,17 +112,18 @@ public class JwtTool {
         //todo: 1 进行验证码认证
 
         //todo: 2 如果要进行密码加密，先把明文密码加密一下
-        User userEntity = sysUserEntityService.getOne(new QueryWrapper<User>().lambda().
-                eq(User::getUserName, strUserName), false);
+
+        User userEntity = iUserService.getOne(new QueryWrapper<User>().lambda().
+                        eq(User::getUserName, strUserName), false);
         if (userEntity != null) {
             pwd = ShiroUtils.sha256(pwd, userEntity.getSalt());
         }
         //3 进行用户认证
         try {
             SecurityUtils.getSubject().login(new UsernamePasswordToken(strUserName, pwd));
-        }catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             return ApiResult.fail(e.getMessage());
-        }catch (Exception e) {
+        } catch (Exception e) {
             return ApiResult.fail("账号密码验证失败");
         }
         CurrentUserVo userInfo = (CurrentUserVo) SecurityUtils.getSubject().getPrincipal();
@@ -147,7 +151,6 @@ public class JwtTool {
         //3 生成用户token
         return this.createTokenStr(userInfo, strTokenKey);
     }
-
 
 
 }

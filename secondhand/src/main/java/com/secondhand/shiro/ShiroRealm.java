@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.secondhand.common.constant.Constant;
 import com.secondhand.module.sys.entity.Menu;
 import com.secondhand.module.sys.entity.User;
+import com.secondhand.module.sys.service.IMenuService;
+import com.secondhand.module.sys.service.IUserService;
 import com.secondhand.module.sys.service.impl.MenuServiceImpl;
 import com.secondhand.module.sys.service.impl.UserServiceImpl;
 import com.secondhand.module.sys.vo.CurrentUserVo;
@@ -35,19 +37,20 @@ public class ShiroRealm extends AuthorizingRealm {
     private RedisTool redisTool;
 
     @Autowired
-    private UserServiceImpl sysUserEntityService;
+    // private UserServiceImpl sysUserEntityService;
+    private IUserService iUserService;
 
     @Autowired
-    private MenuServiceImpl menuEntityService;
-
+    // private MenuServiceImpl menuEntityService;
+    private IMenuService iMenuService;
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         //todo: 这里第一次应该从数据库加载，第二次应该是从缓存中加载  但要处理一个过期的问题
-        System.out.println("执行授权");
+        // System.out.println("执行授权");
         CurrentUserVo userInfo = (CurrentUserVo) principals.getPrimaryPrincipal();
         Long userId = userInfo.getUserId();
         String permKey = String.format("%s%d", SECOND_HAND_PERMISSION_KEY_PREFIX, userId);
-        System.out.println(permKey);
+        // System.out.println(permKey);
         Set<String> perms = redisTool.getPermissions(permKey);
         if (perms == null) {
             perms = getPermissionsFromDb(userId);
@@ -64,13 +67,13 @@ public class ShiroRealm extends AuthorizingRealm {
         List<String> permsList;
         //系统管理员，拥有最高权限
         if (userId == Constant.SUPER_ADMIN) {
-            List<Menu> menuList = menuEntityService.list();
+            List<Menu> menuList = iMenuService.list();
             permsList = new ArrayList<>(menuList.size());
             for (Menu menu : menuList) {
                 permsList.add(menu.getPerms());
             }
         } else {
-            permsList = sysUserEntityService.queryAllPerms(userId);
+            permsList = iUserService.queryAllPerms(userId);
         }
         //用户权限列表
         Set<String> permsSet = new HashSet<>();
@@ -87,7 +90,7 @@ public class ShiroRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
 
-        System.out.println("执行登录");
+        // System.out.println("执行登录");
         CurrentUserVo user = null;
 
         char[] pwd = null;
@@ -95,7 +98,7 @@ public class ShiroRealm extends AuthorizingRealm {
             user = this.processJwtAuthenticationToken(((JwtToken) token));
             // 从token获取用户信息
             // user = (CurrentUserVo)token.getPrincipal();
-            System.out.println(user);
+            // System.out.println(user);
             Assert.notNull(user, "系统中没有指定的用户");
             pwd = user.getTokenId().toCharArray();
         } else if (token instanceof UsernamePasswordToken) {
@@ -138,7 +141,7 @@ public class ShiroRealm extends AuthorizingRealm {
 
         //todo: 从数据库返回用户对象 待完成 否则应该抛出异常
 //        var user = new BaseUserInfo(1, token.getPrincipal().toString(), new Date(), jwtTool.getTokenKey(0));
-        User userEntity = sysUserEntityService.getOne(new QueryWrapper<User>().lambda().
+        User userEntity = iUserService.getOne(new QueryWrapper<User>().lambda().
                 eq(User::getUserName, token.getUsername()), false);
         if (null == userEntity) return null;
         CurrentUserVo user = new CurrentUserVo();

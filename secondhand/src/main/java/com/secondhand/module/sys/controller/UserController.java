@@ -7,6 +7,8 @@ import com.secondhand.common.constant.Constant;
 import com.secondhand.module.sys.ao.LoginAo;
 import com.secondhand.module.sys.entity.Menu;
 import com.secondhand.module.sys.entity.User;
+import com.secondhand.module.sys.service.IMenuService;
+import com.secondhand.module.sys.service.IUserService;
 import com.secondhand.module.sys.service.impl.MenuServiceImpl;
 import com.secondhand.module.sys.service.impl.UserServiceImpl;
 import com.secondhand.module.sys.vo.CurrentUserVo;
@@ -30,14 +32,14 @@ import java.util.*;
  * @since 2020-01-31
  */
 @RestController
-@RequestMapping("/user")
 public class UserController {
 
     @Autowired
-    private UserServiceImpl userService;
+    private IUserService iUserService;
 
     @Autowired
-    private MenuServiceImpl menuService;
+    private IMenuService iMenuService;
+
     @Autowired
     private RedisTool redisTool;
 
@@ -46,14 +48,14 @@ public class UserController {
     //  获取列表
     @RequestMapping("/test1")
     public ApiResult test1(){
-        return ApiResult.success(userService.test1());
+        return ApiResult.success(iUserService.test1());
     }
 
     @RequestMapping("/api/sys/user/test2")
     public PageApiResult test2(){
         Integer pageNum=1;
         Integer PageSize=10;
-        return userService.test2(pageNum,PageSize);
+        return iUserService.test2(pageNum,PageSize);
     }
 
 
@@ -74,13 +76,13 @@ public class UserController {
         List<String> permsList;
         //系统管理员，拥有最高权限
         if (user.getUserId() == Constant.SUPER_ADMIN) {
-            List<Menu> menuList = menuService.list();
+            List<Menu> menuList = iMenuService.list();
             permsList = new ArrayList<>(menuList.size());
             for (Menu menu : menuList) {
                 permsList.add(menu.getPerms());
             }
         } else {
-            permsList = userService.queryAllPerms(user.getUserId());
+            permsList = iUserService.queryAllPerms(user.getUserId());
         }
         //用户权限列表
         Set<String> permsSet = new HashSet<>();
