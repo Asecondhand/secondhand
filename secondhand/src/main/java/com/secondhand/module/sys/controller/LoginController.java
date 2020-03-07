@@ -32,7 +32,8 @@ public class LoginController {
             return ApiResult.fail("参数格式不正确");
         }
         String token = jwtTool.doLogin(po.getUsername(), po.getPassword(), "").getMessage();
-        return ApiResult.success("成功",token);
+        int code = jwtTool.doLogin(po.getUsername(), po.getPassword(), "").getCode();
+        return ApiResult.success(code,"成功",token);
     }
 
 

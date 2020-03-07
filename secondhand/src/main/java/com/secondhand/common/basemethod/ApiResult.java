@@ -86,4 +86,8 @@ public class ApiResult<T> {
         re.returnObject = data;
         return re;
     }
+
+    public static <T> ApiResult<T> success(Integer code,String msg,T data) {
+        return new ApiResult<>(code,msg,data);
+    }
 }
