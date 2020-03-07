@@ -45,7 +45,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
     @Override
     public List<String> queryAllPerms(Long userId) {
-        return this.queryAllPerms(userId);
+        return this.baseMapper.queryAllPerms(userId);
     }
 
 
