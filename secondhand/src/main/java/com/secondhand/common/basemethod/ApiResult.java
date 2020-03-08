@@ -51,7 +51,7 @@ public class ApiResult<T> {
      */
     @SuppressWarnings("rawtypes")
     public static <T> ApiResult<T> fail(String message) {
-        return new ApiResult<>(500, message);
+        return new ApiResult<>(1, message);
     }
 
     /**

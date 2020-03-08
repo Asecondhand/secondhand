@@ -31,9 +31,16 @@ public class LoginController {
         if (StringUtils.isEmpty(po.getUsername()) || StringUtils.isEmpty(po.getPassword())) {
             return ApiResult.fail("参数格式不正确");
         }
-        String token = jwtTool.doLogin(po.getUsername(), po.getPassword(), "").getMessage();
-        int code = jwtTool.doLogin(po.getUsername(), po.getPassword(), "").getCode();
-        return ApiResult.success(code,"成功",token);
+        ApiResult object =  jwtTool.doLogin(po.getUsername(), po.getPassword(), "");
+        String token = object.getMessage();
+        int code = object.getCode();
+        String msg = object.getMessage();
+        if (code==0) {
+            msg = "登录成功";
+        }else {
+            token = null;
+        }
+        return ApiResult.success(code, msg, token);
     }
 
 

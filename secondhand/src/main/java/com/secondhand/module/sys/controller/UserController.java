@@ -17,7 +17,6 @@ import com.secondhand.module.sys.vo.CurrentUserVo;
 import com.secondhand.redis.RedisTool;
 import com.secondhand.shiro.JwtTool;
 import com.secondhand.shiro.ShiroRealm;
-import com.sun.org.apache.bcel.internal.generic.NEW;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
