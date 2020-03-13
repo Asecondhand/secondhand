@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.secondhand.module.product.mapper.UserAttrMapper">
+  <resultMap id="BaseResultMap" type="com.secondhand.module.product.entity.UserAttr">
+    <!--@mbg.generated-->
+    <!--@Table user_attr-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="start_num" jdbcType="INTEGER" property="startNum" />
+    <result column="notice_num" jdbcType="INTEGER" property="noticeNum" />
+    <result column="follow_num" jdbcType="INTEGER" property="followNum" />
+    <result column="issuse_num" jdbcType="INTEGER" property="issuseNum" />
+    <result column="sell_num" jdbcType="INTEGER" property="sellNum" />
+    <result column="buy_num" jdbcType="INTEGER" property="buyNum" />
+    <result column="like_num" jdbcType="INTEGER" property="likeNum" />
+    <result column="icon" jdbcType="VARCHAR" property="icon" />
+    <result column="uname" jdbcType="VARCHAR" property="uname" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, `uid`, start_num, notice_num, follow_num, issuse_num, sell_num, buy_num, like_num, 
+    icon, uname, create_time, update_time
+  </sql>
+</mapper>

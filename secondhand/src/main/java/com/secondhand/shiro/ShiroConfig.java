@@ -31,7 +31,7 @@ public class ShiroConfig {
         filterChainMap.put("/noauth", "anon");
         filterChainMap.put("/login", "anon");
         filterChainMap.put("/captcha", "anon");
-
+        filterChainMap.put("/api/product/files", "anon");
         // 指的是访问，user/api时，需要经过authFilter过滤器
         // filterChainMap.put("/api/**", authFilter);
 //        filterChainMap.put("api/**", "anon");

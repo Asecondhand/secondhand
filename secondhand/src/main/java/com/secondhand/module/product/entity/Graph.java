@@ -23,13 +23,13 @@ public class Graph {
      * 用户id
      */
     @TableField(value = "uid")
-    private Integer uid;
+    private Long uid;
 
     /**
      * 粉丝id
      */
     @TableField(value = "followid")
-    private Integer followid;
+    private Long followid;
 
     public static final String COL_ID = "id";
 

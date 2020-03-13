@@ -1,17 +1,29 @@
 package com.secondhand.module.sys.controller;
+import java.time.LocalDateTime;
 
 import com.secondhand.common.basemethod.ApiResult;
+import com.secondhand.module.product.entity.UserAttr;
+import com.secondhand.module.sys.UserDTO;
 import com.secondhand.module.sys.ao.LoginAo;
+import com.secondhand.module.sys.entity.User;
+import com.secondhand.module.sys.service.IUserService;
+import com.secondhand.module.sys.service.UserAttrService;
+import com.secondhand.module.sys.service.impl.UserServiceImpl;
 import com.secondhand.redis.RedisTool;
 import com.secondhand.shiro.JwtTool;
+import com.secondhand.util.shiro.ShiroUtils;
+import org.apache.shiro.crypto.hash.SimpleHash;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Random;
 
 /**
  * @author Erica
@@ -24,6 +36,11 @@ public class LoginController {
     private JwtTool jwtTool;
     @Autowired
     private RedisTool redisTool;
+    @Autowired
+    private IUserService userService;
+
+    @Autowired
+    private UserAttrService userAttrService;
 
 
     @PostMapping(value = "/login")
@@ -43,5 +60,29 @@ public class LoginController {
         return ApiResult.success(code, msg, token);
     }
 
+    @PostMapping("/register")
+    public ApiResult<Boolean> registerUser(@Validated  @RequestBody UserDTO userDTO){
+        String[] strings = new String[]{"1","2","3","4","5","6","7","8","9"
+                ,"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","w","e","r","t","y","z","x"
+        };
+        Random random =new Random();
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < 22; i++) {
+           stringBuilder.append(strings[random.nextInt(strings.length)]);
+        }
+        userDTO.setPassword( ShiroUtils.sha256(userDTO.getPassword(),stringBuilder.toString()));
+        User user = new User();
+        user.setUserName(userDTO.getUsername());
+        user.setUserPassword(userDTO.getPassword());
+        user.setSalt(stringBuilder.toString());
+        user.setEmail(userDTO.getEmail());
+        user.setMobile(userDTO.getMobile());
+        user.setHeaderPicture(userDTO.getHeadPicture()==null?"http://47.93.117.14:8080/second-hand/fileSystem/files/images.jpg":userDTO.getHeadPicture());
+//        user.setHeaderPicture(userDTO.getHeadPicture()==null?"http://localhost:9091/second-hand/fileSystem/files/1238390565725274112.jpg":userDTO.getHeadPicture());
+        //添加 userattr 属性
+        UserAttr userAttr = new UserAttr(user);
+        userAttrService.save(userAttr);
+        return ApiResult.success(userService.save(user));
+    }
 
 }

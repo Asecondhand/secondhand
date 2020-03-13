@@ -7,7 +7,10 @@ import com.baomidou.mybatisplus.generator.config.*;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
+import org.springframework.core.io.UrlResource;
 
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +21,6 @@ public class GeneratorCode {
 
 
     public static void main(String[] args) {
-
         //模块名
         String packageName = "com.secondhand.module";
         // 包名

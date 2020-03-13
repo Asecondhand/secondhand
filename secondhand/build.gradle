@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.secondhand'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.7'
 sourceCompatibility = '1.8'
 
 configurations {
@@ -50,11 +50,14 @@ dependencies {
     // https://mvnrepository.com/artifact/ch.qos.logback/logback-core
     compile group: 'ch.qos.logback', name: 'logback-core', version: '1.2.3'
 
+    // https://mvnrepository.com/artifact/com.google.guava/guava
+    compile group: 'com.google.guava', name: 'guava', version: '23.0'
+
     // https://mvnrepository.com/artifact/ch.qos.logback/logback-classic
     testCompile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
 
     // https://mvnrepository.com/artifact/com.alibaba/fastjson
-    compile group: 'com.alibaba', name: 'fastjson', version: '1.2.58'
+    compile group: 'com.alibaba', name: 'fastjson', version: '1.2.62'
     // 代码生成器 mybatis-plus
     implementation 'com.baomidou:mybatis-plus-generator:3.2.0'
     implementation 'org.freemarker:freemarker:2.3.29'

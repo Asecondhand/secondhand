@@ -14,11 +14,13 @@ import com.secondhand.module.sys.service.IUserService;
 import com.secondhand.module.sys.service.impl.MenuServiceImpl;
 import com.secondhand.module.sys.service.impl.UserServiceImpl;
 import com.secondhand.module.sys.vo.CurrentUserVo;
+import com.secondhand.module.sys.vo.UserVo;
 import com.secondhand.redis.RedisTool;
 import com.secondhand.shiro.JwtTool;
 import com.secondhand.shiro.ShiroRealm;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -94,6 +96,14 @@ public class UserController {
         vo.from(user);
         vo.setPerms(permsSet);
         return ApiResult.success(vo);
+    }
+
+    @GetMapping("/info")
+    public ApiResult<UserVo> getUserInfo(){
+        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        UserVo uservo = new UserVo();
+        BeanUtils.copyProperties(user, uservo);
+        return ApiResult.success(uservo);
     }
 
     /**

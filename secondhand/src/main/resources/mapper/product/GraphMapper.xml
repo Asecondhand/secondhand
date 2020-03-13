@@ -12,4 +12,10 @@
     <!--@mbg.generated-->
     id, `uid`, followid
   </sql>
+    <select id="getFollowListById" resultMap="BaseResultMap">
+      select * from graph where followid = #{id}
+    </select>
+  <select id="getUserList" resultMap="BaseResultMap">
+    select * from graph where uid =#{id}
+  </select>
 </mapper>

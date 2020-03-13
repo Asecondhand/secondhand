@@ -26,7 +26,7 @@ public class webLog {
     private final static Logger logger = LoggerFactory.getLogger(webLog.class);
 
     /** 以 controller 包下定义的所有请求为切入点 */
-    @Pointcut("execution(* com.secondhand.module.sys.controller.*Controller.*(..)) ")
+    @Pointcut("execution(* com.secondhand.module.*.controller.*Controller.*(..)) && !execution(* com.secondhand.module.product.controller.FileController.*(..))  ")
     public void webLog() {}
 
     /**

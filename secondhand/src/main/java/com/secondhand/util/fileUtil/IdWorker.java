@@ -3,6 +3,7 @@ package com.secondhand.util.fileUtil;
 import java.lang.management.ManagementFactory;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
+import java.util.*;
 
 /**
  * <p>名称：IdWorker.java</p>
