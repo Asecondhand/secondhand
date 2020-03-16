@@ -19,7 +19,8 @@ public class UserAttrServiceImpl extends ServiceImpl<UserAttrMapper, UserAttr> i
     @Override
     public UserAttr getCurrentUserInfo() {
         User user = (User) SecurityUtils.getSubject().getPrincipal();
-        return this.getOne(new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getUid,user.getUserId()));
+        return this.getOne(new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getUid, user.getUserId()));
     }
 }
+
 

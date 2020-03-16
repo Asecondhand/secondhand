@@ -83,6 +83,8 @@ public class LoginController {
         }
 
         UserAttr userAttr = new UserAttr(user);
+        userAttr.setUserSex(0);//默认男
+        userAttr.setUserResume("这个人很懒，什么都没留下");//个人简介
         userAttrService.save(userAttr);
         return ApiResult.success(true);
     }

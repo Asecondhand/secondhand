@@ -28,6 +28,18 @@ public class UserAttr {
     private Integer uid;
 
     /**
+     * 用户性别
+     */
+    @TableField(value = "user_sex")
+    private Integer userSex;
+
+    /**
+     * 用户简介
+     */
+    @TableField(value = "user_resume")
+    private String userResume;
+
+    /**
      * 点赞数量
      */
     @TableField(value = "start_num")
@@ -90,6 +102,10 @@ public class UserAttr {
     public static final String COL_ID = "id";
 
     public static final String COL_UID = "uid";
+
+    public static final String COL_USER_SEX = "user_sex";
+
+    public static final String COL_USER_RESUME = "user_resume";
 
     public static final String COL_START_NUM = "start_num";
 

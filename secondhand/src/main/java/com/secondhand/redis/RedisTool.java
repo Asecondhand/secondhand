@@ -10,6 +10,7 @@ import org.apache.shiro.util.Assert;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.BoundListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -23,7 +24,7 @@ import java.util.concurrent.TimeUnit;
  * @since 2020/2/15
  */
 @Slf4j
-@Service
+@Component
 public class RedisTool {
 
     // 有效时长 秒为单位
@@ -83,5 +84,12 @@ public class RedisTool {
 
     public BoundListOperations  getRedisList(String key){
         return  redis.boundListOps(key);
+    }
+    /**
+     * 检查是否存在该key
+     */
+
+    public boolean hasKeys(String key){
+      return   redis.hasKey(key);
     }
 }

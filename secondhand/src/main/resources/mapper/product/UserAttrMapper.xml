@@ -6,6 +6,8 @@
     <!--@Table user_attr-->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="user_sex" jdbcType="INTEGER" property="userSex" />
+    <result column="user_resume" jdbcType="VARCHAR" property="userResume" />
     <result column="start_num" jdbcType="INTEGER" property="startNum" />
     <result column="notice_num" jdbcType="INTEGER" property="noticeNum" />
     <result column="follow_num" jdbcType="INTEGER" property="followNum" />
@@ -20,7 +22,7 @@
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, `uid`, start_num, notice_num, follow_num, issuse_num, sell_num, buy_num, like_num, 
-    icon, uname, create_time, update_time
+    id, `uid`, user_sex, user_resume, start_num, notice_num, follow_num, issuse_num, 
+    sell_num, buy_num, like_num, icon, uname, create_time, update_time
   </sql>
 </mapper>
