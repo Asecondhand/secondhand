@@ -1,7 +1,11 @@
 package com.secondhand.module.product.controller;
 
 import com.secondhand.common.basemethod.ApiResult;
+import com.secondhand.module.product.entity.UserAttr;
 import com.secondhand.module.product.vo.ProductVo;
+import com.secondhand.module.sys.service.IUserService;
+import com.secondhand.module.sys.service.UserAttrService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,10 +22,21 @@ import java.util.List;
 @RequestMapping("/api/user/workspace")
 public class UserWorkSpaceController {
 
-
+    @Autowired
+    UserAttrService userAttrService;
     @RequestMapping("{id}/product/issue")
     public ApiResult<List<ProductVo>> getProductList(@PathVariable String id){
         return null;
     }
+
+
+    /**
+     * 获得用户主页信息
+     */
+    @RequestMapping("/info")
+    public ApiResult<UserAttr> getUserInfo(){
+        return ApiResult.success(userAttrService.getCurrentUserInfo());
+    }
+
 
 }

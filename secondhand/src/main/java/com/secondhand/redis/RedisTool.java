@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.util.Assert;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.BoundListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -80,4 +81,7 @@ public class RedisTool {
     }
 
 
+    public BoundListOperations  getRedisList(String key){
+        return  redis.boundListOps(key);
+    }
 }

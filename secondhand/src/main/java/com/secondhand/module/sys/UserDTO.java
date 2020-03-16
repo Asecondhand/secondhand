@@ -16,7 +16,7 @@ import javax.validation.constraints.Size;
 public class UserDTO {
     @NotNull
     String username;
-    @Size(min = 10,max = 20)
+    @Size(min = 6,max = 20)
     String password;
 
     @Email

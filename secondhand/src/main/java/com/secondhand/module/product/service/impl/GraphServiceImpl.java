@@ -35,13 +35,14 @@ public class GraphServiceImpl extends ServiceImpl<GraphMapper, Graph> implements
 
 
     /**
-     * 通过缓存过的
+     * 通过缓存获得的
      * @param followId
      * @return
      */
     @Override
     public List<UserAttr> followList(Long followId) {
         List<Graph> graphList = graphMapper.getFollowListById(followId);
+
         List<Long> idList = graphList.stream().map(Graph::getUid).collect(Collectors.toList());
         return (List<UserAttr>) userAttrService.listByIds(idList);
     }

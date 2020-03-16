@@ -7,8 +7,9 @@ package com.secondhand.util.support;
  * @create: 2020-02-27 15:39
  **/
 public enum ResultCode implements IResultCode {
+
         SUCCESS(200, "操作成功"),
-        FAILURE(400, "业务异常"),
+        FAILURE(1, "业务异常"),
         UN_AUTHORIZED(401, "请求未授权"),
         NOT_FOUND(404, "404 没找到请求"),
         MSG_NOT_READABLE(400, "消息不能读取"),

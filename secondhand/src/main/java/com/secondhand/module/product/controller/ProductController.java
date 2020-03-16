@@ -56,7 +56,6 @@ public class ProductController {
     public ApiResult<Boolean> changeStatus(@RequestParam("status") int status, @RequestParam("productId") Long productId) {
         return ApiResult.success(productService.changeStatus(status, productId));
     }
-
     /**
      * 查询用户发布的商品
      * @param userId

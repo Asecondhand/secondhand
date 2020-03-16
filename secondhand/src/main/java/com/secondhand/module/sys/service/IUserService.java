@@ -3,6 +3,7 @@ package com.secondhand.module.sys.service;
 import com.secondhand.common.basemethod.PageApiResult;
 import com.secondhand.module.sys.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.secondhand.module.sys.vo.UserVo;
 
 import java.util.List;
 
@@ -15,7 +16,6 @@ import java.util.List;
  * @since 2020-02-15
  */
 public interface IUserService extends IService<User> {
-
 
     List<User> test1();
 

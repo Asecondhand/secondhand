@@ -70,7 +70,7 @@ public class UserController {
     @PostMapping("/getUserInfoWithPerms")
     public ApiResult getUserInfoWithPerms() {
         User user = (User) SecurityUtils.getSubject().getPrincipal();
-        if (null == user) return ApiResult.fail(401, "登录过期");
+        if (null == user) return ApiResult.fail(1, "登录过期");
         List<String> permsList;
         //系统管理员，拥有最高权限
         if (user.getUserId() == Constant.SUPER_ADMIN) {

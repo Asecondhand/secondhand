@@ -26,11 +26,11 @@ public class GraphController {
         return ApiResult.success(graphService.follow(graph));
     }
 
-    @GetMapping("/{followId}")
+    @GetMapping("/{followId}/followList")
     public ApiResult<List<UserAttr>> getFollowList(@PathVariable Long followId){
         return ApiResult.success(graphService.followList(followId));
     }
-    @GetMapping("/{uid}")
+    @GetMapping("/{uid}/userList")
     public ApiResult<List<UserAttr>> getUserList(@PathVariable Long uid){
         return ApiResult.success(graphService.uList(uid));
     }

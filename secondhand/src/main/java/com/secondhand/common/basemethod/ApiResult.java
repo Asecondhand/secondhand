@@ -1,6 +1,9 @@
 package com.secondhand.common.basemethod;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.experimental.Accessors;
 import org.springframework.util.Assert;
 
 /**
@@ -10,6 +13,9 @@ import org.springframework.util.Assert;
  * @since 2020/2/3
  */
 @Data
+@Getter
+@Setter
+@Accessors(chain = true)
 public class ApiResult<T> {
     private static final long serialVersionUID = -5963397321998888554L;
 
@@ -17,27 +23,32 @@ public class ApiResult<T> {
     // // 错误代码
     // private String errorCode;
     // 错误消息
-    private String Message;
+    private String message;
     // 返回的对象
-    private T returnObject;
+    private T data;
 
-    public ApiResult(int code, String errorMsg, T data) {
+    private  String path;
+
+    public static int FAIL_CODE = 1;
+
+    public static int SUCCESS_CODE = 0;
+    public ApiResult(int code, String message, T data) {
         this.code = code;
         // 2位十进制数
         // this.errorCode = String.format("%02d", code);
-        this.Message = errorMsg;
-        this.returnObject = data;
+        this.message = message;
+        this.data = data;
     }
 
-    public ApiResult(int code, String errorMsg) {
+    public ApiResult(int code, String message) {
         this.code = code;
         // this.errorCode = String.format("%02d", code);
-        this.Message = errorMsg;
+        this.message = message;
     }
 
     public static <T> ApiResult fail(int code, String message) {
 
-        Assert.isTrue(code > 1, "错误结果请不要设置code值为0");
+        Assert.isTrue(code >= FAIL_CODE, "错误结果请不要设置code值为0");
 
         return new ApiResult(code, message);
     }
@@ -51,7 +62,7 @@ public class ApiResult<T> {
      */
     @SuppressWarnings("rawtypes")
     public static <T> ApiResult<T> fail(String message) {
-        return new ApiResult<>(1, message);
+        return new ApiResult<>(FAIL_CODE, message);
     }
 
     /**
@@ -62,13 +73,13 @@ public class ApiResult<T> {
      */
     @SuppressWarnings("rawtypes")
     public static <T> ApiResult<T> success(T data) {
-        ApiResult<T> re = new ApiResult<>(0, "成功");
-        re.returnObject = data;
+        ApiResult<T> re = new ApiResult<>(SUCCESS_CODE, "成功");
+        re.data = data;
         return re;
     }
 
     public static <T> ApiResult<T> success(String msg) {
-        return new ApiResult<>(0, msg);
+        return new ApiResult<>(SUCCESS_CODE, msg);
     }
 
     public static <T> ApiResult<T> success(boolean flag){
@@ -82,8 +93,8 @@ public class ApiResult<T> {
      */
     @SuppressWarnings("rawtypes")
     public static <T> ApiResult success(String msg, T data) {
-        ApiResult<T> re = new ApiResult<>(0, msg);
-        re.returnObject = data;
+        ApiResult<T> re = new ApiResult<>(SUCCESS_CODE, msg);
+        re.data = data;
         return re;
     }
 
