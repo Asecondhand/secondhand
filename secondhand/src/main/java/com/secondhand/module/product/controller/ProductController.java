@@ -3,8 +3,10 @@ package com.secondhand.module.product.controller;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.secondhand.common.basemethod.ApiResult;
+import com.secondhand.module.product.DTO.ProductDTO;
 import com.secondhand.module.product.entity.Product;
 import com.secondhand.module.product.service.ProductService;
+import com.secondhand.module.product.vo.ProductVo;
 import org.apache.shiro.authz.annotation.RequiresGuest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,8 +36,8 @@ public class ProductController {
      * 商品发布
      */
     @PostMapping("/issue")
-    public ApiResult<Boolean> issueProduct(@RequestBody Product product) {
-        return ApiResult.success(productService.issue(product));
+    public ApiResult<Boolean> issueProduct(@RequestBody ProductDTO productDTO) {
+        return ApiResult.success(productService.issue(productDTO));
     }
 
     /**
@@ -44,7 +46,7 @@ public class ProductController {
      * @return
      */
     @GetMapping("/search/{id}")
-    public ApiResult<Product> searchById(@PathVariable String id) {
+    public ApiResult<ProductVo> searchById(@PathVariable String id) {
         return ApiResult.success(productService.search(id));
     }
 

@@ -26,10 +26,12 @@ public class GraphController {
         return ApiResult.success(graphService.follow(graph));
     }
 
+    //关注列表
     @GetMapping("/{followId}/followList")
     public ApiResult getFollowList(@PathVariable Long followId){
         return ApiResult.success(graphService.followList(followId));
     }
+    //粉丝列表
     @GetMapping("/{uid}/userList")
     public ApiResult getUserList(@PathVariable Long uid){
         return ApiResult.success(graphService.uList(uid));

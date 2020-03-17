@@ -3,7 +3,9 @@ package com.secondhand.module.product.service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.secondhand.module.product.DTO.ProductDTO;
 import com.secondhand.module.product.entity.Product;
+import com.secondhand.module.product.vo.ProductVo;
 
 /**
  * 商品服务类
@@ -11,9 +13,9 @@ import com.secondhand.module.product.entity.Product;
 public interface ProductService extends IService<Product> {
 
     //商品发布
-    boolean issue(Product product);
+    boolean issue(ProductDTO productDTO);
 
-    Product search(String id);
+    ProductVo search(String id);
 
     boolean changeStatus(int status, Long productId);
 

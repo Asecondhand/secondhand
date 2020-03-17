@@ -4,13 +4,9 @@ import com.baomidou.mybatisplus.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
-@Getter
-@Setter
-@ToString
+@Data
 @TableName(value = "product")
 public class Product {
     @TableId(value = "id", type = IdType.AUTO)

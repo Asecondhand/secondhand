@@ -6,9 +6,7 @@ import com.secondhand.module.product.vo.ProductVo;
 import com.secondhand.module.sys.service.IUserService;
 import com.secondhand.module.sys.service.UserAttrService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -38,5 +36,9 @@ public class UserWorkSpaceController {
         return ApiResult.success(userAttrService.getCurrentUserInfo());
     }
 
+    @PutMapping("/icon")
+    public ApiResult changeIcon(@RequestParam("icon") String icon){
+        return ApiResult.success(userAttrService.changeIcon(icon));
+    }
 
 }

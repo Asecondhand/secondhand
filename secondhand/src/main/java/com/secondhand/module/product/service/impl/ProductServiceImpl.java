@@ -6,14 +6,17 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.hash.BloomFilter;
 import com.google.common.hash.Funnels;
+import com.secondhand.module.product.DTO.ProductDTO;
 import com.secondhand.module.product.entity.LeaveMessage;
 import com.secondhand.module.product.entity.Product;
+import com.secondhand.module.product.entity.ProductPic;
 import com.secondhand.module.product.mapper.ProductMapper;
 import com.secondhand.module.product.service.LeaveMessageService;
 import com.secondhand.module.product.service.ProductService;
 import com.secondhand.module.product.vo.ProductVo;
 import com.secondhand.module.sys.entity.User;
 import com.secondhand.module.sys.service.IUserService;
+import com.secondhand.module.sys.service.ProductPicService;
 import com.secondhand.module.sys.vo.CurrentUserVo;
 import com.secondhand.util.exception.ServiceException;
 import org.apache.shiro.SecurityUtils;
@@ -22,32 +25,47 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
 @Service
-public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> implements ProductService , InitializingBean {
+public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> implements ProductService, InitializingBean {
 
     @Autowired
     LeaveMessageService leaveMessageService;
     @Autowired
     IUserService iUserService;
 
-    private  static BloomFilter bloomFilter = BloomFilter.create(Funnels.integerFunnel(),1000000);
+    @Autowired
+    ProductPicService productPicService;
+
+    private static BloomFilter bloomFilter = BloomFilter.create(Funnels.integerFunnel(), 1000000);
+
     @Override
-    public boolean issue(Product product) {
+    @Transactional(propagation = Propagation.REQUIRED)
+    public boolean issue(ProductDTO productDTO) {
         //检查userid 是否存在
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         //商品发布的时候，可以通知所有的follow
         //观察者模式
-        if (user.getUserId() == product.getUserId().intValue()) {
-            if (iUserService.getById(product.getUserId()) != null)
-                return this.save(product);
-            throw new ServiceException("用户不存在，请重新输入");
+        if (user.getUserId() == productDTO.getUserId().intValue()) {
+            Product product =new Product();
+            BeanUtils.copyProperties(productDTO,product);
+            this.save(product);
+            String[] productPic = productDTO.getProductPic();
+            List<ProductPic> list = new ArrayList<>();
+            for (String s : productPic) {
+                list.add(new ProductPic(Math.toIntExact(product.getId()),s));
+            }
+          return  productPicService.saveBatch(list);
         }
         throw new ServiceException("用户验证出现错误,无法登录");
     }
@@ -59,18 +77,20 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
      * @return
      */
     @Override
-    public Product search(String id) {
+    public ProductVo search(String id) {
         //id 小于0
         //如果不在布隆过滤器里，直接返回false
-        if(!bloomFilter.mightContain(Integer.parseInt(id)))
-            throw  new ServiceException("查询的id可能不存在");
+        if (!bloomFilter.mightContain(Integer.parseInt(id)))
+            throw new ServiceException("查询的id可能不存在");
         Product product = this.getById(id);
         if (product == null)
             return null;
         ProductVo productVo = new ProductVo();
         List<LeaveMessage> leaveMessageList = leaveMessageService.searchByProductIdAndPage(Long.valueOf(id));
+        List<ProductPic> productPicList = productPicService.list(new LambdaQueryWrapper<ProductPic>().eq(ProductPic::getPid,id));
         BeanUtils.copyProperties(product, productVo);
         productVo.setLeaveMessages(leaveMessageList);
+        productVo.setProductPics(productPicList);
         return productVo;
     }
 
@@ -97,7 +117,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 
     @Override
     public IPage<Product> getProductPageByUserId(Long userId, Page page) {
-        return this.page(page,new LambdaQueryWrapper<Product>().eq(Product::getUserId,userId));
+        return this.page(page, new LambdaQueryWrapper<Product>().eq(Product::getUserId, userId));
     }
 
 
@@ -108,6 +128,8 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         }
     }
 }
+
+
 
 
 

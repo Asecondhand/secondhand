@@ -2,6 +2,7 @@ package com.secondhand.module.product.vo;
 
 import com.secondhand.module.product.entity.LeaveMessage;
 import com.secondhand.module.product.entity.Product;
+import com.secondhand.module.product.entity.ProductPic;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -17,4 +18,6 @@ import java.util.List;
 @Data
 public class ProductVo extends Product {
     private List<LeaveMessage> leaveMessages;
+
+    private List<ProductPic> productPics;
 }

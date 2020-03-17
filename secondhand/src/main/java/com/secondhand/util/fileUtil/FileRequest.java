@@ -8,10 +8,10 @@ public class FileRequest {
     private String typeConstraint = ".jpg,.png,.gif";
     private Integer sizeConstraint = 2 * 1024 * 1024;
     private String storagePath;
-    private MultipartFile file;
+    private MultipartFile[] file;
 
 
-    public FileRequest(MultipartFile file, String storagePath, String typeConstraint, Integer sizeConstraint) {
+    public FileRequest(MultipartFile[] file, String storagePath, String typeConstraint, Integer sizeConstraint) {
         this.typeConstraint = typeConstraint;
         this.sizeConstraint = sizeConstraint;
         this.storagePath = storagePath;
@@ -19,7 +19,7 @@ public class FileRequest {
     }
 
 
-    public FileRequest(MultipartFile file, String storagePath) {
+    public FileRequest(MultipartFile[] file, String storagePath) {
         this.file = file;
         this.storagePath = storagePath;
     }

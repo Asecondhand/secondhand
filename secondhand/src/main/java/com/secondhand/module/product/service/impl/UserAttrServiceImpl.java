@@ -21,6 +21,17 @@ public class UserAttrServiceImpl extends ServiceImpl<UserAttrMapper, UserAttr> i
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         return this.getOne(new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getUid, user.getUserId()));
     }
+
+    @Override
+    public boolean changeIcon(String icon) {
+        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        UserAttr userAttr = this.getOne(new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getUid, user.getUserId()));
+        userAttr.setIcon(icon);
+        return this.save(userAttr);
+    }
 }
+
+
+
 
 

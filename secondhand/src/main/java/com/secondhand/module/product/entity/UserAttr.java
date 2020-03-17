@@ -28,7 +28,7 @@ public class UserAttr {
     private Integer uid;
 
     /**
-     * 用户性别
+     * 用户性别 0-男 1-女
      */
     @TableField(value = "user_sex")
     private Integer userSex;
@@ -42,26 +42,26 @@ public class UserAttr {
     /**
      * 点赞数量
      */
-    @TableField(value = "start_num")
-    private Integer startNum;
+    @TableField(value = "star_num")
+    private Integer starNum;
 
     /**
      * 关注数量
-     */
-    @TableField(value = "notice_num")
-    private Integer noticeNum;
-
-    /**
-     * 粉丝数量 
      */
     @TableField(value = "follow_num")
     private Integer followNum;
 
     /**
+     * 粉丝数量
+     */
+    @TableField(value = "fans_num")
+    private Integer fansNum;
+
+    /**
      * 我发布的
      */
-    @TableField(value = "issuse_num")
-    private Integer issuseNum;
+    @TableField(value = "publish_num")
+    private Integer publishNum;
 
     /**
      * 我卖出的 
@@ -78,8 +78,8 @@ public class UserAttr {
     /**
      * 我收藏的
      */
-    @TableField(value = "like_num")
-    private Integer likeNum;
+    @TableField(value = "collect_num")
+    private Integer collectNum;
 
     /**
      * 用户头像//默认头像
@@ -107,19 +107,19 @@ public class UserAttr {
 
     public static final String COL_USER_RESUME = "user_resume";
 
-    public static final String COL_START_NUM = "start_num";
-
-    public static final String COL_NOTICE_NUM = "notice_num";
+    public static final String COL_STAR_NUM = "star_num";
 
     public static final String COL_FOLLOW_NUM = "follow_num";
 
-    public static final String COL_ISSUSE_NUM = "issuse_num";
+    public static final String COL_FANS_NUM = "fans_num";
+
+    public static final String COL_PUBLISH_NUM = "publish_num";
 
     public static final String COL_SELL_NUM = "sell_num";
 
     public static final String COL_BUY_NUM = "buy_num";
 
-    public static final String COL_LIKE_NUM = "like_num";
+    public static final String COL_COLLECT_NUM = "collect_num";
 
     public static final String COL_ICON = "icon";
 

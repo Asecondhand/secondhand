@@ -1,4 +1,5 @@
 package com.secondhand.util.fileUtil;
+import com.secondhand.module.product.controller.FileController;
 import com.secondhand.module.product.controller.ProductController;
 import com.secondhand.util.exception.RRException;
 import com.secondhand.util.exception.ServiceException;
@@ -26,44 +27,49 @@ public class FileService {
     private String productsPath;
     //request 不应该放任何配置路径的信息
     // 面向对象
-    public String uploadFile(FileRequest request) throws Exception {
+    public String[] uploadFile(FileRequest request) throws Exception {
 
+        String[] strings = new String[request.getFile().length];
         /**
          * 获取文件大小、类型
          */
-            MultipartFile file = request.getFile();
-        String fileName = file.getOriginalFilename();
-        String fileNamePrifix = fileName.substring(fileName.lastIndexOf("."));
-        long fileSize = file.getSize();
-        /**
-         * 【校验判断】大小、类型
-         */
-        if (file.isEmpty()) {
-            throw new RRException("上传文件失败！没有选择文件，或上传的文件为空！");
+        MultipartFile[] file = request.getFile();
+        for(int i = 0 ;i<file.length ;i++){
+            String fileName = file[i].getOriginalFilename();
+            String fileNamePrifix = fileName.substring(fileName.lastIndexOf("."));
+            long fileSize = file[i].getSize();
+            /**
+             * 【校验判断】大小、类型
+             */
+            if (file[i].isEmpty()) {
+                throw new RRException("上传文件失败！没有选择文件，或上传的文件为空！");
+            }
+            if (!request.getTypeConstraint().contains(fileNamePrifix)) {
+                throw new RRException("上传文件失败！不支持上传" + fileName + "类型的文件！");
+            }
+            if (request.getSizeConstraint() < fileSize) {
+                throw new RRException("上传文件失败！尝试上传的文件大小超出了限制！仅允许上传不超过" + (request.getSizeConstraint()/1024) + "KB的文件！");
+            }
+            /**
+             * 【建立目录、确认目录】
+             * relativeStoragePath：相对存储路径，/imgages/products/日期/文件名
+             * absoluteStoragePath：绝对存储路径，带有当前环境的resoulce作为前缀
+             */
+            //逻辑实在太零散了，一个rootPath在sevice下，一个request配置在request里面
+            //没有为后续获得路径做考虑
+            String relativeStoragePath =  "/"+request.getStoragePath();
+            String absoluteStoragePath = rootPath + relativeStoragePath;
+            File dir = new File(absoluteStoragePath);
+            if (!dir.exists()) dir.mkdirs();//如果文件路径不存在,则创建文件夹
+            /**
+             * 【生成文件名并上传】
+             */
+            fileName = IDHelper.createSnowFlateWorker() + fileNamePrifix;
+            file[i].transferTo(new File(absoluteStoragePath + "/" + fileName));
+            strings[i] = MvcUriComponentsBuilder.fromMethodName(FileController.class,"serachFile",fileName).build().toUri().toString();
         }
-        if (!request.getTypeConstraint().contains(fileNamePrifix)) {
-            throw new RRException("上传文件失败！不支持上传" + fileName + "类型的文件！");
-        }
-        if (request.getSizeConstraint() < fileSize) {
-            throw new RRException("上传文件失败！尝试上传的文件大小超出了限制！仅允许上传不超过" + (request.getSizeConstraint()/1024) + "KB的文件！");
-        }
-        /**
-         * 【建立目录、确认目录】
-         * relativeStoragePath：相对存储路径，/imgages/products/日期/文件名
-         * absoluteStoragePath：绝对存储路径，带有当前环境的resoulce作为前缀
-         */
-        //逻辑实在太零散了，一个rootPath在sevice下，一个request配置在request里面
-        //没有为后续获得路径做考虑
-        String relativeStoragePath =  "/"+request.getStoragePath();
-        String absoluteStoragePath = rootPath + relativeStoragePath;
-        File dir = new File(absoluteStoragePath);
-        if (!dir.exists()) dir.mkdirs();//如果文件路径不存在,则创建文件夹
-        /**
-         * 【生成文件名并上传】
-         */
-        fileName = IDHelper.createSnowFlateWorker() + fileNamePrifix;
-        file.transferTo(new File(absoluteStoragePath + "/" + fileName));
-        return fileName;
+
+        return strings;
     }
 
     public Resource loadFileByFilename(String filename){
