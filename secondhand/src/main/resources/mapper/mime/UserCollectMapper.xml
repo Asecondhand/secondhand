@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.secondhand.module.mime.mapper.UserCollectMapper">
+
+    <select id="getUserCollectByUserId" resultType="com.secondhand.module.product.entity.Product">
+        SELECT
+        t2.*
+        FROM
+        user_collect t1
+        LEFT JOIN product t2 ON t1.product_id = t2.id
+        where
+            t1.uid = #{userId}
+    </select>
+</mapper>

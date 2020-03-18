@@ -24,9 +24,9 @@ public class GeneratorCode {
         //模块名
         String packageName = "com.secondhand.module";
         // 包名
-        String moduleName = "sys";
+        String moduleName = "mime";
         //包名,模块名,表名"sp_sys_user","sp_fault_bill_tbl" 同时生成多张表
-        generateByTables(packageName, moduleName, "sys_role","sys_user","sys_menu","sys_user_role","sys_role_menu");
+        generateByTables(packageName, moduleName, "user_buy","user_collect","user_praise");
         System.out.println("代码生成完成");
     }
 
@@ -50,7 +50,7 @@ public class GeneratorCode {
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
         // useSSL 是否进行SSL连接
-        dsc.setUrl("jdbc:mysql://localhost:3306/secondhand?serverTimezone=UTC&useUnicode=true&useSSL=false&characterEncoding=utf8");
+        dsc.setUrl("jdbc:mysql://47.93.117.14:3306/secondhand?serverTimezone=UTC&useUnicode=true&useSSL=false&characterEncoding=utf8");
         // dsc.setSchemaName("public");
         dsc.setDriverName("com.mysql.jdbc.Driver");
         dsc.setUsername("root");
