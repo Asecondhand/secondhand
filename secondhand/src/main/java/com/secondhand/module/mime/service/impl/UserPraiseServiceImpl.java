@@ -9,6 +9,7 @@ import com.secondhand.module.mime.entity.UserPraise;
 import com.secondhand.module.mime.mapper.UserPraiseMapper;
 import com.secondhand.module.mime.service.IUserPraiseService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.secondhand.module.mime.vo.ProductInfoVo;
 import com.secondhand.module.product.entity.Product;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +25,8 @@ import org.springframework.stereotype.Service;
 public class UserPraiseServiceImpl extends ServiceImpl<UserPraiseMapper, UserPraise> implements IUserPraiseService {
 
     @Override
-    public IPage<Product> getUserPraiseByUserId(Long userId, Page page) {
-        return page.setRecords(baseMapper.getuserPraiseByUserId(userId,page));
+    public IPage<ProductInfoVo> getUserPraiseByUserId(Long userId, Page page) {
+        return page.setRecords(baseMapper.getUserPraiseByUserId(userId,page));
     }
 
     @Override

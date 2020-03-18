@@ -8,6 +8,7 @@ import com.secondhand.module.mime.entity.UserCollect;
 import com.secondhand.module.mime.mapper.UserCollectMapper;
 import com.secondhand.module.mime.service.IUserCollectService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.secondhand.module.mime.vo.ProductInfoVo;
 import com.secondhand.module.product.entity.Product;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,7 @@ import org.springframework.stereotype.Service;
 public class UserCollectServiceImpl extends ServiceImpl<UserCollectMapper, UserCollect> implements IUserCollectService {
 
     @Override
-    public IPage<Product> getUserCollectByUserId(Long userId, Page page) {
+    public IPage<ProductInfoVo> getUserCollectByUserId(Long userId, Page page) {
         return page.setRecords(baseMapper.getUserCollectByUserId(userId,page));
     }
 

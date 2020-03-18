@@ -6,6 +6,7 @@ import com.secondhand.module.mime.entity.UserBuy;
 import com.secondhand.module.mime.mapper.UserBuyMapper;
 import com.secondhand.module.mime.service.IUserBuyService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.secondhand.module.mime.vo.ProductInfoVo;
 import com.secondhand.module.product.entity.Product;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,7 @@ import java.util.List;
 public class UserBuyServiceImpl extends ServiceImpl<UserBuyMapper, UserBuy> implements IUserBuyService {
 
     @Override
-    public IPage<Product> getUserBuyByUserId(Long userId, Page page) {
+    public IPage<ProductInfoVo> getUserBuyByUserId(Long userId, Page page) {
         // List<Product> iPage = baseMapper.getUserBuyByUserId(userId,page);
         // List<Product> list = page.setRecords(baseMapper.getUserBuyByUserId(userId,page)).getRecords();
         return page.setRecords(baseMapper.getUserBuyByUserId(userId,page));

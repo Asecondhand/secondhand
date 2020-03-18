@@ -23,4 +23,15 @@
     id, user_name, user_address, user_id, product_name, product_price, product_content, 
     product_tag, product_create_time, product_status, create_time, update_time, is_deleted
   </sql>
+    <select id="getProductInfoByUserId" resultType="com.secondhand.module.mime.vo.ProductInfoVo">
+      SELECT
+          t1.*,
+          t2.product_pic
+      FROM
+          product t1
+          LEFT JOIN ( SELECT DISTINCT product_pic.pid, product_pic FROM product_pic ) t2 ON t1.id = t2.pid
+      WHERE
+      	t1.product_status = #{productStatus}
+        and t1.user_id = #{userId}
+    </select>
 </mapper>

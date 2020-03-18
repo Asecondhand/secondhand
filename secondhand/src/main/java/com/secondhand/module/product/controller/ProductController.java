@@ -101,7 +101,7 @@ public class ProductController {
     @GetMapping("/sale")
     public ApiResult saleProductByUserId(Page page){
         Long userId = ShiroUtils.getUserId();
-        return ApiResult.success(productService.saleProductByUserId(userId,page));
+        return ApiResult.success(productService.getSaleProductByUserId(userId,page));
     }
 
 }

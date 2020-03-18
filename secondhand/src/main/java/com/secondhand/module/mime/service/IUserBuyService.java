@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.secondhand.module.mime.entity.UserBuy;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.secondhand.module.mime.vo.ProductInfoVo;
 import com.secondhand.module.product.entity.Product;
 
 /**
@@ -17,5 +18,5 @@ import com.secondhand.module.product.entity.Product;
 public interface IUserBuyService extends IService<UserBuy> {
 
 
-    IPage<Product> getUserBuyByUserId(Long userId, Page page);
+    IPage<ProductInfoVo> getUserBuyByUserId(Long userId, Page page);
 }
