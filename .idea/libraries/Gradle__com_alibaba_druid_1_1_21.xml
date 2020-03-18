@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.alibaba:druid:1.1.21">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.alibaba/druid/1.1.21/5b2a163e69c4afd223ca6f6f5ac440eec92c0249/druid-1.1.21.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.alibaba/druid/1.1.21/7729082a961613e4f87ffd9697c05c3444eb6e32/druid-1.1.21-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

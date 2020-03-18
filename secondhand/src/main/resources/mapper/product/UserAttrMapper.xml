@@ -8,13 +8,13 @@
     <result column="uid" jdbcType="INTEGER" property="uid" />
     <result column="user_sex" jdbcType="INTEGER" property="userSex" />
     <result column="user_resume" jdbcType="VARCHAR" property="userResume" />
-    <result column="start_num" jdbcType="INTEGER" property="startNum" />
-    <result column="notice_num" jdbcType="INTEGER" property="noticeNum" />
+    <result column="star_num" jdbcType="INTEGER" property="starNum" />
     <result column="follow_num" jdbcType="INTEGER" property="followNum" />
-    <result column="issuse_num" jdbcType="INTEGER" property="issuseNum" />
+    <result column="fans_num" jdbcType="INTEGER" property="fansNum" />
+    <result column="publish_num" jdbcType="INTEGER" property="publishNum" />
     <result column="sell_num" jdbcType="INTEGER" property="sellNum" />
     <result column="buy_num" jdbcType="INTEGER" property="buyNum" />
-    <result column="like_num" jdbcType="INTEGER" property="likeNum" />
+    <result column="collect_num" jdbcType="INTEGER" property="collectNum" />
     <result column="icon" jdbcType="VARCHAR" property="icon" />
     <result column="uname" jdbcType="VARCHAR" property="uname" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
@@ -22,7 +22,7 @@
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, `uid`, user_sex, user_resume, start_num, notice_num, follow_num, issuse_num, 
-    sell_num, buy_num, like_num, icon, uname, create_time, update_time
+    id, `uid`, user_sex, user_resume, star_num, follow_num, fans_num, publish_num, sell_num, 
+    buy_num, collect_num, icon, uname, create_time, update_time
   </sql>
 </mapper>

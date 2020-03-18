@@ -8,6 +8,11 @@ import java.io.Serializable;
 public interface UserAttrService extends IService<UserAttr> {
 
     UserAttr getCurrentUserInfo();
+
+    boolean changeIcon(String icon);
 }
+
+
+
 
 

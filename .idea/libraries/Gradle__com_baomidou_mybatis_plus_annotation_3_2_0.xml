@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Gradle: com.baomidou:mybatis-plus-annotation:3.2.0">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/baomidou/mybatis-plus-annotation/3.2.0/mybatis-plus-annotation-3.2.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

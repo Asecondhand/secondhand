@@ -28,9 +28,8 @@ public class FileController {
     private String productsPath;
 
     @PostMapping("/upLoadImage")
-    public ApiResult upLoadImage(@RequestParam("file") MultipartFile file) throws Exception {
-        return ApiResult.success("成功", MvcUriComponentsBuilder.fromMethodName(FileController.class,"serachFile" , fileService.uploadFile(new FileRequest(file, productsPath)))
-                .build().toUri().toString());
+    public ApiResult upLoadImage(@RequestParam("file") MultipartFile[] file) throws Exception {
+        return ApiResult.success("成功",fileService.uploadFile(new FileRequest(file,productsPath))) ;
     }
     @GetMapping("/files/{filename:.+}")
     public ResponseEntity<Resource> serachFile(@PathVariable String filename){
