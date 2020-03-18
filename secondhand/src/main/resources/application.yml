@@ -79,5 +79,5 @@ mybatis-plus:
     jdbc-type-for-null: 'null'
 
 resources:
-    path: D:/file/secondhand
+    path: /file/secondhand
     productsPath: images/products
