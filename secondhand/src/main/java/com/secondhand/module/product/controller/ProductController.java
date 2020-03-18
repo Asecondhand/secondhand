@@ -7,6 +7,7 @@ import com.secondhand.module.product.DTO.ProductDTO;
 import com.secondhand.module.product.entity.Product;
 import com.secondhand.module.product.service.ProductService;
 import com.secondhand.module.product.vo.ProductVo;
+import com.secondhand.util.shiro.ShiroUtils;
 import org.apache.shiro.authz.annotation.RequiresGuest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -67,6 +68,40 @@ public class ProductController {
     @GetMapping("/{userId}")
     public ApiResult getPageByUserId(@PathVariable Long userId, Page page){
        return ApiResult.success(productService.getProductPageByUserId(userId,page));
+    }
+
+    /**
+     * "下架宝贝"
+     * 查询用户下架的商品
+     * @param page
+     * @return
+     */
+    @GetMapping("/soldOut")
+    public ApiResult getSoldOutByUserId(Page page) {
+        Long userId = ShiroUtils.getUserId();
+        return ApiResult.success(productService.getSoldOutByUserId(userId,page));
+    }
+
+    /**
+     * 删除商品
+     * @param id
+     * @return
+     */
+    @GetMapping("/delete/{id}")
+    public ApiResult updateProductById(@PathVariable Long id) {
+        return productService.updateProductById(id);
+    }
+
+    /**
+     * "我卖出的"
+     * 获取已卖出的商品
+     * @param page
+     * @return
+     */
+    @GetMapping("/sale")
+    public ApiResult saleProductByUserId(Page page){
+        Long userId = ShiroUtils.getUserId();
+        return ApiResult.success(productService.saleProductByUserId(userId,page));
     }
 
 }

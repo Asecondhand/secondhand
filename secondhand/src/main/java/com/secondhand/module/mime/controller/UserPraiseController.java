@@ -30,7 +30,7 @@ public class UserPraiseController {
     private IUserPraiseService iUserPraiseService;
 
     @GetMapping
-    public ApiResult getuserPraiseByUserId(Page page) {
+    public ApiResult getUserPraiseByUserId(Page page) {
         Long userId = ShiroUtils.getUserId();
         return ApiResult.success(iUserPraiseService.getUserPraiseByUserId(userId, page));
     }

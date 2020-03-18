@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.secondhand.module.product.DTO.ProductDTO;
+import com.secondhand.common.basemethod.ApiResult;
 import com.secondhand.module.product.entity.Product;
 import com.secondhand.module.product.vo.ProductVo;
 
@@ -21,6 +22,11 @@ public interface ProductService extends IService<Product> {
 
     IPage<Product> getProductPageByUserId(Long userId , Page page);
 
+    IPage<Product>  getSoldOutByUserId(Long userId, Page page);
+
+    ApiResult updateProductById(Long id);
+
+    IPage<Product>  saleProductByUserId(Long userId, Page page);
 }
 
 

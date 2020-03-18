@@ -1,12 +1,14 @@
 package com.secondhand.module.product.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.hash.BloomFilter;
 import com.google.common.hash.Funnels;
 import com.secondhand.module.product.DTO.ProductDTO;
+import com.secondhand.common.basemethod.ApiResult;
 import com.secondhand.module.product.entity.LeaveMessage;
 import com.secondhand.module.product.entity.Product;
 import com.secondhand.module.product.entity.ProductPic;
@@ -120,6 +122,45 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         return this.page(page, new LambdaQueryWrapper<Product>().eq(Product::getUserId, userId));
     }
 
+    /**
+     * 获取已下架商品
+     * @param userId
+     * @param page
+     * @return
+     */
+    @Override
+    public IPage<Product> getSoldOutByUserId(Long userId, Page page) {
+        QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(Product::getUserId,userId)
+                .eq(Product::getProductStatus,1)
+                .eq(Product::getIsDeleted,1);
+        return this.page(page,queryWrapper);
+    }
+
+    /**
+     * 删除商品
+     * @param id
+     */
+    @Override
+    public ApiResult updateProductById(Long id) {
+        QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(Product::getId,id);
+        boolean update =  this.remove(queryWrapper);
+        if (update==false){
+            return ApiResult.fail("删除商品失败");
+        }
+        return ApiResult.success("删除商品成功");
+    }
+
+    @Override
+    public IPage<Product> saleProductByUserId(Long userId, Page page) {
+        QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(Product::getUserId,userId)
+                .eq(Product::getProductStatus,2)
+                .eq(Product::getIsDeleted,1);
+        return this.page(page,queryWrapper);
+    }
+
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -128,8 +169,6 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         }
     }
 }
-
-
 
 
 
