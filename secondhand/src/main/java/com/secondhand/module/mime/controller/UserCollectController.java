@@ -33,7 +33,7 @@ public class UserCollectController {
      * @return
      */
     @GetMapping
-    public ApiResult getuserBuyByUserId(Page page) {
+    public ApiResult getUserBuyByUserId(Page page) {
         Long userId = ShiroUtils.getUserId();
         return ApiResult.success(iUserCollectService.getUserCollectByUserId(userId,page));
     }

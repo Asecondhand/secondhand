@@ -34,7 +34,7 @@ public class UserBuyController {
      * @return
      */
     @GetMapping
-    public ApiResult getuserBuyByUserId( Page page) {
+    public ApiResult getUserBuyByUserId( Page page) {
         Long userId = ShiroUtils.getUserId();
         return ApiResult.success(iUserBuyService.getUserBuyByUserId(userId,page));
     }
