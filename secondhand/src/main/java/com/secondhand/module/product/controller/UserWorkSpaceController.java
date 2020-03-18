@@ -37,7 +37,7 @@ public class UserWorkSpaceController {
     }
 
     @PutMapping("/icon")
-    public ApiResult changeIcon(@RequestParam("icon") String icon){
+    public ApiResult changeIcon(@RequestBody String icon){
         return ApiResult.success(userAttrService.changeIcon(icon));
     }
 

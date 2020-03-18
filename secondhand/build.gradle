@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.secondhand'
-version = '0.0.8'
+version = '0.0.9'
 sourceCompatibility = '1.8'
 
 configurations {
@@ -20,7 +20,12 @@ configurations {
 
 repositories {
     mavenLocal()
-    maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
+    maven { url 'http://maven.aliyun.com/nexus/content/groups/public/'
+    }
+    maven {
+        name 'lucene-snapshots'
+        url 'https://s3.amazonaws.com/download.elasticsearch.org/lucenesnapshots/83f9835'
+    }
     mavenCentral()
 }
 
@@ -34,6 +39,16 @@ dependencies {
 
     // https://mvnrepository.com/artifact/com.alibaba/druid-spring-boot-starter
     compile group: 'com.alibaba', name: 'druid-spring-boot-starter', version: '1.1.21'
+
+    // https://mvnrepository.com/artifact/org.elasticsearch/elasticsearch
+    compile group: 'org.elasticsearch', name: 'elasticsearch', version: '7.6.1'
+
+    // https://mvnrepository.com/artifact/org.elasticsearch.client/elasticsearch-rest-high-level-client
+    compile group: 'org.elasticsearch.client', name: 'elasticsearch-rest-high-level-client', version: '7.6.1'
+
+    // https://mvnrepository.com/artifact/org.elasticsearch.client/elasticsearch-rest-client
+    compile group: 'org.elasticsearch.client', name: 'elasticsearch-rest-client', version: '7.6.1'
+
 
     implementation 'org.springframework.boot:spring-boot-starter-aop'
 

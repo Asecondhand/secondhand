@@ -1,11 +1,13 @@
 package com.secondhand.module.product.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.hash.BloomFilter;
 import com.google.common.hash.Funnels;
+import com.secondhand.common.es.EsIndex;
 import com.secondhand.module.product.DTO.ProductDTO;
 import com.secondhand.module.product.entity.LeaveMessage;
 import com.secondhand.module.product.entity.Product;
@@ -20,6 +22,10 @@ import com.secondhand.module.sys.service.ProductPicService;
 import com.secondhand.module.sys.vo.CurrentUserVo;
 import com.secondhand.util.exception.ServiceException;
 import org.apache.shiro.SecurityUtils;
+import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.common.xcontent.XContentType;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +37,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -47,11 +54,14 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     @Autowired
     ProductPicService productPicService;
 
+    @Autowired
+    RestHighLevelClient restHighLevelClient;
+
     private static BloomFilter bloomFilter = BloomFilter.create(Funnels.integerFunnel(), 1000000);
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public boolean issue(ProductDTO productDTO) {
+    public boolean issue(ProductDTO productDTO)  {
         //检查userid 是否存在
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         //商品发布的时候，可以通知所有的follow
@@ -65,7 +75,13 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
             for (String s : productPic) {
                 list.add(new ProductPic(Math.toIntExact(product.getId()),s));
             }
-          return  productPicService.saveBatch(list);
+            try {
+                restHighLevelClient.index(new IndexRequest(EsIndex.PRODUCTINDEX.getIndexName())
+                        .source(JSON.toJSONString(productDTO), XContentType.JSON), RequestOptions.DEFAULT);
+                return  productPicService.saveBatch(list);
+            } catch (IOException e) {
+                throw new ServiceException("es无法post数据");
+            }
         }
         throw new ServiceException("用户验证出现错误,无法登录");
     }

@@ -1,6 +1,8 @@
 package com.secondhand.module.sys.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.secondhand.common.basemethod.ApiResult;
+import com.secondhand.common.es.EsIndex;
 import com.secondhand.module.product.entity.UserAttr;
 import com.secondhand.module.sys.UserDTO;
 import com.secondhand.module.sys.ao.LoginAo;
@@ -10,6 +12,12 @@ import com.secondhand.module.sys.service.UserAttrService;
 import com.secondhand.redis.RedisTool;
 import com.secondhand.shiro.JwtTool;
 import com.secondhand.util.shiro.ShiroUtils;
+import org.elasticsearch.action.bulk.BulkRequest;
+import org.elasticsearch.action.bulk.BulkResponse;
+import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.common.xcontent.XContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -18,6 +26,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.Random;
 
 /**
@@ -36,6 +45,9 @@ public class LoginController {
 
     @Autowired
     private UserAttrService userAttrService;
+
+    @Autowired
+    RestHighLevelClient restHighLevelClient;
 
 
     @PostMapping(value = "/login")
@@ -57,7 +69,7 @@ public class LoginController {
 
     @PostMapping("/register")
     @Transactional
-    public ApiResult registerUser(@Validated  @RequestBody UserDTO userDTO){
+    public ApiResult registerUser(@Validated  @RequestBody UserDTO userDTO) throws IOException {
         String[] strings = new String[]{"1","2","3","4","5","6","7","8","9"
                 ,"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","w","e","r","t","y","z","x"
         };
@@ -81,12 +93,15 @@ public class LoginController {
         }catch (Exception ignored){
             return ApiResult.fail(1,"用户名重复，请检查输入");
         }
-
+        BulkRequest request = new BulkRequest();
         UserAttr userAttr = new UserAttr(user);
         userAttr.setUserSex(0);//默认男
         userAttr.setUserResume("这个人很懒，什么都没留下");//个人简介
         userAttrService.save(userAttr);
-        return ApiResult.success(true);
+        String json = JSONObject.toJSONString(userAttr);
+        request.add(new IndexRequest(EsIndex.USERINDEX.getIndexName()).source(json,XContentType.JSON));
+        BulkResponse bulkResponse = restHighLevelClient.bulk(request, RequestOptions.DEFAULT);
+        return ApiResult.success(!bulkResponse.hasFailures());
     }
 
 }

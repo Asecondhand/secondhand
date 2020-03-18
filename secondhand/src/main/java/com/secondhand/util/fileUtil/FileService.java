@@ -47,9 +47,6 @@ public class FileService {
             if (!request.getTypeConstraint().contains(fileNamePrifix)) {
                 throw new RRException("上传文件失败！不支持上传" + fileName + "类型的文件！");
             }
-            if (request.getSizeConstraint() < fileSize) {
-                throw new RRException("上传文件失败！尝试上传的文件大小超出了限制！仅允许上传不超过" + (request.getSizeConstraint()/1024) + "KB的文件！");
-            }
             /**
              * 【建立目录、确认目录】
              * relativeStoragePath：相对存储路径，/imgages/products/日期/文件名

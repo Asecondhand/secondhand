@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: org.elasticsearch.plugin:mapper-extras-client:7.6.1">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.elasticsearch.plugin/mapper-extras-client/7.6.1/4133f813296e8e4962e9dc9e064f3296ae8bfc40/mapper-extras-client-7.6.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.elasticsearch.plugin/mapper-extras-client/7.6.1/e0a71161e1495c322c1a6bd85da03b76850d7208/mapper-extras-client-7.6.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
