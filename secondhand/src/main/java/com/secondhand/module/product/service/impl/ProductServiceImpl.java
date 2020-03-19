@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.hash.BloomFilter;
 import com.google.common.hash.Funnels;
+import com.secondhand.module.mime.vo.DynamicVO;
 import com.secondhand.module.mime.vo.HomePageVO;
 import com.secondhand.module.mime.vo.ProductInfoVo;
 import com.secondhand.module.product.DTO.ProductDTO;
@@ -37,6 +38,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -61,15 +63,15 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         //商品发布的时候，可以通知所有的follow
         //观察者模式
         if (user.getUserId() == productDTO.getUserId().intValue()) {
-            Product product =new Product();
-            BeanUtils.copyProperties(productDTO,product);
+            Product product = new Product();
+            BeanUtils.copyProperties(productDTO, product);
             this.save(product);
             String[] productPic = productDTO.getProductPic();
             List<ProductPic> list = new ArrayList<>();
             for (String s : productPic) {
-                list.add(new ProductPic(Math.toIntExact(product.getId()),s));
+                list.add(new ProductPic(Math.toIntExact(product.getId()), s));
             }
-          return  productPicService.saveBatch(list);
+            return productPicService.saveBatch(list);
         }
         throw new ServiceException("用户验证出现错误,无法登录");
     }
@@ -91,7 +93,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
             return null;
         ProductVo productVo = new ProductVo();
         List<LeaveMessage> leaveMessageList = leaveMessageService.searchByProductIdAndPage(Long.valueOf(id));
-        List<ProductPic> productPicList = productPicService.list(new LambdaQueryWrapper<ProductPic>().eq(ProductPic::getPid,id));
+        List<ProductPic> productPicList = productPicService.list(new LambdaQueryWrapper<ProductPic>().eq(ProductPic::getPid, id));
         BeanUtils.copyProperties(product, productVo);
         productVo.setLeaveMessages(leaveMessageList);
         productVo.setProductPics(productPicList);
@@ -126,28 +128,30 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 
     /**
      * 获取已下架商品
+     *
      * @param userId
      * @return
      */
     @Override
     public ApiResult getSoldOutByUserId(Long userId) {
         QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(Product::getUserId,userId)
-                .eq(Product::getProductStatus,1);
+        queryWrapper.lambda().eq(Product::getUserId, userId)
+                .eq(Product::getProductStatus, 1);
         List<Product> list = this.list(queryWrapper);
         return ApiResult.success(list);
     }
 
     /**
      * 删除商品
+     *
      * @param id
      */
     @Override
     public ApiResult updateProductById(Long id) {
         QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(Product::getId,id);
-        boolean update =  this.remove(queryWrapper);
-        if (update==false){
+        queryWrapper.lambda().eq(Product::getId, id);
+        boolean update = this.remove(queryWrapper);
+        if (update == false) {
             return ApiResult.fail("商品已删除");
         }
         return ApiResult.success("删除商品成功");
@@ -160,6 +164,36 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         vo.setMineNum(list.size());
         vo.setProductInfoVos(list);
         return ApiResult.success(vo);
+    }
+
+    /**
+     * 个人动态
+     *
+     * @param userId
+     * @return
+     */
+    @Override
+    public ApiResult personalDynamic(Long userId) {
+        List<DynamicVO> list = baseMapper.personalDynamic(userId);
+        List<DynamicVO> vos = new ArrayList<>();
+        Long allNum = baseMapper.personalDynamicAllNum(userId);
+        if (list.size() > 0) {
+            for (DynamicVO vo : list) {
+                List<ProductInfoVo> productInfoVoList = baseMapper.getProductInfoByTime(vo.getTime());
+                if (productInfoVoList.size() > 0) {
+                    DynamicVO entity = new DynamicVO();
+                    entity.setNum(vo.getNum());
+                    entity.setProductList(productInfoVoList);
+                    entity.setTime(vo.getTime());
+                    entity.setTitle("上新了" + vo.getNum() + "个宝贝");
+                    vos.add(entity);
+                }
+            }
+        }
+        HashMap result = new HashMap();
+        result.put("dynamic",vos);
+        result.put("allNum",allNum);
+        return ApiResult.success(result);
     }
 
 

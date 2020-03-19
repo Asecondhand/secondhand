@@ -28,4 +28,13 @@ public class HomePageController {
         Long userId = ShiroUtils.getUserId();
         return productService.mineProductByUserId(userId);
     }
+
+    /**
+     * 动态
+     */
+    @GetMapping("/dynamic")
+    public ApiResult personalDynamic(){
+        Long userId = ShiroUtils.getUserId();
+        return productService.personalDynamic(userId);
+    }
 }

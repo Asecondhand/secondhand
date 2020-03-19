@@ -28,6 +28,8 @@ public interface ProductService extends IService<Product> {
     ApiResult updateProductById(Long id);
 
     ApiResult mineProductByUserId(Long userId);
+
+    ApiResult personalDynamic(Long userId);
 }
 
 
