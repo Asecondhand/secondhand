@@ -73,13 +73,12 @@ public class ProductController {
     /**
      * "下架宝贝"
      * 查询用户下架的商品
-     * @param page
      * @return
      */
     @GetMapping("/soldOut")
-    public ApiResult getSoldOutByUserId(Page page) {
+    public ApiResult getSoldOutByUserId() {
         Long userId = ShiroUtils.getUserId();
-        return ApiResult.success(productService.getSoldOutByUserId(userId,page));
+        return productService.getSoldOutByUserId(userId);
     }
 
     /**
@@ -90,18 +89,6 @@ public class ProductController {
     @GetMapping("/delete/{id}")
     public ApiResult updateProductById(@PathVariable Long id) {
         return productService.updateProductById(id);
-    }
-
-    /**
-     * "我卖出的"
-     * 获取已卖出的商品
-     * @param page
-     * @return
-     */
-    @GetMapping("/sale")
-    public ApiResult saleProductByUserId(Page page){
-        Long userId = ShiroUtils.getUserId();
-        return ApiResult.success(productService.getSaleProductByUserId(userId,page));
     }
 
 }

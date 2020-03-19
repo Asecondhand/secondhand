@@ -2,6 +2,7 @@ package com.secondhand.module.mime.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.secondhand.common.basemethod.ApiResult;
 import com.secondhand.module.mime.entity.UserBuy;
 import com.secondhand.module.mime.mapper.UserBuyMapper;
 import com.secondhand.module.mime.service.IUserBuyService;
@@ -24,9 +25,11 @@ import java.util.List;
 public class UserBuyServiceImpl extends ServiceImpl<UserBuyMapper, UserBuy> implements IUserBuyService {
 
     @Override
-    public IPage<ProductInfoVo> getUserBuyByUserId(Long userId, Page page) {
+    public ApiResult getUserBuyByUserId(Long userId) {
         // List<Product> iPage = baseMapper.getUserBuyByUserId(userId,page);
         // List<Product> list = page.setRecords(baseMapper.getUserBuyByUserId(userId,page)).getRecords();
-        return page.setRecords(baseMapper.getUserBuyByUserId(userId,page));
+        // return page.setRecords(baseMapper.getUserBuyByUserId(userId,page));
+        return ApiResult.success(baseMapper.getUserBuyByUserId(userId));
     }
+
 }

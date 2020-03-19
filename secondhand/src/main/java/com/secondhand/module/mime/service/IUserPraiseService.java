@@ -1,12 +1,9 @@
 package com.secondhand.module.mime.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.secondhand.common.basemethod.ApiResult;
+import com.secondhand.module.mime.ao.PriseAO;
 import com.secondhand.module.mime.entity.UserPraise;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.secondhand.module.mime.vo.ProductInfoVo;
-import com.secondhand.module.product.entity.Product;
 
 /**
  * <p>
@@ -18,11 +15,11 @@ import com.secondhand.module.product.entity.Product;
  */
 public interface IUserPraiseService extends IService<UserPraise> {
 
-    IPage<ProductInfoVo> getUserPraiseByUserId(Long userId, Page page);
+    ApiResult getUserPraiseByUserId(Long userId);
 
     Boolean createPraise(Long userId, Long productId);
 
     Boolean deletePraise(Long userId, Long productId);
 
-    ApiResult userPraise(Long userId, Long productId);
+    ApiResult UpdateUserPraiseStatus(PriseAO ao);
 }

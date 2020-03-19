@@ -9,21 +9,21 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 用户收藏的商品关联表
+ * 用户卖出的商品关联表
  * </p>
  *
  * @author Erica
- * @since 2020-03-17
+ * @since 2020-03-19
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-public class UserCollect implements Serializable {
+public class UserSale implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "collect_id", type = IdType.AUTO)
-    private Integer collectId;
+    @TableId(value = "sale_id", type = IdType.AUTO)
+    private Integer saleId;
 
     /**
      * 用户id
@@ -31,9 +31,19 @@ public class UserCollect implements Serializable {
     private Integer uid;
 
     /**
-     * 收藏的商品id
+     * 买家id
+     */
+    private Integer buyerId;
+
+    /**
+     * 卖出的商品id
      */
     private Integer productId;
 
-    private Integer Status;
+    /**
+     * 订单id
+     */
+    private Integer orderId;
+
+
 }

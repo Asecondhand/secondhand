@@ -1,12 +1,10 @@
 package com.secondhand.module.mime.service;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+
 import com.secondhand.common.basemethod.ApiResult;
+import com.secondhand.module.mime.ao.CollectAO;
 import com.secondhand.module.mime.entity.UserCollect;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.secondhand.module.mime.vo.ProductInfoVo;
-import com.secondhand.module.product.entity.Product;
 
 /**
  * <p>
@@ -18,11 +16,11 @@ import com.secondhand.module.product.entity.Product;
  */
 public interface IUserCollectService extends IService<UserCollect> {
 
-    IPage<ProductInfoVo> getUserCollectByUserId(Long userId, Page page);
+   ApiResult getUserCollectByUserId(Long userId);
 
     Boolean createCollect(Long userId, Long productId);
 
     Boolean deleteCollect(Long userId, Long productId);
 
-    ApiResult userCollect(Long userId, Long productId);
+    ApiResult UpdateUserCollectStatus( CollectAO ao);
 }

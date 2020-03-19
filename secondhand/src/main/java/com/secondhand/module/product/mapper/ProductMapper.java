@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface ProductMapper extends BaseMapper<Product> {
 
-    List<ProductInfoVo> getProductInfoByUserId(@Param("userId") Long userId,
-                                               @Param("productStatus") Integer productStatus,
-                                               Page page);
+    List<ProductInfoVo> getProductInfoByUserId(@Param("userId") Long userId);
+
+    List<ProductInfoVo> mineProductByUserId(@Param("userId") Long userId);
 }

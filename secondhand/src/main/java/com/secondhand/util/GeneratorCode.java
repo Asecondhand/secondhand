@@ -26,7 +26,7 @@ public class GeneratorCode {
         // 包名
         String moduleName = "mime";
         //包名,模块名,表名"sp_sys_user","sp_fault_bill_tbl" 同时生成多张表
-        generateByTables(packageName, moduleName, "user_buy","user_collect","user_praise");
+        generateByTables(packageName, moduleName, "user_sale");
         System.out.println("代码生成完成");
     }
 

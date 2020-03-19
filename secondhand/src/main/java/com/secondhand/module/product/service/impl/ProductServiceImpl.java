@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.hash.BloomFilter;
 import com.google.common.hash.Funnels;
+import com.secondhand.module.mime.vo.HomePageVO;
 import com.secondhand.module.mime.vo.ProductInfoVo;
 import com.secondhand.module.product.DTO.ProductDTO;
 import com.secondhand.common.basemethod.ApiResult;
@@ -126,18 +127,15 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     /**
      * 获取已下架商品
      * @param userId
-     * @param page
      * @return
      */
     @Override
-    public IPage<ProductInfoVo> getSoldOutByUserId(Long userId, Page page) {
-        List<ProductInfoVo> productInfoVo = baseMapper.getProductInfoByUserId(userId,1,page);
-        return page.setRecords(productInfoVo);
-        // QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
-        // queryWrapper.lambda().eq(Product::getUserId,userId)
-        //         .eq(Product::getProductStatus,1)
-        //         .eq(Product::getIsDeleted,1);
-        // return this.page(page,queryWrapper);
+    public ApiResult getSoldOutByUserId(Long userId) {
+        QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(Product::getUserId,userId)
+                .eq(Product::getProductStatus,1);
+        List<Product> list = this.list(queryWrapper);
+        return ApiResult.success(list);
     }
 
     /**
@@ -150,26 +148,18 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         queryWrapper.lambda().eq(Product::getId,id);
         boolean update =  this.remove(queryWrapper);
         if (update==false){
-            return ApiResult.fail("删除商品失败");
+            return ApiResult.fail("商品已删除");
         }
         return ApiResult.success("删除商品成功");
     }
 
-    /**
-     * 已卖出
-     * @param userId
-     * @param page
-     * @return
-     */
     @Override
-    public IPage<ProductInfoVo> getSaleProductByUserId(Long userId, Page page) {
-        List<ProductInfoVo> productInfoVo = baseMapper.getProductInfoByUserId(userId,2,page);
-        return page.setRecords(productInfoVo);
-        // QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
-        // queryWrapper.lambda().eq(Product::getUserId,userId)
-        //         .eq(Product::getProductStatus,2)
-        //         .eq(Product::getIsDeleted,1);
-        // return this.page(page,queryWrapper);
+    public ApiResult mineProductByUserId(Long userId) {
+        List<ProductInfoVo> list = baseMapper.mineProductByUserId(userId);
+        HomePageVO vo = new HomePageVO();
+        vo.setMineNum(list.size());
+        vo.setProductInfoVos(list);
+        return ApiResult.success(vo);
     }
 
 

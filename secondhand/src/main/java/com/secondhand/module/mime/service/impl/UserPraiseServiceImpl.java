@@ -1,16 +1,12 @@
 package com.secondhand.module.mime.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.secondhand.common.basemethod.ApiResult;
-import com.secondhand.module.mime.entity.UserCollect;
+import com.secondhand.module.mime.ao.PriseAO;
 import com.secondhand.module.mime.entity.UserPraise;
 import com.secondhand.module.mime.mapper.UserPraiseMapper;
 import com.secondhand.module.mime.service.IUserPraiseService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.secondhand.module.mime.vo.ProductInfoVo;
-import com.secondhand.module.product.entity.Product;
 import org.springframework.stereotype.Service;
 
 /**
@@ -25,8 +21,9 @@ import org.springframework.stereotype.Service;
 public class UserPraiseServiceImpl extends ServiceImpl<UserPraiseMapper, UserPraise> implements IUserPraiseService {
 
     @Override
-    public IPage<ProductInfoVo> getUserPraiseByUserId(Long userId, Page page) {
-        return page.setRecords(baseMapper.getUserPraiseByUserId(userId,page));
+    public ApiResult getUserPraiseByUserId(Long userId) {
+        // return page.setRecords(baseMapper.getUserPraiseByUserId(userId,page));
+        return ApiResult.success(baseMapper.getUserPraiseByUserId(userId));
     }
 
     @Override
@@ -46,25 +43,11 @@ public class UserPraiseServiceImpl extends ServiceImpl<UserPraiseMapper, UserPra
     }
 
     @Override
-    public ApiResult userPraise(Long userId, Long productId) {
-        QueryWrapper<UserPraise> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(UserPraise::getUid,userId)
-                .eq(UserPraise::getProductId,productId);
-        UserPraise userPraise = this.getOne(queryWrapper);
-        if (userPraise!=null){
-            Boolean update = this.remove(queryWrapper);
-            if (update==true){
-                return  ApiResult.success("取消点赞成功");
-            }
-            return  ApiResult.success("取消点赞失败");
-        }
-        UserPraise praiseEntity = new UserPraise();
-        praiseEntity.setUid(Math.toIntExact(userId));
-        praiseEntity.setProductId(Math.toIntExact(productId));
-        Boolean save = this.save(praiseEntity);
-        if (save==false) {
-            return ApiResult.success("点赞失败");
-        }
-        return ApiResult.success("点赞成功");
+    public ApiResult UpdateUserPraiseStatus(PriseAO ao) {
+        UserPraise userPraise = new UserPraise();
+        userPraise.setStatus(ao.getStatus());
+        userPraise.setPraiseId(Math.toIntExact(ao.getPriseId()));
+        this.updateById(userPraise);
+        return ApiResult.success("成功");
     }
 }

@@ -2,10 +2,13 @@ package com.secondhand.module.mime.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.secondhand.common.basemethod.ApiResult;
 import com.secondhand.module.mime.entity.UserBuy;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.secondhand.module.mime.vo.ProductInfoVo;
 import com.secondhand.module.product.entity.Product;
+
+import java.util.List;
 
 /**
  * <p>
@@ -18,5 +21,5 @@ import com.secondhand.module.product.entity.Product;
 public interface IUserBuyService extends IService<UserBuy> {
 
 
-    IPage<ProductInfoVo> getUserBuyByUserId(Long userId, Page page);
+   ApiResult getUserBuyByUserId(Long userId);
 }

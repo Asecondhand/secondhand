@@ -23,11 +23,11 @@ public interface ProductService extends IService<Product> {
 
     IPage<Product> getProductPageByUserId(Long userId , Page page);
 
-    IPage<ProductInfoVo>  getSoldOutByUserId(Long userId, Page page);
+    ApiResult  getSoldOutByUserId(Long userId);
 
     ApiResult updateProductById(Long id);
 
-    IPage<ProductInfoVo>  getSaleProductByUserId(Long userId, Page page);
+    ApiResult mineProductByUserId(Long userId);
 }
 
 
