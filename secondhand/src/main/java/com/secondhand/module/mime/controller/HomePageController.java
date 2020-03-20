@@ -6,6 +6,7 @@ import com.secondhand.module.product.service.ProductService;
 import com.secondhand.util.shiro.ShiroUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,18 +24,16 @@ public class HomePageController {
      * 个人主页
      * 我的
      */
-    @GetMapping("/mine")
-    public ApiResult mineProductByUserId(){
-        Long userId = ShiroUtils.getUserId();
-        return productService.mineProductByUserId(userId);
+    @GetMapping("/mine/{uid}")
+    public ApiResult mineProductByUserId(@PathVariable("uid")Long uid){
+        return productService.mineProductByUserId(uid);
     }
 
     /**
      * 动态
      */
-    @GetMapping("/dynamic")
-    public ApiResult personalDynamic(){
-        Long userId = ShiroUtils.getUserId();
-        return productService.personalDynamic(userId);
+    @GetMapping("/dynamic/{uid}")
+    public ApiResult personalDynamic(@PathVariable("uid")Long uid){
+        return productService.personalDynamic(uid);
     }
 }

@@ -86,7 +86,7 @@ public class ProductController {
      * @param id
      * @return
      */
-    @GetMapping("/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ApiResult updateProductById(@PathVariable Long id) {
         return productService.updateProductById(id);
     }
