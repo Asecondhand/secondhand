@@ -71,7 +71,7 @@
             t2.product_pic
         FROM
             product t1
-            LEFT JOIN ( SELECT DISTINCT product_pic.pid, product_pic FROM product_pic ) t2 ON t1.id = t2.pid
+            LEFT JOIN ( SELECT DISTINCT product_pic.pid, product_pic FROM product_pic GROUP BY product_pic.pid) t2 ON t1.id = t2.pid
         WHERE
             DATE_FORMAT( t1.create_time, '%Y-%m-%d' )= #{time}
     </select>

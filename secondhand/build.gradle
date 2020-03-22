@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.secondhand'
-version = '0.0.11'
+version = '0.0.14'
 sourceCompatibility = '1.8'
 
 configurations {
