@@ -1,6 +1,7 @@
 package com.secondhand.module.product.controller;
 
 import com.secondhand.common.basemethod.ApiResult;
+import com.secondhand.module.product.DTO.IconDTO;
 import com.secondhand.module.product.entity.UserAttr;
 import com.secondhand.module.product.vo.ProductVo;
 import com.secondhand.module.sys.service.IUserService;
@@ -26,8 +27,6 @@ public class UserWorkSpaceController {
     public ApiResult<List<ProductVo>> getProductList(@PathVariable String id){
         return null;
     }
-
-
     /**
      * 获得用户主页信息
      */
@@ -37,8 +36,8 @@ public class UserWorkSpaceController {
     }
 
     @PutMapping("/icon")
-    public ApiResult changeIcon(@RequestBody String icon){
-        return ApiResult.success(userAttrService.changeIcon(icon));
+    public ApiResult changeIcon(@RequestBody IconDTO icon){
+        return ApiResult.success(userAttrService.changeIcon(icon.getIcon()));
     }
 
 }

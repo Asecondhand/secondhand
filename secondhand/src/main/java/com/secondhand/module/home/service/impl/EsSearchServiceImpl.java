@@ -67,7 +67,7 @@ public class EsSearchServiceImpl implements EsSearchService {
             throw  new ServiceException("es查询失败!");
         }
         try {
-            searchResponse = sendRequest(EsIndex.PRODUCTINDEX.getIndexName(), keyword,"productName");
+            searchResponse = productSendRequest(EsIndex.PRODUCTINDEX.getIndexName(), keyword,"productName");
             SearchHits hits = searchResponse.getHits();
             TotalHits totalHits = hits.getTotalHits();
            // the total number of hits, must be interpreted in the context of totalHits.relation
@@ -91,9 +91,18 @@ public class EsSearchServiceImpl implements EsSearchService {
     private SearchResponse sendRequest(String index,String keyword,String filed) throws IOException {
         SearchRequest searchRequest = new SearchRequest(index);
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(QueryBuilders.matchQuery(filed,keyword).fuzziness(Fuzziness.AUTO));
+        //不要fuzzess
+        searchSourceBuilder.query(QueryBuilders.matchQuery(filed,keyword));
         searchRequest.source(searchSourceBuilder);
          return restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
         }
 
+    private SearchResponse productSendRequest(String index,String keyword,String filed) throws IOException {
+        SearchRequest searchRequest = new SearchRequest(index);
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        //不要fuzzess
+        searchSourceBuilder.query(QueryBuilders.boolQuery().should(QueryBuilders.matchQuery(filed,keyword)).should(QueryBuilders.matchQuery("productTag",keyword)));
+        searchRequest.source(searchSourceBuilder);
+        return restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+    }
 }

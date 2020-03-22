@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.secondhand'
-version = '0.0.9'
+version = '0.0.11'
 sourceCompatibility = '1.8'
 
 configurations {
@@ -50,6 +50,7 @@ dependencies {
     compile group: 'org.elasticsearch.client', name: 'elasticsearch-rest-client', version: '7.6.1'
 
 
+    compile 'org.springframework.kafka:spring-kafka:2.4.4.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-aop'
 
     // redis shiro

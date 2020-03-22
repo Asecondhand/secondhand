@@ -36,6 +36,9 @@ spring:
         min-idle: 5       # 连接池中的最小空闲连接
   mvc:
   static-path-pattern: /**
+  servlet:
+    multipart:
+      max-file-size: 10MB #上传文件大小为10MB
 
 # 日志记录
 logging:

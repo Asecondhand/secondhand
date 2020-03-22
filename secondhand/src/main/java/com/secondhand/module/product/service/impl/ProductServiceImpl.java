@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.hash.BloomFilter;
 import com.google.common.hash.Funnels;
 import com.secondhand.common.es.EsIndex;
+import com.secondhand.common.kafka.KafkaTopic;
 import com.secondhand.module.product.DTO.ProductDTO;
 import com.secondhand.module.product.entity.LeaveMessage;
 import com.secondhand.module.product.entity.Product;
@@ -30,12 +31,14 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -57,6 +60,9 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     @Autowired
     RestHighLevelClient restHighLevelClient;
 
+    @Autowired
+    KafkaTemplate<String,String> kafkaTemplate;
+
     private static BloomFilter bloomFilter = BloomFilter.create(Funnels.integerFunnel(), 1000000);
 
     @Override
@@ -76,12 +82,15 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
                 list.add(new ProductPic(Math.toIntExact(product.getId()),s));
             }
             try {
+                //向es索引添加数据
                 restHighLevelClient.index(new IndexRequest(EsIndex.PRODUCTINDEX.getIndexName())
                         .source(JSON.toJSONString(productDTO), XContentType.JSON), RequestOptions.DEFAULT);
-                return  productPicService.saveBatch(list);
+                //通过kafka向消息系统发送数
             } catch (IOException e) {
                 throw new ServiceException("es无法post数据");
             }
+//            kafkaTemplate.send(KafkaTopic.PRODUCT_TOPIC, JSON.toJSONString(productDTO));
+            return  productPicService.saveBatch(list);
         }
         throw new ServiceException("用户验证出现错误,无法登录");
     }

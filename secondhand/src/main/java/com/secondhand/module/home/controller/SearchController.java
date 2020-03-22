@@ -21,10 +21,21 @@ public class SearchController {
     @Autowired
     EsSearchService esSearchService;
     /**
-     * 查找物品和用户
+     * 查找物品和用户 需要分页
      */
     @GetMapping
     public ApiResult SearchUserOrProductByKeyword(@RequestParam("keyword")String keyword){
         return ApiResult.success(esSearchService.SearchUserOrProductByKeyword(keyword));
     }
+    /**
+     * 查询提示
+     * 用户只要确认查询，tip 索引创建类似的id
+     * 如何取出这几个权值最大的数
+     * es聚合后面再学
+     */
+
+//    @GetMapping("/tip")
+//    public ApiResult searchTip(@RequestParam("keyword")String keyword){
+//
+//    }
 }

@@ -21,6 +21,7 @@ public class GraphController {
 
     @Autowired
     GraphService graphService;
+    //todo graph需要更新状态
     @PostMapping
     public ApiResult<Boolean> followUser(@RequestBody Graph graph){
         return ApiResult.success(graphService.follow(graph));
