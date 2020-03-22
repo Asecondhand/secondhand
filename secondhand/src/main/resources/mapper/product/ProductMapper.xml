@@ -66,7 +66,14 @@
             DATE_FORMAT( t1.create_time, '%Y-%m-%d' )
     </select>
     <select id="getProductInfoByTime" resultType="com.secondhand.module.mime.vo.ProductInfoVo">
-        	SELECT * from product WHERE DATE_FORMAT( create_time, '%Y-%m-%d' )= #{time}
+        SELECT
+            t1.*,
+            t2.product_pic
+        FROM
+            product t1
+            LEFT JOIN ( SELECT DISTINCT product_pic.pid, product_pic FROM product_pic ) t2 ON t1.id = t2.pid
+        WHERE
+            DATE_FORMAT( t1.create_time, '%Y-%m-%d' )= #{time}
     </select>
     <select id="personalDynamicAllNum" resultType="java.lang.Long">
         SELECT
