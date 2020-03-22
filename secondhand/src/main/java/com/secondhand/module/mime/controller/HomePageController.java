@@ -3,6 +3,7 @@ package com.secondhand.module.mime.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.secondhand.common.basemethod.ApiResult;
 import com.secondhand.module.product.service.ProductService;
+import com.secondhand.module.sys.service.UserAttrService;
 import com.secondhand.util.shiro.ShiroUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class HomePageController {
     @Autowired
     ProductService productService;
+    @Autowired
+    UserAttrService userAttrService;
 
     /**
      * 个人主页
@@ -36,4 +39,14 @@ public class HomePageController {
     public ApiResult personalDynamic(@PathVariable("uid")Long uid){
         return productService.personalDynamic(uid);
     }
+
+    /**
+     * 个人主页
+     * 个人信息
+     */
+    @GetMapping("/userInfo/{uid}")
+    public ApiResult getUserInfoByUserId(@PathVariable("uid")Long uid){
+        return userAttrService.getUserInfoByUserId(uid);
+    }
+
 }

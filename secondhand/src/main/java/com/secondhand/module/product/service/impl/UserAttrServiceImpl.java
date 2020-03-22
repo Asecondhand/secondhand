@@ -1,9 +1,12 @@
 package com.secondhand.module.product.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.secondhand.common.basemethod.ApiResult;
+import com.secondhand.module.mime.vo.UserInfoVO;
 import com.secondhand.module.sys.entity.User;
 import com.secondhand.util.exception.ServiceException;
 import org.apache.shiro.SecurityUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.io.Serializable;
@@ -28,6 +31,14 @@ public class UserAttrServiceImpl extends ServiceImpl<UserAttrMapper, UserAttr> i
         UserAttr userAttr = this.getOne(new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getUid, user.getUserId()));
         userAttr.setIcon(icon);
         return this.updateById(userAttr);
+    }
+
+    @Override
+    public ApiResult getUserInfoByUserId(Long uid) {
+        UserAttr userAttr = this.getOne(new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getUid, uid));
+        UserInfoVO userInfoVO = new UserInfoVO();
+        BeanUtils.copyProperties( userAttr,userInfoVO);
+        return ApiResult.success(userInfoVO);
     }
 }
 
