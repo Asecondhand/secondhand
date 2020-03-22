@@ -4,6 +4,7 @@ import com.secondhand.module.product.entity.Product;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * @author Erica
@@ -17,4 +18,6 @@ public class ProductInfoVo {
     private BigDecimal productPrice;
     private String productPic;
     private Integer productStatus;
+    private String productTag;
+    private Date createTime;
 }

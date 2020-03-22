@@ -11,6 +11,8 @@
         t2.product_price,
         t3.product_pic,
         t2.product_status,
+        	t2.product_tag,
+	t2.create_time,
         t4.user_id AS buyerId ,
         t4.user_name AS buyerName,
         t4.header_picture AS buyerHeaderPicture
@@ -21,5 +23,6 @@
         LEFT JOIN sys_user t4 ON t1.buyer_id = t4.user_id
     WHERE
         t1.uid = #{userId}
+        	ORDER BY t2.create_time DESC
     </select>
 </mapper>
