@@ -12,7 +12,7 @@
         t3.product_pic,
         t2.product_status,
         	t2.product_tag,
-	t2.create_time,
+		t2.product_create_time,
         t2.user_id AS sellerId,
         t2.user_name AS sellerName,
         t4.header_picture AS sellerHeaderPicture ,

@@ -21,5 +21,5 @@ public class ProductInfoVo {
     private String productPic;
     private Integer productStatus;
     private String productTag;
-    private String createTime;
+    private String productCreateTime;
 }
