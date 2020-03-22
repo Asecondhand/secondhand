@@ -1,26 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.secondhand.module.product.mapper.ProductMapper">
-  <resultMap id="BaseResultMap" type="com.secondhand.module.product.entity.Product">
-    <!--@mbg.generated-->
-    <!--@Table product-->
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="user_name" jdbcType="VARCHAR" property="userName" />
-    <result column="user_address" jdbcType="VARCHAR" property="userAddress" />
-    <result column="user_id" jdbcType="INTEGER" property="userId" />
-    <result column="product_name" jdbcType="VARCHAR" property="productName" />
-    <result column="product_price" jdbcType="DECIMAL" property="productPrice" />
-    <result column="product_content" jdbcType="VARCHAR" property="productContent" />
-    <result column="product_tag" jdbcType="VARCHAR" property="productTag" />
-    <result column="product_create_time" jdbcType="TIMESTAMP" property="productCreateTime" />
-    <result column="product_status" jdbcType="TINYINT" property="productStatus" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-    <result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    <!--@mbg.generated-->
-    id, user_name, user_address, user_id, product_name, product_price, product_content, 
-    product_tag, product_create_time, product_status, create_time, update_time, is_deleted
-  </sql>
+    <resultMap id="BaseResultMap" type="com.secondhand.module.product.entity.Product">
+        <!--@mbg.generated-->
+        <!--@Table product-->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+        <result column="user_address" jdbcType="VARCHAR" property="userAddress"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="product_name" jdbcType="VARCHAR" property="productName"/>
+        <result column="product_price" jdbcType="DECIMAL" property="productPrice"/>
+        <result column="product_content" jdbcType="VARCHAR" property="productContent"/>
+        <result column="product_tag" jdbcType="VARCHAR" property="productTag"/>
+        <result column="product_create_time" jdbcType="TIMESTAMP" property="productCreateTime"/>
+        <result column="product_status" jdbcType="TINYINT" property="productStatus"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="is_deleted" jdbcType="INTEGER" property="isDeleted"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, user_name, user_address, user_id, product_name, product_price, product_content,
+        product_tag, product_create_time, product_status, create_time, update_time, is_deleted
+    </sql>
+    <select id="getProductInfoByUserId" resultType="com.secondhand.module.mime.vo.ProductInfoVo">
+        SELECT
+            t2.id,
+            t2.product_name,
+            t2.product_content,
+            t2.product_price,
+            t3.product_pic,
+            t2.product_status,
+            t2.user_id,
+            t2.user_name,
+            t4.header_picture,
+            t2.user_address
+        FROM
+            product t2
+            LEFT JOIN ( SELECT product_pic.pid, product_pic FROM product_pic GROUP BY product_pic.pid ) t3 ON t2.id = t3.pid
+            LEFT JOIN sys_user t4 ON t2.user_id = t4.user_id
+        WHERE
+            t2.product_status = 1
+            AND t2.user_id = #{userId}
+    </select>
+    <select id="mineProductByUserId" resultType="com.secondhand.module.mime.vo.ProductInfoVo">
+            SELECT
+          t1.*,
+          t2.product_pic
+      FROM
+          product t1
+          LEFT JOIN ( SELECT DISTINCT product_pic.pid, product_pic FROM product_pic ) t2 ON t1.id = t2.pid
+      WHERE
+         t1.user_id = #{userId}
+         and(t1.product_status = 0 or t1.product_status = 1)
+    </select>
+    <select id="personalDynamic" resultType="com.secondhand.module.mime.vo.DynamicVO">
+        SELECT
+            count(*) as num,
+            DATE_FORMAT( t1.create_time, '%Y-%m-%d' ) as time
+        FROM
+            product t1
+        WHERE
+            user_id = 1
+        GROUP BY
+            DATE_FORMAT( t1.create_time, '%Y-%m-%d' )
+    </select>
+    <select id="getProductInfoByTime" resultType="com.secondhand.module.mime.vo.ProductInfoVo">
+        	SELECT * from product WHERE DATE_FORMAT( create_time, '%Y-%m-%d' )= #{time}
+    </select>
+    <select id="personalDynamicAllNum" resultType="java.lang.Long">
+        SELECT
+            sum( pt.num )
+        FROM
+            (
+            SELECT
+                count(*) AS num,
+                DATE_FORMAT( t1.create_time, '%Y-%m-%d' ) AS create_time
+            FROM
+                product t1
+            WHERE
+                user_id = 1
+            GROUP BY
+                DATE_FORMAT( t1.create_time, '%Y-%m-%d' )
+            ) pt
+    </select>
 </mapper>
