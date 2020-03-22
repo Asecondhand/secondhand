@@ -1,7 +1,9 @@
 package com.secondhand.module.mime.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.secondhand.module.product.entity.Product;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -19,5 +21,5 @@ public class ProductInfoVo {
     private String productPic;
     private Integer productStatus;
     private String productTag;
-    private Date createTime;
+    private String createTime;
 }
