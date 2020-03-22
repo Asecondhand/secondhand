@@ -2,13 +2,18 @@ package com.secondhand.module.product.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.hash.BloomFilter;
 import com.google.common.hash.Funnels;
+import com.secondhand.common.basemethod.ApiResult;
 import com.secondhand.common.es.EsIndex;
 import com.secondhand.common.kafka.KafkaTopic;
+import com.secondhand.module.mime.vo.DynamicVO;
+import com.secondhand.module.mime.vo.HomePageVO;
+import com.secondhand.module.mime.vo.ProductInfoVo;
 import com.secondhand.module.product.DTO.ProductDTO;
 import com.secondhand.module.product.entity.LeaveMessage;
 import com.secondhand.module.product.entity.Product;
@@ -43,6 +48,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -144,6 +150,79 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     public IPage<Product> getProductPageByUserId(Long userId, Page page) {
         return this.page(page, new LambdaQueryWrapper<Product>().eq(Product::getUserId, userId));
     }
+
+
+    /**
+     * 获取已下架商品
+     *
+     * @param userId
+     * @return
+     */
+    @Override
+    public ApiResult getSoldOutByUserId(Long userId) {
+        QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(Product::getUserId, userId)
+                .eq(Product::getProductStatus, 1);
+        List<Product> list = this.list(queryWrapper);
+        return ApiResult.success(list);
+    }
+
+    /**
+     * 删除商品
+     *
+     * @param id
+     */
+    @Override
+    public ApiResult updateProductById(Long id) {
+        QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(Product::getId, id);
+        boolean update = this.remove(queryWrapper);
+        if (update == false) {
+            return ApiResult.fail("商品已删除");
+        }
+        return ApiResult.success("删除商品成功");
+    }
+
+    @Override
+    public ApiResult mineProductByUserId(Long userId) {
+        List<ProductInfoVo> list = baseMapper.mineProductByUserId(userId);
+        HomePageVO vo = new HomePageVO();
+        vo.setMineNum(list.size());
+        vo.setProductInfoVos(list);
+        return ApiResult.success(vo);
+    }
+
+    /**
+     * 个人动态
+     *
+     * @param userId
+     * @return
+     */
+    @Override
+    public ApiResult personalDynamic(Long userId) {
+        List<DynamicVO> list = baseMapper.personalDynamic(userId);
+        List<DynamicVO> vos = new ArrayList<>();
+        Long allNum = baseMapper.personalDynamicAllNum(userId);
+        if (list.size() > 0) {
+            for (DynamicVO vo : list) {
+                List<ProductInfoVo> productInfoVoList = baseMapper.getProductInfoByTime(vo.getTime());
+                if (productInfoVoList.size() > 0) {
+                    DynamicVO entity = new DynamicVO();
+                    entity.setNum(vo.getNum());
+                    entity.setProductList(productInfoVoList);
+                    entity.setTime(vo.getTime());
+                    entity.setTitle("上新了" + vo.getNum() + "个宝贝");
+                    vos.add(entity);
+                }
+            }
+        }
+        HashMap result = new HashMap();
+        result.put("dynamic",vos);
+        result.put("allNum",allNum);
+        return ApiResult.success(result);
+    }
+
+
 
 
     @Override
