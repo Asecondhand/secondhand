@@ -96,6 +96,8 @@ public class JwtTool {
             user.setTokenId(tokeKey);
             user.setUserName(name);
             user.setUserId(userId);
+            // 进行验证token
+            redisTool.checkTokenByRedis(user);
             return user;
         } catch (TokenExpiredException e) {
             log.error("token已经过期" + e.getMessage());
