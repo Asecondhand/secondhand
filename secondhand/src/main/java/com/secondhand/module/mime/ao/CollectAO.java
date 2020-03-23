@@ -8,6 +8,6 @@ import lombok.Data;
  */
 @Data
 public class CollectAO {
-    private Long CollectId;
     private Integer status;  // 0 取消 1收藏
+    private Long productId; // 商品id
 }

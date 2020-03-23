@@ -26,28 +26,20 @@ public class UserPraiseServiceImpl extends ServiceImpl<UserPraiseMapper, UserPra
         return ApiResult.success(baseMapper.getUserPraiseByUserId(userId));
     }
 
-    @Override
-    public Boolean createPraise(Long userId, Long productId) {
-        UserPraise userPraise = new UserPraise();
-        userPraise.setProductId(Math.toIntExact(productId));
-        userPraise.setUid(Math.toIntExact(userId));
-        return  this.save(userPraise);
-    }
 
     @Override
-    public Boolean deletePraise(Long userId, Long productId) {
-        QueryWrapper<UserPraise> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(UserPraise::getUid,userId)
-                .eq(UserPraise::getProductId,productId);
-        return this.remove(queryWrapper);
-    }
-
-    @Override
-    public ApiResult UpdateUserPraiseStatus(PriseAO ao) {
-        UserPraise userPraise = new UserPraise();
-        userPraise.setStatus(ao.getStatus());
-        userPraise.setPraiseId(Math.toIntExact(ao.getPriseId()));
-        this.updateById(userPraise);
+    public ApiResult UpdateUserPraiseStatus(Long userId, PriseAO ao) {
+        if (ao.getStatus() == 1){
+            UserPraise userPraise = new UserPraise();
+            userPraise.setUid(Math.toIntExact(userId));
+            userPraise.setProductId(Math.toIntExact(ao.getProductId()));
+            this.save(userPraise);
+        }else {
+            QueryWrapper<UserPraise> queryWrapper = new QueryWrapper<>();
+            queryWrapper.lambda().eq(UserPraise::getProductId,ao.getProductId())
+                    .eq(UserPraise::getUid,userId);
+            this.remove(queryWrapper);
+        }
         return ApiResult.success("成功");
     }
 }

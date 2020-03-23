@@ -38,7 +38,8 @@ public class UserPraiseController {
      */
     @PostMapping("/PriseStatus")
     public ApiResult UpdateUserPraise(@RequestBody PriseAO ao) {
-        return iUserPraiseService.UpdateUserPraiseStatus(ao);
+        Long userId = ShiroUtils.getUserId();
+        return iUserPraiseService.UpdateUserPraiseStatus(userId,ao);
     }
 
 

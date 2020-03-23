@@ -35,7 +35,5 @@ public class UserPraise implements Serializable {
      */
     private Integer productId;
 
-    private Integer Status;
-
 
 }

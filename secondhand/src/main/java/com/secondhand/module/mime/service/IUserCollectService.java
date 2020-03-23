@@ -18,9 +18,5 @@ public interface IUserCollectService extends IService<UserCollect> {
 
    ApiResult getUserCollectByUserId(Long userId);
 
-    Boolean createCollect(Long userId, Long productId);
-
-    Boolean deleteCollect(Long userId, Long productId);
-
-    ApiResult UpdateUserCollectStatus( CollectAO ao);
+    ApiResult UpdateUserCollectStatus(Long userId, CollectAO ao);
 }

@@ -7,6 +7,7 @@ import com.secondhand.module.mime.entity.UserCollect;
 import com.secondhand.module.mime.mapper.UserCollectMapper;
 import com.secondhand.module.mime.service.IUserCollectService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.secondhand.module.sys.entity.User;
 import org.springframework.stereotype.Service;
 
 /**
@@ -26,33 +27,25 @@ public class UserCollectServiceImpl extends ServiceImpl<UserCollectMapper, UserC
         return ApiResult.success(baseMapper.getUserCollectByUserId(userId));
     }
 
-    @Override
-    public Boolean createCollect(Long userId, Long productId) {
-        UserCollect userCollect = new UserCollect();
-        userCollect.setProductId(Math.toIntExact(productId));
-        userCollect.setUid(Math.toIntExact(userId));
-        return this.save(userCollect);
-    }
-
-    @Override
-    public Boolean deleteCollect(Long userId, Long productId) {
-        QueryWrapper<UserCollect> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(UserCollect::getUid,userId)
-                .eq(UserCollect::getProductId,productId);
-        return this.remove(queryWrapper);
-    }
-
     /**
      * 用户收藏
      * 取消收藏
      * @return
      */
     @Override
-    public ApiResult UpdateUserCollectStatus( CollectAO ao) {
-        UserCollect collectEntity = new UserCollect();
-        collectEntity.setStatus(ao.getStatus());
-        collectEntity.setCollectId(Math.toIntExact(ao.getCollectId()));
-        this.updateById(collectEntity);
+    public ApiResult UpdateUserCollectStatus(Long userId, CollectAO ao) {
+        if (ao.getStatus() == 1){
+            UserCollect userCollect = new UserCollect();
+            userCollect.setProductId(Math.toIntExact(ao.getProductId()));
+            userCollect.setUid(Math.toIntExact(userId));
+            userCollect.setProductId(Math.toIntExact(ao.getProductId()));
+            this.save(userCollect);
+        }else {
+            QueryWrapper<UserCollect> queryWrapper = new QueryWrapper<>();
+            queryWrapper.lambda().eq(UserCollect::getProductId,ao.getProductId())
+                    .eq(UserCollect::getUid,userId);
+            this.remove(queryWrapper);
+        }
         return ApiResult.success("成功");
     }
 }

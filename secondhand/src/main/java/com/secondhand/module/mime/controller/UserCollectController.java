@@ -39,7 +39,8 @@ public class UserCollectController {
      */
     @PostMapping("/collectStatus")
     public ApiResult UpdateUserCollect(@RequestBody CollectAO ao){
-        return iUserCollectService.UpdateUserCollectStatus(ao);
+        Long userId = ShiroUtils.getUserId();
+        return iUserCollectService.UpdateUserCollectStatus(userId,ao);
     }
 
 }

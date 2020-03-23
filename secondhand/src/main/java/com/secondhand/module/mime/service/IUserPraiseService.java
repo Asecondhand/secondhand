@@ -17,9 +17,5 @@ public interface IUserPraiseService extends IService<UserPraise> {
 
     ApiResult getUserPraiseByUserId(Long userId);
 
-    Boolean createPraise(Long userId, Long productId);
-
-    Boolean deletePraise(Long userId, Long productId);
-
-    ApiResult UpdateUserPraiseStatus(PriseAO ao);
+    ApiResult UpdateUserPraiseStatus(Long userId, PriseAO ao);
 }
