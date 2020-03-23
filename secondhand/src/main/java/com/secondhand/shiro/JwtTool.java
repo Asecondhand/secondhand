@@ -38,6 +38,7 @@ public class JwtTool {
     private String secretKey;
     // 有效时长 秒为单位
     @Value("${security.token_ttl:43200}")//12小时
+    // @Value("${security.token_ttl:60}")//1分中
 
     private int ttl;
     @Getter

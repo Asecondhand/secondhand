@@ -18,37 +18,6 @@ import java.util.Map;
 @Configuration
 public class ShiroConfig {
 
-    @Bean("shiroFilterFactoryBean")
-    public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager manager, JwtFilter filter) {
-        final String authFilter = "auth";
-        ShiroFilterFactoryBean factory = new ShiroFilterFactoryBean();
-        factory.setSecurityManager(manager);
-
-        factory.getFilters().put(authFilter, filter);
-
-        Map<String, String> filterChainMap = new LinkedHashMap<>();
-
-        filterChainMap.put("/noauth", "anon");
-        filterChainMap.put("/login", "anon");
-        filterChainMap.put("/captcha", "anon");
-        filterChainMap.put("/api/product/files", "anon");
-        // 指的是访问，user/api时，需要经过authFilter过滤器
-        // filterChainMap.put("/api/**", authFilter);
-//        filterChainMap.put("api/**", "anon");
-        filterChainMap.put("/api/**", authFilter);
-        factory.setFilterChainDefinitionMap(filterChainMap);
-
-        return factory;
-    }
-
-    @Bean
-    public DefaultWebSecurityManager securityManager(ShiroRealm realm) {
-        DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        securityManager.setRealm(realm);
-
-        return securityManager;
-    }
-
     @Bean("lifecycleBeanPostProcessor")
     public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
         return new LifecycleBeanPostProcessor();
@@ -72,4 +41,37 @@ public class ShiroConfig {
         defaultAdvisorAutoProxyCreator.setUsePrefix(true);
         return defaultAdvisorAutoProxyCreator;
     }
+
+
+    @Bean
+    public DefaultWebSecurityManager securityManager(ShiroRealm realm) {
+        DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
+        securityManager.setRealm(realm);
+
+        return securityManager;
+    }
+
+    @Bean("shiroFilterFactoryBean")
+    public ShiroFilterFactoryBean shiroFilterFactoryBean(SecurityManager manager, JwtFilter filter) {
+        final String authFilter = "auth";
+        ShiroFilterFactoryBean factory = new ShiroFilterFactoryBean();
+        factory.setSecurityManager(manager);
+
+        factory.getFilters().put(authFilter, filter);
+
+        Map<String, String> filterChainMap = new LinkedHashMap<>();
+
+        filterChainMap.put("/noauth", "anon");
+        filterChainMap.put("/login", "anon");
+        filterChainMap.put("/captcha", "anon");
+        filterChainMap.put("/api/product/files", "anon");
+        // 指的是访问，user/api时，需要经过authFilter过滤器
+        // filterChainMap.put("/api/**", authFilter);
+//        filterChainMap.put("api/**", "anon");
+        filterChainMap.put("/api/**", authFilter);
+        factory.setFilterChainDefinitionMap(filterChainMap);
+
+        return factory;
+    }
+
 }
