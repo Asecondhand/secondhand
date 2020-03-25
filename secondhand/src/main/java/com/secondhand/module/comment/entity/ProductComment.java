@@ -2,6 +2,8 @@ package com.secondhand.module.comment.entity;
 
 import java.time.LocalDateTime;
 import java.io.Serializable;
+import java.util.Date;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -54,17 +56,20 @@ public class ProductComment implements Serializable {
     /**
      * 创建时间
      */
-    private LocalDateTime createTime;
+    private Date createTime;
 
     /**
      * 更新时间
      */
-    private LocalDateTime updateTime;
+    private Date updateTime;
 
     /**
      * 上一级留言id
      */
-    private Integer messagePid;
+    private Integer commentPid;
 
-
+    /**
+     * 是否删除 0是 1否
+     */
+    private Integer isDelete;
 }
