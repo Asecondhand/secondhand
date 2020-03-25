@@ -7,10 +7,11 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="uid" jdbcType="INTEGER" property="uid" />
     <result column="followid" jdbcType="INTEGER" property="followid" />
+    <result column="status" jdbcType="INTEGER" property="status" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, `uid`, followid
+    id, `uid`, followid, `status`
   </sql>
     <select id="getFollowListById" resultMap="BaseResultMap">
       select * from graph where followid = #{id}

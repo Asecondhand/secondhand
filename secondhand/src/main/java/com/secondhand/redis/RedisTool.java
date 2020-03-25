@@ -92,4 +92,8 @@ public class RedisTool {
     public boolean hasKeys(String key){
       return   redis.hasKey(key);
     }
+
+    public boolean expire(String key,long timeout, TimeUnit timeUnit){
+        return redis.expire(key,timeout,timeUnit);
+    }
 }

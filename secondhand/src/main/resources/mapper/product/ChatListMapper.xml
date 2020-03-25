@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.secondhand.module.product.mapper.LeaveMessageMapper">
-  <resultMap id="BaseResultMap" type="com.secondhand.module.product.entity.LeaveMessage">
+<mapper namespace="com.secondhand.module.product.mapper.ChatListMapper">
+  <resultMap id="BaseResultMap" type="com.secondhand.module.product.entity.ChatList">
     <!--@mbg.generated-->
-    <!--@Table leave_message-->
+    <!--@Table chat_list-->
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="product_id" jdbcType="INTEGER" property="productId" />
-    <result column="Message" jdbcType="VARCHAR" property="message" />
+    <result column="to_uid" jdbcType="INTEGER" property="toUid" />
     <result column="uid" jdbcType="INTEGER" property="uid" />
-    <result column="uname" jdbcType="VARCHAR" property="uname" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="icon" jdbcType="VARCHAR" property="icon" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-    <result column="message_pid" jdbcType="INTEGER" property="messagePid" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, product_id, Message, `uid`, uname, icon, create_time, update_time, message_pid
+    id, to_uid, `uid`, `name`, icon, create_time, update_time
   </sql>
 </mapper>

@@ -19,7 +19,7 @@ public class UserAttr {
         this.uname = user.getUserName();
     }
     @TableId(value = "id", type = IdType.AUTO)
-    private Integer id;
+    private Long id;
 
     /**
      * 用户id

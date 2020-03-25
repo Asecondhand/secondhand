@@ -4,20 +4,13 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
-@Getter
-@Setter
-@ToString
+@Data
 @TableName(value = "graph")
-/**
- * 关注与被关注
- */
 public class Graph {
     @TableId(value = "id", type = IdType.AUTO)
-    private Integer id;
+    private Long id;
 
     /**
      * 用户id
@@ -31,9 +24,17 @@ public class Graph {
     @TableField(value = "followid")
     private Long followid;
 
+    /**
+     *  0-已关注 1-未关注
+     */
+    @TableField(value = "status")
+    private Integer status;
+
     public static final String COL_ID = "id";
 
     public static final String COL_UID = "uid";
 
     public static final String COL_FOLLOWID = "followid";
+
+    public static final String COL_STATUS = "status";
 }

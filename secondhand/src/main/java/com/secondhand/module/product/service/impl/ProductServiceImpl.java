@@ -39,6 +39,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionManager;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -47,10 +48,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 
 @Service
@@ -73,7 +71,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     private static BloomFilter bloomFilter = BloomFilter.create(Funnels.integerFunnel(), 1000000);
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
     public boolean issue(ProductDTO productDTO)  {
         //检查userid 是否存在
         User user = (User) SecurityUtils.getSubject().getPrincipal();
@@ -81,6 +79,11 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         //观察者模式
         if (user.getUserId() == productDTO.getUserId().intValue()) {
             Product product =new Product();
+            if(productDTO.getProductStatus() == null){
+                productDTO.setProductStatus(0);
+            }
+            Integer status = productDTO.getProductStatus() == 1 ? 1 : 0;
+            productDTO.setProductStatus(status);
             BeanUtils.copyProperties(productDTO,product);
             this.save(product);
             String[] productPic = productDTO.getProductPic();
@@ -112,16 +115,35 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     public ProductVo search(String id) {
         //id 小于0
         //如果不在布隆过滤器里，直接返回false
-        if (!bloomFilter.mightContain(Integer.parseInt(id)))
+        if (!bloomFilter.mightContain(Integer.parseInt(id))) {
             throw new ServiceException("查询的id可能不存在");
+        }
         Product product = this.getById(id);
-        if (product == null)
+        if (product == null) {
             return null;
+        }
         ProductVo productVo = new ProductVo();
         List<LeaveMessage> leaveMessageList = leaveMessageService.searchByProductIdAndPage(Long.valueOf(id));
         List<ProductPic> productPicList = productPicService.list(new LambdaQueryWrapper<ProductPic>().eq(ProductPic::getPid,id));
         BeanUtils.copyProperties(product, productVo);
         productVo.setLeaveMessages(leaveMessageList);
+        productVo.setProductPics(productPicList);
+        return productVo;
+    }
+
+    @Override
+    public ProductVo search(Long id) {
+        //wrapper
+        //查询productVo
+        List<Product> product ;
+        if (!bloomFilter.mightContain(id.intValue()))
+            throw new ServiceException("查询的id可能不存在");
+        ProductVo productVo = new ProductVo();
+        if( (product = this.list(new LambdaQueryWrapper<Product>().eq(Product::getUserId,id).orderByDesc(Product::getCreateTime))).size()==0){
+            return null;
+        }
+        BeanUtils.copyProperties(product.get(0),productVo);
+        List<ProductPic> productPicList = productPicService.list(new LambdaQueryWrapper<ProductPic>().eq(ProductPic::getPid,productVo.getId()));
         productVo.setProductPics(productPicList);
         return productVo;
     }
@@ -152,7 +174,6 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         return this.page(page, new LambdaQueryWrapper<Product>().eq(Product::getUserId, userId));
     }
 
-
     /**
      * 获取已下架商品
      *
@@ -174,11 +195,15 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     public ApiResult updateProductById(Long id) {
         QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(Product::getId, id);
+<<<<<<< HEAD
+        return  this.remove(queryWrapper)?ApiResult.success("删除代码成功"):ApiResult.fail("商品已删除");
+=======
         boolean update = this.remove(queryWrapper);
         if (update == false) {
             return ApiResult.fail("操作失败");
         }
         return ApiResult.success("操作成功");
+>>>>>>> origin/master
     }
 
     @Override
