@@ -8,7 +8,7 @@ import com.secondhand.module.product.vo.LeaveMessageVo;
 
 import java.util.List;
 
-public interface LeaveMessageService extends IService<LeaveMessage>{
+public interface LeaveMessageService extends IService<LeaveMessage> {
 
     /**
      * 通过Product id 查询留言列表
@@ -16,9 +16,11 @@ public interface LeaveMessageService extends IService<LeaveMessage>{
     IPage<LeaveMessage> searchByProductIdAndPage(Long ProductId, Page<LeaveMessage> page);
 
     List<LeaveMessage> searchByProductIdAndPage(Long ProductId);
+
     /**
      * 上传留言
      */
     Boolean upload(LeaveMessageVo leaveMessage);
 
 }
+

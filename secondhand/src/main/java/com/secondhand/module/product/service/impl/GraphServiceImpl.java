@@ -3,6 +3,7 @@ package com.secondhand.module.product.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.secondhand.module.product.DTO.GraphStatusDTO;
 import com.secondhand.module.product.entity.Graph;
 import com.secondhand.module.product.entity.UserAttr;
 import com.secondhand.module.product.mapper.GraphMapper;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -39,7 +41,7 @@ public class GraphServiceImpl extends ServiceImpl<GraphMapper, Graph> implements
         //需要用户验证
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         if (graph.getFollowid().equals(user.getUserId())) {
-            return this.save(graph);
+            return this.saveOrUpdate(graph);
         }
         return false;
     }
@@ -56,6 +58,8 @@ public class GraphServiceImpl extends ServiceImpl<GraphMapper, Graph> implements
         //如何存储到redis中
         //从redis中取出来
         if(redisTool.hasKeys(key)){
+            //设置key过期时间
+            redisTool.expire(key,10, TimeUnit.MINUTES);
             BoundListOperations listOperation = redisTool.getRedisList(key);
             return (List<FollowUserVo>) listOperation.range(0,-1);
         }
@@ -66,11 +70,23 @@ public class GraphServiceImpl extends ServiceImpl<GraphMapper, Graph> implements
     public List<FollowUserVo> uList(Long uid) {
         String key = "uidList:"+uid;
         if(redisTool.hasKeys(key)){
+            redisTool.expire(key,10, TimeUnit.MINUTES);
             BoundListOperations listOperation = redisTool.getRedisList(key);
             return (List<FollowUserVo>) listOperation.range(0,-1);
         }
         return getByUid(uid,key);
     }
+
+    @Override
+    public boolean updateStatus(Long id, GraphStatusDTO graphStatusDTO) {
+        Graph graph = this.getById(id);
+        if(graph != null){
+            graph.setStatus(graphStatusDTO.getStatus());
+            return this.save(graph);
+        }
+        return false;
+    }
+
     private   List<FollowUserVo> getById(Long followId,String key){
         BoundListOperations listOperation = redisTool.getRedisList(key);
         List<Graph> graphList = graphMapper.getFollowListById(followId);
@@ -82,9 +98,11 @@ public class GraphServiceImpl extends ServiceImpl<GraphMapper, Graph> implements
         userAttrs.forEach(userAttr -> {
             FollowUserVo followUserVo = new FollowUserVo();
             BeanUtils.copyProperties(userAttr,followUserVo);
+            followUserVo.setId(userAttr.getId());
             followUserVos.add(followUserVo);
             listOperation.leftPush(followUserVo);
         });
+        redisTool.expire(key,10, TimeUnit.MINUTES);
         return followUserVos;
     }
     //有空处理一下空数据，没有插入到redis的情况
@@ -100,9 +118,11 @@ public class GraphServiceImpl extends ServiceImpl<GraphMapper, Graph> implements
         userAttrs.forEach(userAttr -> {
             FollowUserVo followUserVo = new FollowUserVo();
             BeanUtils.copyProperties(userAttr,followUserVo);
+            followUserVo.setId(userAttr.getId());
             followUserVos.add(followUserVo);
             listOperation.leftPush(followUserVo);
         });
+        redisTool.expire(key,10, TimeUnit.MINUTES);
         return followUserVos;
     }
 }

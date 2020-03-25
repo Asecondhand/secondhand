@@ -12,7 +12,7 @@ import lombok.Data;
 @Data
 public class FollowUserVo {
     @TableField(value = "uid")
-    private Integer uid;
+    private Long id;
 
     /**
      * 用户性别

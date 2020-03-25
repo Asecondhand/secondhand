@@ -16,20 +16,24 @@ import org.springframework.stereotype.Service;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * @author zangjan
+ */
 @Service
 public class LeaveMessageServiceImpl extends ServiceImpl<LeaveMessageMapper, LeaveMessage> implements LeaveMessageService {
 
+
     @Override
-    public IPage<LeaveMessage> searchByProductIdAndPage(Long ProductId, Page<LeaveMessage> page) {
+    public IPage<LeaveMessage> searchByProductIdAndPage(Long productId, Page<LeaveMessage> page) {
         LambdaQueryWrapper<LeaveMessage> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(LeaveMessage::getProductId,ProductId);
-        return this.page(page,wrapper);
+        wrapper.eq(LeaveMessage::getProductId, productId);
+        return this.page(page, wrapper);
     }
 
     @Override
-    public List<LeaveMessage> searchByProductIdAndPage(Long ProductId) {
+    public List<LeaveMessage> searchByProductIdAndPage(Long productId) {
         LambdaQueryWrapper<LeaveMessage> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(LeaveMessage::getProductId,ProductId);
+        wrapper.eq(LeaveMessage::getProductId, productId);
         return this.list(wrapper);
     }
 
@@ -37,10 +41,12 @@ public class LeaveMessageServiceImpl extends ServiceImpl<LeaveMessageMapper, Lea
     public Boolean upload(LeaveMessageVo leaveMessage) {
         LeaveMessage leaveMessage1 = new LeaveMessage();
         CurrentUserVo currentUserVo = (CurrentUserVo) SecurityUtils.getSubject().getPrincipal();
-        BeanUtils.copyProperties(leaveMessage,leaveMessage1);
+        BeanUtils.copyProperties(leaveMessage, leaveMessage1);
         leaveMessage1.setUid(currentUserVo.getUserId().intValue());
         leaveMessage1.setUname(currentUserVo.getUserName());
+        leaveMessage1.setIcon(currentUserVo.getHeaderPicture());
         return this.save(leaveMessage1);
     }
 
 }
+

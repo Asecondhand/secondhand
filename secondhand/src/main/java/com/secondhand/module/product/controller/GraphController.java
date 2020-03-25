@@ -1,6 +1,7 @@
 package com.secondhand.module.product.controller;
 
 import com.secondhand.common.basemethod.ApiResult;
+import com.secondhand.module.product.DTO.GraphStatusDTO;
 import com.secondhand.module.product.entity.Graph;
 import com.secondhand.module.product.entity.UserAttr;
 import com.secondhand.module.product.service.GraphService;
@@ -28,13 +29,21 @@ public class GraphController {
     }
 
     //关注列表
-    @GetMapping("/{followId}/followList")
-    public ApiResult getFollowList(@PathVariable Long followId){
-        return ApiResult.success(graphService.followList(followId));
+    @GetMapping("/{uid}/followList")
+    public ApiResult getFollowList(@PathVariable Long uid){
+        return ApiResult.success(graphService.followList(uid));
     }
     //粉丝列表
     @GetMapping("/{uid}/userList")
     public ApiResult getUserList(@PathVariable Long uid){
         return ApiResult.success(graphService.uList(uid));
     }
+
+//    /**
+//     * 更改关注的状态
+//     */
+//    @PutMapping("/{id}/status")
+//    public ApiResult updateStatus(@PathVariable Long id, @RequestBody GraphStatusDTO graphStatusDTO){
+//        return ApiResult.success(graphService.updateStatus(id, graphStatusDTO));
+//    }
 }

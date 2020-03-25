@@ -19,6 +19,8 @@ public interface ProductService extends IService<Product> {
 
     ProductVo search(String id);
 
+    //根据用户id查找商品
+    ProductVo search(Long id);
     boolean changeStatus(int status, Long productId);
 
     IPage<Product> getProductPageByUserId(Long userId , Page page);

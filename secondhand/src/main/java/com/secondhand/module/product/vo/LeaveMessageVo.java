@@ -14,4 +14,5 @@ public class LeaveMessageVo {
     private Integer productId;
 
     private String message;
+
 }
