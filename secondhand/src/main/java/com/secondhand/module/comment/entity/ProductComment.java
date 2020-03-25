@@ -22,6 +22,11 @@ public class ProductComment implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
+     * 商品留言表id
+     */
+    private Integer commentId;
+
+    /**
      * 商品id
      */
     private Integer productId;

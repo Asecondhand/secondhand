@@ -1,19 +1,15 @@
-package com.secondhand.module.mime.vo;
+package com.secondhand.module.product.vo;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.secondhand.module.product.entity.Product;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * @author Erica
- * @since 2020/3/18
+ * @since 2020/3/25
  */
 @Data
-public class ProductInfoVo {
+public class UserSoldOut {
     private Integer id; // 商品id
     private String productName; // 商品名
     private String productContent;
@@ -22,7 +18,5 @@ public class ProductInfoVo {
     private Integer productStatus;
     private String productTag;
     private String productCreateTime;
-    private String userName;
     private Integer userId;  // 用户id
-    private String userHeaderPicture;  // 头像
 }

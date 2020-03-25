@@ -12,7 +12,4 @@ import lombok.EqualsAndHashCode;
 public class SaleProductVO  extends ProductInfoVo {
     private Integer saleId;
     private Integer orderId;
-    private Integer buyerId;  // 买家id
-    private String buyerName;
-    private String buyerHeaderPicture;
 }

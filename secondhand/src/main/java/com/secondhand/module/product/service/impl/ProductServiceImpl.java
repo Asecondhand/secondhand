@@ -22,6 +22,7 @@ import com.secondhand.module.product.mapper.ProductMapper;
 import com.secondhand.module.product.service.LeaveMessageService;
 import com.secondhand.module.product.service.ProductService;
 import com.secondhand.module.product.vo.ProductVo;
+import com.secondhand.module.product.vo.UserSoldOut;
 import com.secondhand.module.sys.entity.User;
 import com.secondhand.module.sys.service.IUserService;
 import com.secondhand.module.sys.service.ProductPicService;
@@ -160,10 +161,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
      */
     @Override
     public ApiResult getSoldOutByUserId(Long userId) {
-        QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(Product::getUserId, userId)
-                .eq(Product::getProductStatus, 1);
-        List<Product> list = this.list(queryWrapper);
+        List<UserSoldOut> list = baseMapper.getSoldOutByUserId(userId);
         return ApiResult.success(list);
     }
 
@@ -178,9 +176,9 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         queryWrapper.lambda().eq(Product::getId, id);
         boolean update = this.remove(queryWrapper);
         if (update == false) {
-            return ApiResult.fail("商品已删除");
+            return ApiResult.fail("操作失败");
         }
-        return ApiResult.success("删除商品成功");
+        return ApiResult.success("操作成功");
     }
 
     @Override

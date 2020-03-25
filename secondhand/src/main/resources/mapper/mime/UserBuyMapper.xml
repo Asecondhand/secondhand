@@ -12,11 +12,10 @@
 		t3.product_pic,
 		t2.product_status,
 		t2.product_tag,
-			t2.product_create_time,
-		t2.user_id AS sellerId ,
-		t2.user_name AS sellerName,
-		t4.header_picture AS sellerHeaderPicture,
-		t2.user_address AS sellerAddress
+		t2.product_create_time,
+		t2.user_id AS userId ,
+		t2.user_name AS userName,
+		t4.header_picture AS userHeaderPicture
 	FROM
 		user_buy t1
 		LEFT JOIN product t2 ON t1.product_id = t2.id
@@ -24,6 +23,7 @@
 		LEFT JOIN sys_user t4 ON t2.user_id = t4.user_id
 	WHERE
 		t1.uid = #{userId}
-			ORDER BY t2.create_time DESC
+		and t2.is_deleted=1
+		ORDER BY t2.create_time DESC
     </select>
 </mapper>

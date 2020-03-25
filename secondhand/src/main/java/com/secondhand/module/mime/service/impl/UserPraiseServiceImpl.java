@@ -40,6 +40,6 @@ public class UserPraiseServiceImpl extends ServiceImpl<UserPraiseMapper, UserPra
                     .eq(UserPraise::getUid,userId);
             this.remove(queryWrapper);
         }
-        return ApiResult.success("成功");
+        return ApiResult.success("操作成功");
     }
 }

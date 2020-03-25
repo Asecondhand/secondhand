@@ -46,6 +46,6 @@ public class UserCollectServiceImpl extends ServiceImpl<UserCollectMapper, UserC
                     .eq(UserCollect::getUid,userId);
             this.remove(queryWrapper);
         }
-        return ApiResult.success("成功");
+        return ApiResult.success("操作成功");
     }
 }

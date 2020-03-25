@@ -36,7 +36,7 @@ public class UserPraiseController {
      * 用户点赞
      * 取消点赞
      */
-    @PostMapping("/PriseStatus")
+    @PostMapping("/priseStatus")
     public ApiResult UpdateUserPraise(@RequestBody PriseAO ao) {
         Long userId = ShiroUtils.getUserId();
         return iUserPraiseService.UpdateUserPraiseStatus(userId,ao);
