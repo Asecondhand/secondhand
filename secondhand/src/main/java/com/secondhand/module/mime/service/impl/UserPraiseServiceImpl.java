@@ -29,16 +29,19 @@ public class UserPraiseServiceImpl extends ServiceImpl<UserPraiseMapper, UserPra
 
     @Override
     public ApiResult UpdateUserPraiseStatus(Long userId, PriseAO ao) {
-        if (ao.getStatus() == 1){
+        if (ao.getStatus() == 0){
             UserPraise userPraise = new UserPraise();
             userPraise.setUid(Math.toIntExact(userId));
             userPraise.setProductId(Math.toIntExact(ao.getProductId()));
+            userPraise.setStatus(0);
             this.save(userPraise);
         }else {
             QueryWrapper<UserPraise> queryWrapper = new QueryWrapper<>();
             queryWrapper.lambda().eq(UserPraise::getProductId,ao.getProductId())
                     .eq(UserPraise::getUid,userId);
-            this.remove(queryWrapper);
+            UserPraise userPraise = new UserPraise();
+            userPraise.setStatus(1);
+            this.update(userPraise,queryWrapper);
         }
         return ApiResult.success("操作成功");
     }

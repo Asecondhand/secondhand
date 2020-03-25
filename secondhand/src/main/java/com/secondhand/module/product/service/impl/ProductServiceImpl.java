@@ -22,7 +22,7 @@ import com.secondhand.module.product.mapper.ProductMapper;
 import com.secondhand.module.product.service.LeaveMessageService;
 import com.secondhand.module.product.service.ProductService;
 import com.secondhand.module.product.vo.ProductVo;
-import com.secondhand.module.product.vo.UserSoldOut;
+import com.secondhand.module.product.vo.UserProductVO;
 import com.secondhand.module.sys.entity.User;
 import com.secondhand.module.sys.service.IUserService;
 import com.secondhand.module.sys.service.ProductPicService;
@@ -66,30 +66,30 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     RestHighLevelClient restHighLevelClient;
 
     @Autowired
-    KafkaTemplate<String,String> kafkaTemplate;
+    KafkaTemplate<String, String> kafkaTemplate;
 
     private static BloomFilter bloomFilter = BloomFilter.create(Funnels.integerFunnel(), 1000000);
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
-    public boolean issue(ProductDTO productDTO)  {
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public boolean issue(ProductDTO productDTO) {
         //检查userid 是否存在
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         //商品发布的时候，可以通知所有的follow
         //观察者模式
         if (user.getUserId() == productDTO.getUserId().intValue()) {
-            Product product =new Product();
-            if(productDTO.getProductStatus() == null){
+            Product product = new Product();
+            if (productDTO.getProductStatus() == null) {
                 productDTO.setProductStatus(0);
             }
             Integer status = productDTO.getProductStatus() == 1 ? 1 : 0;
             productDTO.setProductStatus(status);
-            BeanUtils.copyProperties(productDTO,product);
+            BeanUtils.copyProperties(productDTO, product);
             this.save(product);
             String[] productPic = productDTO.getProductPic();
             List<ProductPic> list = new ArrayList<>();
             for (String s : productPic) {
-                list.add(new ProductPic(Math.toIntExact(product.getId()),s));
+                list.add(new ProductPic(Math.toIntExact(product.getId()), s));
             }
             try {
                 //向es索引添加数据
@@ -100,7 +100,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
                 throw new ServiceException("es无法post数据");
             }
 //            kafkaTemplate.send(KafkaTopic.PRODUCT_TOPIC, JSON.toJSONString(productDTO));
-            return  productPicService.saveBatch(list);
+            return productPicService.saveBatch(list);
         }
         throw new ServiceException("用户验证出现错误,无法登录");
     }
@@ -124,7 +124,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         }
         ProductVo productVo = new ProductVo();
         List<LeaveMessage> leaveMessageList = leaveMessageService.searchByProductIdAndPage(Long.valueOf(id));
-        List<ProductPic> productPicList = productPicService.list(new LambdaQueryWrapper<ProductPic>().eq(ProductPic::getPid,id));
+        List<ProductPic> productPicList = productPicService.list(new LambdaQueryWrapper<ProductPic>().eq(ProductPic::getPid, id));
         BeanUtils.copyProperties(product, productVo);
         productVo.setLeaveMessages(leaveMessageList);
         productVo.setProductPics(productPicList);
@@ -135,15 +135,15 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     public ProductVo search(Long id) {
         //wrapper
         //查询productVo
-        List<Product> product ;
+        List<Product> product;
         if (!bloomFilter.mightContain(id.intValue()))
             throw new ServiceException("查询的id可能不存在");
         ProductVo productVo = new ProductVo();
-        if( (product = this.list(new LambdaQueryWrapper<Product>().eq(Product::getUserId,id).orderByDesc(Product::getCreateTime))).size()==0){
+        if ((product = this.list(new LambdaQueryWrapper<Product>().eq(Product::getUserId, id).orderByDesc(Product::getCreateTime))).size() == 0) {
             return null;
         }
-        BeanUtils.copyProperties(product.get(0),productVo);
-        List<ProductPic> productPicList = productPicService.list(new LambdaQueryWrapper<ProductPic>().eq(ProductPic::getPid,productVo.getId()));
+        BeanUtils.copyProperties(product.get(0), productVo);
+        List<ProductPic> productPicList = productPicService.list(new LambdaQueryWrapper<ProductPic>().eq(ProductPic::getPid, productVo.getId()));
         productVo.setProductPics(productPicList);
         return productVo;
     }
@@ -182,7 +182,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
      */
     @Override
     public ApiResult getSoldOutByUserId(Long userId) {
-        List<UserSoldOut> list = baseMapper.getSoldOutByUserId(userId);
+        List<UserProductVO> list = baseMapper.getSoldOutByUserId(userId);
         return ApiResult.success(list);
     }
 
@@ -195,15 +195,12 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     public ApiResult updateProductById(Long id) {
         QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(Product::getId, id);
-<<<<<<< HEAD
-        return  this.remove(queryWrapper)?ApiResult.success("删除代码成功"):ApiResult.fail("商品已删除");
-=======
+        // return  this.remove(queryWrapper)?ApiResult.success("删除代码成功"):ApiResult.fail("商品已删除");
         boolean update = this.remove(queryWrapper);
         if (update == false) {
             return ApiResult.fail("操作失败");
         }
         return ApiResult.success("操作成功");
->>>>>>> origin/master
     }
 
     @Override
@@ -240,12 +237,26 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
             }
         }
         HashMap result = new HashMap();
-        result.put("dynamic",vos);
-        result.put("allNum",allNum);
+        result.put("dynamic", vos);
+        result.put("allNum", allNum);
         return ApiResult.success(result);
     }
 
-
+    @Override
+    public ApiResult getUserRelease(Long userId) {
+        List<UserProductVO> vos = new ArrayList<>();
+        QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(Product::getUserId, userId).eq(Product::getIsDeleted, 0);
+        List<Product> list = this.list(queryWrapper);
+        if (list.size() > 0) {
+            for (Product entity : list) {
+                UserProductVO vo = new UserProductVO();
+                BeanUtils.copyProperties(entity, vo);
+                vos.add(vo);
+            }
+        }
+        return ApiResult.success(vos);
+    }
 
 
     @Override

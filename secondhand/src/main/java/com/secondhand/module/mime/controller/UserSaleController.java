@@ -6,10 +6,7 @@ import com.secondhand.common.basemethod.ApiResult;
 import com.secondhand.module.mime.service.IUserSaleService;
 import com.secondhand.util.shiro.ShiroUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
@@ -37,5 +34,14 @@ public class UserSaleController {
         return iUserSaleService.getUserSaleByUserId(userId);
     }
 
+    /**
+     * 删除我卖出的
+     * @param saleId
+     * @return
+     */
+    @DeleteMapping("/{saleId}")
+    public ApiResult deleteUserSale(@PathVariable("saleId")Long saleId){
+        return iUserSaleService.deleteUserSale(saleId);
+    }
 
 }

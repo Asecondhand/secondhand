@@ -23,6 +23,7 @@
         LEFT JOIN sys_user t4 ON t1.buyer_id = t4.user_id
     WHERE
         t1.uid = #{userId}
+        and t1.status = 0
         ORDER BY t2.create_time DESC
     </select>
 </mapper>

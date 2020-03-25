@@ -91,4 +91,13 @@ public class ProductController {
         return productService.updateProductById(id);
     }
 
+    /**
+     * 查询用户发布的商品
+     */
+    @GetMapping("/userRelease")
+    public ApiResult getUserRelease(){
+        Long userId = ShiroUtils.getUserId();
+        return productService.getUserRelease(userId);
+    }
+
 }

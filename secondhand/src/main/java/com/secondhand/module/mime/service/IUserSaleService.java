@@ -17,4 +17,6 @@ import java.util.List;
 public interface IUserSaleService extends IService<UserSale> {
 
     ApiResult getUserSaleByUserId(Long userId);
+
+    ApiResult deleteUserSale(Long saleId);
 }

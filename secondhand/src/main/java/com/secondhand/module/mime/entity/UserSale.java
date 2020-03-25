@@ -45,5 +45,10 @@ public class UserSale implements Serializable {
      */
     private Integer orderId;
 
+    /**
+     * 是否删除
+     * 0 是 1否
+     */
+    private Integer status;
 
 }

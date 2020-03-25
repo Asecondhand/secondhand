@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.secondhand.module.mime.vo.DynamicVO;
 import com.secondhand.module.mime.vo.ProductInfoVo;
 import com.secondhand.module.product.entity.Product;
-import com.secondhand.module.product.vo.UserSoldOut;
+import com.secondhand.module.product.vo.UserProductVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -22,6 +22,6 @@ public interface ProductMapper extends BaseMapper<Product> {
 
     Long personalDynamicAllNum(@Param("userId") Long userId);
 
-    List<UserSoldOut> getSoldOutByUserId(@Param("userId") Long userId);
+    List<UserProductVO> getSoldOutByUserId(@Param("userId") Long userId);
 
 }

@@ -34,5 +34,10 @@ public class UserCollect implements Serializable {
      * 收藏的商品id
      */
     private Integer productId;
+    /**
+     * 是否删除
+     * 0 否 1是
+     */
+    private Integer status;
 
 }

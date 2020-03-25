@@ -30,21 +30,26 @@ public class UserCollectServiceImpl extends ServiceImpl<UserCollectMapper, UserC
     /**
      * 用户收藏
      * 取消收藏
+     *
      * @return
      */
     @Override
     public ApiResult UpdateUserCollectStatus(Long userId, CollectAO ao) {
-        if (ao.getStatus() == 1){
+        if (ao.getStatus() == 0) {
             UserCollect userCollect = new UserCollect();
             userCollect.setProductId(Math.toIntExact(ao.getProductId()));
             userCollect.setUid(Math.toIntExact(userId));
             userCollect.setProductId(Math.toIntExact(ao.getProductId()));
+            userCollect.setStatus(0);
             this.save(userCollect);
-        }else {
+        } else {
             QueryWrapper<UserCollect> queryWrapper = new QueryWrapper<>();
-            queryWrapper.lambda().eq(UserCollect::getProductId,ao.getProductId())
-                    .eq(UserCollect::getUid,userId);
-            this.remove(queryWrapper);
+            queryWrapper.lambda().eq(UserCollect::getProductId, ao.getProductId())
+                    .eq(UserCollect::getUid, userId);
+            UserCollect userCollect = new UserCollect();
+            userCollect.setStatus(1);
+            this.update(userCollect,queryWrapper);
+            // this.remove(queryWrapper);
         }
         return ApiResult.success("操作成功");
     }

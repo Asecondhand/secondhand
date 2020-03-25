@@ -22,4 +22,12 @@ public class UserSaleServiceImpl extends ServiceImpl<UserSaleMapper, UserSale> i
     public ApiResult getUserSaleByUserId(Long userId) {
         return ApiResult.success(baseMapper.getUserSaleByUserId(userId));
     }
+
+    @Override
+    public ApiResult deleteUserSale(Long saleId) {
+        UserSale userSale = new UserSale();
+        userSale.setSaleId(Math.toIntExact(saleId));
+        userSale.setStatus(1);
+        return this.updateById(userSale) ? ApiResult.success("操作成功") : ApiResult.fail("操作失败");
+    }
 }

@@ -18,8 +18,4 @@ public class ParentCommentVO {
     private Date createTime;
     // 上一级id
     private Integer commentPid;
-    // 回复的目标用户
-    private Integer toUid;
-    private String toUname;
-    private String toIcon;
 }

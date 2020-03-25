@@ -86,7 +86,7 @@ public class Product {
     /**
      * 是否删除 0-正常 1-删除
      */
-    @TableLogic
+    @TableLogic(value = "0",delval = "1")
     @TableField(value = "is_deleted")
     private Integer isDeleted;
 

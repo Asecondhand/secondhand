@@ -9,7 +9,7 @@ import java.math.BigDecimal;
  * @since 2020/3/25
  */
 @Data
-public class UserSoldOut {
+public class UserProductVO {
     private Integer id; // 商品id
     private String productName; // 商品名
     private String productContent;
