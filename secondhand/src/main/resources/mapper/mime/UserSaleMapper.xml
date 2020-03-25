@@ -23,7 +23,6 @@
         LEFT JOIN sys_user t4 ON t1.buyer_id = t4.user_id
     WHERE
         t1.uid = #{userId}
-        and t2.is_deleted=1
         ORDER BY t2.create_time DESC
     </select>
 </mapper>
