@@ -156,14 +156,16 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     @Override
     public boolean changeStatus(int status, Long productId) {
         Product product = this.getById(productId);
-        if (product == null)
+        if (product == null) {
             return false;
+        }
         HttpServletRequest request = ((ServletRequestAttributes) (RequestContextHolder.currentRequestAttributes())).getRequest();
         System.out.println(request.getAttribute("userinfo"));
         //获得当前登录对象
         CurrentUserVo userVo = (CurrentUserVo) request.getAttribute("userinfo");
-        if (userVo.getUserId() != product.getUserId().intValue())
+        if (userVo.getUserId() != product.getUserId().intValue()) {
             throw new ServiceException("权限不足");
+        }
         status = status == 1 ? 1 : 0;
         product.setProductStatus(status);
         return this.updateById(product);

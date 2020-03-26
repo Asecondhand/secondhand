@@ -8,6 +8,9 @@ import lombok.Setter;
 
 @Getter
 public enum  EsIndex {
+    /**
+     * 用户搜索 index
+     */
     USERINDEX("user"),
     PRODUCTINDEX("product"),
     ;

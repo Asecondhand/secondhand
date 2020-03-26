@@ -56,6 +56,7 @@ public class WebSocketServer {
 
     @Autowired
     ChatListService chatListService;
+
     @Autowired
     UserAttrService userAttrService;
 
