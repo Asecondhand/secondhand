@@ -14,5 +14,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IProductCommentService extends IService<ProductComment> {
 
-    ApiResult getProductComment(Long productId);
+    // ApiResult getProductComment(Long productId);
 }

@@ -30,9 +30,9 @@ public class ProductCommentController {
      * @param productId
      * @return
      */
-    @GetMapping("/{productId}")
-    public ApiResult getProductComment(@PathVariable("productId") Long productId){
-        return  iProductCommentService.getProductComment(productId);
-    }
+    // @GetMapping("/{productId}")
+    // public ApiResult getProductComment(@PathVariable("productId") Long productId){
+    //     return  iProductCommentService.getProductComment(productId);
+    // }
 
 }

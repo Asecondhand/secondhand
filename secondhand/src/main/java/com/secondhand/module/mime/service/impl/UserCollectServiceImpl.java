@@ -36,6 +36,14 @@ public class UserCollectServiceImpl extends ServiceImpl<UserCollectMapper, UserC
     @Override
     public ApiResult UpdateUserCollectStatus(Long userId, CollectAO ao) {
         if (ao.getStatus() == 0) {
+            QueryWrapper<UserCollect>  queryWrapper = new QueryWrapper<>();
+            queryWrapper.lambda().eq(UserCollect::getProductId,ao.getProductId())
+                    .eq(UserCollect::getStatus,0)
+                    .eq(UserCollect::getUid,userId);
+            UserCollect entity = this.getOne(queryWrapper);
+            if (entity!=null){
+                return ApiResult.success("已收藏过");
+            }
             UserCollect userCollect = new UserCollect();
             userCollect.setProductId(Math.toIntExact(ao.getProductId()));
             userCollect.setUid(Math.toIntExact(userId));

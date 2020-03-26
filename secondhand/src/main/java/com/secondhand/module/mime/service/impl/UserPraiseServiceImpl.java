@@ -3,6 +3,7 @@ package com.secondhand.module.mime.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.secondhand.common.basemethod.ApiResult;
 import com.secondhand.module.mime.ao.PriseAO;
+import com.secondhand.module.mime.entity.UserCollect;
 import com.secondhand.module.mime.entity.UserPraise;
 import com.secondhand.module.mime.mapper.UserPraiseMapper;
 import com.secondhand.module.mime.service.IUserPraiseService;
@@ -30,6 +31,14 @@ public class UserPraiseServiceImpl extends ServiceImpl<UserPraiseMapper, UserPra
     @Override
     public ApiResult UpdateUserPraiseStatus(Long userId, PriseAO ao) {
         if (ao.getStatus() == 0){
+            QueryWrapper<UserPraise>  queryWrapper = new QueryWrapper<>();
+            queryWrapper.lambda().eq(UserPraise::getProductId,ao.getProductId())
+                    .eq(UserPraise::getStatus,0)
+                    .eq(UserPraise::getUid,userId);
+            UserPraise entity = this.getOne(queryWrapper);
+            if (entity!=null){
+                return ApiResult.success("已点过赞");
+            }
             UserPraise userPraise = new UserPraise();
             userPraise.setUid(Math.toIntExact(userId));
             userPraise.setProductId(Math.toIntExact(ao.getProductId()));
