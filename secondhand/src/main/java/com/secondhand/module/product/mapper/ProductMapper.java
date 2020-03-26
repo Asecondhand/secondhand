@@ -24,4 +24,5 @@ public interface ProductMapper extends BaseMapper<Product> {
 
     List<UserProductVO> getSoldOutByUserId(@Param("userId") Long userId);
 
+    List<UserProductVO> getUserRelease(@Param("userId") Long userId);
 }

@@ -244,17 +244,18 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 
     @Override
     public ApiResult getUserRelease(Long userId) {
-        List<UserProductVO> vos = new ArrayList<>();
-        QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(Product::getUserId, userId).eq(Product::getIsDeleted, 0);
-        List<Product> list = this.list(queryWrapper);
-        if (list.size() > 0) {
-            for (Product entity : list) {
-                UserProductVO vo = new UserProductVO();
-                BeanUtils.copyProperties(entity, vo);
-                vos.add(vo);
-            }
-        }
+        // List<UserProductVO> vos = new ArrayList<>();
+        // QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
+        // queryWrapper.lambda().eq(Product::getUserId, userId).eq(Product::getIsDeleted, 0);
+        // List<Product> list = this.list(queryWrapper);
+        // if (list.size() > 0) {
+        //     for (Product entity : list) {
+        //         UserProductVO vo = new UserProductVO();
+        //         BeanUtils.copyProperties(entity, vo);
+        //         vos.add(vo);
+        //     }
+        // }
+        List<UserProductVO> vos = baseMapper.getUserRelease(userId);
         return ApiResult.success(vos);
     }
 
