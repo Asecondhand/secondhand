@@ -108,10 +108,7 @@ dependencies {
     // 测试用例 lombok
     testAnnotationProcessor 'org.projectlombok:lombok'
     testCompileOnly 'org.projectlombok:lombok'
-
-    testImplementation('org.springframework.boot:spring-boot-starter-test') {
-        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-    }
+    testCompile("org.springframework.boot:spring-boot-starter-test")
 
 }
 

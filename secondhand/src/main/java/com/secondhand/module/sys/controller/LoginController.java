@@ -11,6 +11,7 @@ import com.secondhand.module.sys.service.IUserService;
 import com.secondhand.module.sys.service.UserAttrService;
 import com.secondhand.redis.RedisTool;
 import com.secondhand.shiro.JwtTool;
+import com.secondhand.util.exception.ServiceException;
 import com.secondhand.util.shiro.ShiroUtils;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
@@ -19,6 +20,7 @@ import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
@@ -68,8 +70,8 @@ public class LoginController {
     }
 
     @PostMapping("/register")
-    @Transactional
-    public ApiResult registerUser(@Validated  @RequestBody UserDTO userDTO) throws IOException {
+    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = {Exception.class})
+    public ApiResult registerUser(@Validated  @RequestBody UserDTO userDTO)  {
         String[] strings = new String[]{"1","2","3","4","5","6","7","8","9"
                 ,"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","w","e","r","t","y","z","x"
         };
@@ -95,13 +97,20 @@ public class LoginController {
         }
         BulkRequest request = new BulkRequest();
         UserAttr userAttr = new UserAttr(user);
-        userAttr.setUserSex(0);//默认男
-        userAttr.setUserResume("这个人很懒，什么都没留下");//个人简介
+        //默认男
+        userAttr.setUserSex(0);
+        //个人简介
+        userAttr.setUserResume("这个人很懒，什么都没留下");
         userAttrService.save(userAttr);
         String json = JSONObject.toJSONString(userAttr);
         request.add(new IndexRequest(EsIndex.USERINDEX.getIndexName()).source(json,XContentType.JSON));
-        BulkResponse bulkResponse = restHighLevelClient.bulk(request, RequestOptions.DEFAULT);
-        return ApiResult.success(!bulkResponse.hasFailures());
+        //抛出异常回滚
+        try {
+            BulkResponse bulkResponse = restHighLevelClient.bulk(request, RequestOptions.DEFAULT);
+            return ApiResult.success(!bulkResponse.hasFailures());
+        }catch (IOException ex){
+           throw new ServiceException("es添加失败");
+        }
     }
 
 }

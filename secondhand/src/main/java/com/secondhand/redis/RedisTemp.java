@@ -9,6 +9,7 @@ import lombok.Data;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.web.client.RestTemplate;
@@ -22,7 +23,7 @@ import org.springframework.web.client.RestTemplate;
 public class RedisTemp {
 
     @Bean("SerializableRedisTemplate")
-    public <T> org.springframework.data.redis.core.RedisTemplate<String, T> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
+    public <T> RedisTemplate<String, T> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
         org.springframework.data.redis.core.RedisTemplate<String, T> redisTemplate = new org.springframework.data.redis.core.RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory);
         Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);

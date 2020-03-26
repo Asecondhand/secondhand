@@ -12,15 +12,19 @@ import com.secondhand.module.product.vo.FollowUserVo;
 import com.secondhand.module.sys.entity.User;
 import com.secondhand.module.sys.service.UserAttrService;
 import com.secondhand.redis.RedisTool;
+import lombok.Getter;
 import org.apache.catalina.security.SecurityUtil;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.core.BoundListOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -36,12 +40,28 @@ public class GraphServiceImpl extends ServiceImpl<GraphMapper, Graph> implements
     @Autowired
     RedisTool redisTool;
 
+    @Resource(name = "SerializableRedisTemplate")
+    private RedisTemplate redis;
     @Override
     public boolean follow(Graph graph) {
+        //检验下 graph中的uid是否存在
         //需要用户验证
+        String key = "uidList:"+graph.getUid();
+        //关注列表
+        String key2 = "followList:"+graph.getFollowid();
+        if(redisTool.hasKeys(key)||redisTool.hasKeys(key2)){
+            redis.delete(key);
+            redis.delete(key2);
+        }
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         if (graph.getFollowid().equals(user.getUserId())) {
-            return this.saveOrUpdate(graph);
+            Graph graph1 = this.getOne(new LambdaQueryWrapper<Graph>().eq(Graph::getUid,graph.getUid()).eq(Graph::getFollowid,graph.getFollowid()));
+            if(graph1!=null){
+                graph1.setStatus(graph.getStatus());
+                return this.saveOrUpdate(graph1);
+            }else{
+               return this.save(graph);
+            }
         }
         return false;
     }

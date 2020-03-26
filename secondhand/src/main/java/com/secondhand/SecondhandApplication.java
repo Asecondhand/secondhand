@@ -6,7 +6,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+/**
+ * @author zangjan
+ */
 @SpringBootApplication
+@MapperScan(basePackages = "com.secondhand.module.*.mapper")
 public class SecondhandApplication {
 
     public static void main(String[] args) {

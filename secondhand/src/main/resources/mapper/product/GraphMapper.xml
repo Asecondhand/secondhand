@@ -14,9 +14,9 @@
     id, `uid`, followid, `status`
   </sql>
     <select id="getFollowListById" resultMap="BaseResultMap">
-      select * from graph where followid = #{id}
+      select * from graph where followid = #{id} and status = 0
     </select>
   <select id="getUserList" resultMap="BaseResultMap">
-    select * from graph where uid =#{id}
+    select * from graph where uid =#{id} and status = 0
   </select>
 </mapper>

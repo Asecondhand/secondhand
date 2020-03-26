@@ -85,7 +85,12 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
             Integer status = productDTO.getProductStatus() == 1 ? 1 : 0;
             productDTO.setProductStatus(status);
             BeanUtils.copyProperties(productDTO, product);
-            this.save(product);
+            try {
+                this.save(product);
+            }catch (Exception ex){
+                throw new ServiceException("添加商品失败");
+            }
+
             String[] productPic = productDTO.getProductPic();
             List<ProductPic> list = new ArrayList<>();
             for (String s : productPic) {
@@ -97,7 +102,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
                         .source(JSON.toJSONString(productDTO), XContentType.JSON), RequestOptions.DEFAULT);
                 //通过kafka向消息系统发送数
             } catch (IOException e) {
-                throw new ServiceException("es无法post数据");
+                throw new ServiceException("es添加失败");
             }
 //            kafkaTemplate.send(KafkaTopic.PRODUCT_TOPIC, JSON.toJSONString(productDTO));
             return productPicService.saveBatch(list);

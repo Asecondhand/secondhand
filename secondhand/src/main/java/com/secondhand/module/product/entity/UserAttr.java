@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class UserAttr {
 
     public UserAttr(User user){
-        this.uid = Math.toIntExact(user.getUserId());
+        this.uid = user.getUserId();
         this.icon = user.getHeaderPicture();
         this.uname = user.getUserName();
     }
@@ -25,7 +25,7 @@ public class UserAttr {
      * 用户id
      */
     @TableField(value = "uid")
-    private Integer uid;
+    private Long uid;
 
     /**
      * 用户性别 0-男 1-女

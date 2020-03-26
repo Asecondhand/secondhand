@@ -11,9 +11,12 @@ import lombok.Data;
  **/
 @Data
 public class FollowUserVo {
-    @TableField(value = "uid")
+    @TableField(value = "id")
     private Long id;
 
+    @TableField(value = "uid")
+
+    private Long uid;
     /**
      * 用户性别
      */
