@@ -18,5 +18,4 @@ public class UserProductVO {
     private Integer productStatus;
     private String productTag;
     private String productCreateTime;
-    private Integer userId;  // 用户id
 }
