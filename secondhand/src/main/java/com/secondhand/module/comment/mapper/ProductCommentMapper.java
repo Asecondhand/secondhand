@@ -2,6 +2,10 @@ package com.secondhand.module.comment.mapper;
 
 import com.secondhand.module.comment.entity.ProductComment;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.secondhand.module.comment.vo.ChildrenCommentVO;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +17,5 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface ProductCommentMapper extends BaseMapper<ProductComment> {
 
+    List<ChildrenCommentVO> getChildrenComments(@Param("productId") Long productId);
 }

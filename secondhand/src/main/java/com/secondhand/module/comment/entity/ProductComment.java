@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -26,12 +28,13 @@ public class ProductComment implements Serializable {
     /**
      * 商品留言表id
      */
-    private Integer commentId;
+    @TableId(value = "comment_id", type = IdType.AUTO)
+    private Long commentId;
 
     /**
      * 商品id
      */
-    private Integer productId;
+    private Long productId;
 
     /**
      * 留言信息
@@ -41,7 +44,7 @@ public class ProductComment implements Serializable {
     /**
      * 留言用户id
      */
-    private Integer uid;
+    private Long uid;
 
     /**
      * 留言用户姓名
@@ -66,7 +69,7 @@ public class ProductComment implements Serializable {
     /**
      * 上一级留言id
      */
-    private Integer commentPid;
+    private Long commentPid;
 
     /**
      * 是否删除 0是 1否

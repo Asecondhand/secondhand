@@ -12,10 +12,11 @@ import java.util.Date;
 public class ParentCommentVO {
     private Long commentId;
     private String message;
-    private Integer uid;
+    private Long uid;
     private String uname;
     private String icon;
     private Date createTime;
     // 上一级id
-    private Integer commentPid;
+    private Long commentPid;
+    private Long productId;  //商品id
 }

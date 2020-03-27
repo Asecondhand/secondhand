@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper=false)
 public class ChildrenCommentVO extends ParentCommentVO {
     // 回复的目标用户
-    private Integer toUid;
+    private Long toUid;
     private String toUname;
     private String toIcon;
 }

@@ -10,7 +10,8 @@ import java.util.List;
  */
 @Data
 public class ProductCommentVO {
-    private Long productId;  //商品id
+    // 父级评论
     private ParentCommentVO ParentComments;
+    //子级评论
     private List<ChildrenCommentVO> childrenComments;
 }
