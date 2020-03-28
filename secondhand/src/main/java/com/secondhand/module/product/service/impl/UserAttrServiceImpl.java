@@ -7,6 +7,7 @@ import com.secondhand.module.sys.entity.User;
 import com.secondhand.util.exception.ServiceException;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.io.Serializable;
@@ -16,7 +17,11 @@ import com.secondhand.module.product.entity.UserAttr;
 import com.secondhand.module.product.mapper.UserAttrMapper;
 import com.secondhand.module.sys.service.UserAttrService;
 
+/**
+ * @author zangjan
+ */
 @Service
+@Scope("prototype")
 public class UserAttrServiceImpl extends ServiceImpl<UserAttrMapper, UserAttr> implements UserAttrService {
 
     @Override

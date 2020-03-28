@@ -47,12 +47,12 @@ public class GraphMessage implements NotificationMessageService {
         List<FollowUserVo> followUserVoList = graphService.followList(id);
         //每一个人关注者一个消息
         followUserVoList.forEach(followUserVo -> {
-            ProductVo productVo = productService.search(followUserVo.getId());
+            ProductVo productVo = productService.search(followUserVo.getUid());
             if(productVo == null) {
 
             }else{
                 GraphMessageVO messageVO = new GraphMessageVO();
-                messageVO.setUid(followUserVo.getId());
+                messageVO.setUid(followUserVo.getUid());
                 messageVO.setIcon(followUserVo.getIcon());
                 messageVO.setDate(productVo.getCreateTime());
                 messageVO.setTimeDf(compTimeDiff(productVo.getCreateTime(),new Date()));
@@ -65,7 +65,7 @@ public class GraphMessage implements NotificationMessageService {
     }
 
     private  String compTimeDiff(Date pass,Date now){
-        long diff = (pass.getTime() - now.getTime())/1000;
+        long diff = (now.getTime()-pass.getTime() )/1000;
         if(diff<0){
             return 0+"分";
         }

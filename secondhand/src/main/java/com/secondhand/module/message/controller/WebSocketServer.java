@@ -3,15 +3,18 @@ package com.secondhand.module.message.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.secondhand.common.ws.SpringUtil;
 import com.secondhand.module.product.entity.ChatList;
 import com.secondhand.module.product.entity.ChatMessage;
 import com.secondhand.module.product.entity.UserAttr;
 import com.secondhand.module.product.service.ChatListService;
 import com.secondhand.module.product.service.ChatMessageService;
+import com.secondhand.module.sys.entity.User;
 import com.secondhand.module.sys.service.UserAttrService;
 import com.secondhand.util.exception.ServiceException;
 import lombok.Synchronized;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,15 +54,13 @@ public class WebSocketServer {
      */
     private String userId = "";
 
-    @Autowired
-    ChatMessageService chatMessageService;
+
+    static UserAttrService userAttrService;
 
     @Autowired
-    ChatListService chatListService;
-
-    @Autowired
-    UserAttrService userAttrService;
-
+    public void setUser(UserAttrService userAttrService2) {
+        WebSocketServer.userAttrService = userAttrService2;
+    }
     private static int getOnlineNum() {
         return onlineNum;
     }
@@ -72,31 +73,37 @@ public class WebSocketServer {
     }
 
     @OnOpen
-    public void onOpen(Session session, @PathParam("userId") String  userId){
+    public void onOpen(Session session, @PathParam("userId") String  userId) throws IOException {
         this.session  = session;
         this.userId = userId;
         webSocketServerMap.put(userId,this);
         addOnlineNum();
         log.info("当前连接的人数"+getOnlineNum());
+        sendMessage("你已与服务器建立连接");
     }
     @OnClose
-    public void OnClose(){
+    public void onClose() throws IOException {
         webSocketServerMap.remove(this.userId);
         subOnlineNum();
         log.info("当前连接的人数"+getOnlineNum());
+        sendMessage("你已与服务器关闭连接");
     }
     @OnError
-    public void onError(Session session, Throwable error) {
+    public void onError(Session session, Throwable error) throws IOException {
         log.error("用户错误:"+this.userId+",原因:"+error.getMessage());
         error.printStackTrace();
+        sendMessage("出现错误 ："+error.getMessage());
     }
+
     @OnMessage
-    public void OnMessage(String message, Session session){
+    public void onMessage(String message, Session session) throws IOException {
+        ChatListService chatListService =(ChatListService) SpringUtil.getBean(ChatListService.class);
         if( message!=null && message.length() > 0){
             log.info("收到来自"+session.getBasicRemote()+"的消息:"+message);
             JSONObject jsonObject = JSON.parseObject(message);
             String userId =jsonObject.getString("userId");
             //如果接受方的 列表没有发送方的信息，添加进去
+            System.out.println(userId);
             if(chatListService.getOne(new LambdaQueryWrapper<ChatList>().eq(ChatList::getToUid,this.userId).eq(ChatList::getUid,userId))==null){
                 ChatList chatList = new ChatList();
                 UserAttr userAttr = userAttrService.getById(this.userId);
@@ -129,7 +136,8 @@ public class WebSocketServer {
                 //保存到数据库中
                 log.info("请求的user不在线上"+userId);
             }
-            saveChatMessage(message);
+            sendMessage("发送成功");
+            saveChatMessage(jsonObject,userId);
         }
 
     }
@@ -142,11 +150,12 @@ public class WebSocketServer {
         this.session.getBasicRemote().sendText(message);
     }
 
-    private void saveChatMessage(String message){
+    private void saveChatMessage(JSONObject message,String userId){
         ChatMessage chatMessage = new ChatMessage();
         chatMessage.setToUid(Integer.valueOf(userId));
         chatMessage.setFromUid(Integer.valueOf(this.userId));
-        chatMessage.setMessage(message);
+        chatMessage.setMessage(message.getString("message"));
+        ChatMessageService chatMessageService =  SpringUtil.getBean(ChatMessageService.class);
         chatMessageService.save(chatMessage);
     }
 
