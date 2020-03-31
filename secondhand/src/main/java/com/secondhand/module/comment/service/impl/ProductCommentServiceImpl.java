@@ -1,6 +1,5 @@
 package com.secondhand.module.comment.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.secondhand.common.basemethod.ApiResult;
 import com.secondhand.module.comment.ao.ProductCommentAO;
 import com.secondhand.module.comment.entity.ProductComment;
@@ -10,14 +9,16 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.secondhand.module.comment.vo.ChildrenCommentVO;
 import com.secondhand.module.comment.vo.ParentCommentVO;
 import com.secondhand.module.comment.vo.ProductCommentVO;
+import com.secondhand.module.comment.vo.ProductCommentsVO;
 import com.secondhand.module.sys.vo.CurrentUserVo;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.SecurityUtils;
+import org.joda.time.DateTimeUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * <p>
@@ -29,7 +30,6 @@ import java.util.List;
  */
 @Service
 public class ProductCommentServiceImpl extends ServiceImpl<ProductCommentMapper, ProductComment> implements IProductCommentService {
-
 
     @Override
     public ApiResult addProductComment(ProductCommentAO ao) {
@@ -47,93 +47,104 @@ public class ProductCommentServiceImpl extends ServiceImpl<ProductCommentMapper,
 
     @Override
     public ApiResult getProductComment(Long productId) {
-        // 查询商品所有父级评论
-        List<ParentCommentVO> parentComments = getParentComments(productId);
-        // 查询商品所有的子级评论
-        List<ChildrenCommentVO> childrenComments = baseMapper.getChildrenComments(productId);
-        // 得到评论list
-        List<ProductCommentVO> productCommentVOS = getProductComments(parentComments, childrenComments);
-        return ApiResult.success(productCommentVOS);
-    }
-
-    /**
-     * 获取商品所有的评论
-     *
-     * @param parentComments
-     * @param childrenComments
-     * @return
-     */
-    private List<ProductCommentVO> getProductComments(List<ParentCommentVO> parentComments, List<ChildrenCommentVO> childrenComments) {
-        List<ProductCommentVO> comments = new ArrayList<>();
-        // 只有父级评论
-        if (parentComments.size() > 0 && childrenComments.size() <= 0) {
-            for (int i = 0; i < parentComments.size(); i++) {
-                // 将父级评论添加到出参实体中
-                ProductCommentVO productCommentVO = new ProductCommentVO();
-                productCommentVO.setParentComments(parentComments.get(i));
-                comments.add(productCommentVO);
+        // 查询所有的评论
+        List<ProductCommentsVO> allComments = baseMapper.getallComments(productId);
+        // 存放父级评论
+        List<ProductCommentsVO> parentComments = new ArrayList<>();
+        for (ProductCommentsVO item : allComments) {
+            if (item.getCommentPid() == 0) {
+                parentComments.add(item);
             }
         }
-        // 父级评论和对应的子级评论
-        if (parentComments.size() > 0 && childrenComments.size() > 0) {
-            for (int i = 0; i < parentComments.size(); i++) {
-                List<ChildrenCommentVO> childrenCommentVOS = new ArrayList<>();
-                for (int j = 0; j < childrenComments.size(); j++) {
-                    // 找到父级评论id = 子级评论的Pid
-                    if (parentComments.get(i).getCommentId().equals(childrenComments.get(j).getCommentPid())) {
-                        // 添加到对应的父级评论下面的子级评论列表
-                        childrenCommentVOS.add(childrenComments.get(j));
-                        // 查找子级评论下面的子级评论
-                        List<ChildrenCommentVO> vos = getChildren(childrenComments.get(j).getCommentId(),childrenComments);
-                        if (vos.size()>0){
-                            for (ChildrenCommentVO vos1:vos){
-                                childrenCommentVOS.add(vos1);
-                            }
-                        }
+        // 查找父级评论下面的子级评论
+        for (ProductCommentsVO item : parentComments) {
+            List<ProductCommentsVO> listChild = getChild(item.getCommentId(), allComments);
+            item.setChildren(listChild);
+        }
+        // return ApiResult.success(parentComments);
+
+        // 整合成只有两层
+        List<ProductCommentVO> vos = mergeComments(parentComments);
+        return ApiResult.success(vos);
+
+    }
+
+    private List<ProductCommentVO> mergeComments(List<ProductCommentsVO> parentComments) {
+        // 整合成只有两层
+        List<ProductCommentVO> vos = new ArrayList<>();
+        for (ProductCommentsVO item : parentComments) {
+            List<ChildrenCommentVO> childVos = new ArrayList<>();
+            childVos = mergeChild(item, childVos);
+            // 创建评论输出
+            ProductCommentVO productCommentVO = new ProductCommentVO();
+            ParentCommentVO entity = new ParentCommentVO();
+            BeanUtils.copyProperties(item, entity);
+            // 添加父级评论
+            productCommentVO.setParentComments(entity);
+            // 添加对应的子级评论列表
+            // 排序逆序
+            // Collections.reverse(childVos);
+            // 日期倒序
+            Collections.sort(childVos, new Comparator<ChildrenCommentVO>() {
+                @Override
+                public int compare(ChildrenCommentVO o1, ChildrenCommentVO o2) {
+                    Date date1 = o1.getCreateTime();
+                    Date date2 = o2.getCreateTime();
+                    // 倒序after 升序before
+                    if (date1.after(date2)) {
+                        return 1;
                     }
+                    return -1;
                 }
-                // 创建评论输出
-                ProductCommentVO productCommentVO = new ProductCommentVO();
-                // 添加父级评论
-                productCommentVO.setParentComments(parentComments.get(i));
-                // 添加对应的子级评论列表
-                productCommentVO.setChildrenComments(childrenCommentVOS);
-                comments.add(productCommentVO);
+            });
+            productCommentVO.setChildrenComments(childVos);
 
-            }
-        }
-        return comments;
-    }
-
-    //递归查找二级评论
-    public List<ChildrenCommentVO> getChildren(Long pid, List<ChildrenCommentVO> ao) {
-        List<ChildrenCommentVO> vos = new ArrayList<>();
-        for (int i = 0; i < ao.size(); i++) {
-            if (ao.get(i).getCommentPid().equals(pid)){
-                vos.add(ao.get(i));
-            }
+            vos.add(productCommentVO);
         }
         return vos;
     }
 
-    // 查询商品所有父级评论
-    List<ParentCommentVO> getParentComments(Long productId) {
-        QueryWrapper<ProductComment> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda()
-                .eq(ProductComment::getProductId, productId)
-                .eq(ProductComment::getCommentPid, 0)
-                .eq(ProductComment::getIsDelete, 0)
-                .orderByDesc(ProductComment::getCreateTime);
-        List<ProductComment> productComments = this.list(queryWrapper);
-        List<ParentCommentVO> voList = new ArrayList<>();
-        if (productComments.size() > 0) {
-            for (ProductComment vo : productComments) {
-                ParentCommentVO parentCommentVO = new ParentCommentVO();
-                BeanUtils.copyProperties(vo, parentCommentVO);
-                voList.add(parentCommentVO);
+    private List<ChildrenCommentVO> mergeChild(ProductCommentsVO vo, List<ChildrenCommentVO> childVos) {
+        // List<ChildrenCommentVO> vos =  new ArrayList<>();
+        if (vo.getChildren().size() > 0) {
+            for (ProductCommentsVO item : vo.getChildren()) {
+                ChildrenCommentVO entity = new ChildrenCommentVO();
+                BeanUtils.copyProperties(item, entity);
+                childVos.add(entity);
+                // 空指针异常
+                if (CollectionUtils.isNotEmpty(item.getChildren())) {
+                    mergeChild(item, childVos);
+                    // List<ChildrenCommentVO> list = mergeChild(item);
+                    // for (ChildrenCommentVO item1 : list){
+                    //     vos.add(item1);
+                    // }
+                }
             }
         }
-        return voList;
+        // Collections.reverse(childVos);
+        // return vos;
+        return childVos;
     }
+
+    // 递归
+    private List<ProductCommentsVO> getChild(Long commentId, List<ProductCommentsVO> allComments) {
+        // 存在子评论
+        List<ProductCommentsVO> listChild = new ArrayList<>();
+        for (ProductCommentsVO item : allComments) {
+            if (item.getCommentPid() == commentId) {
+                listChild.add(item);
+            }
+
+        }
+        // 递归
+        for (ProductCommentsVO item : listChild) {
+            item.setChildren(getChild(item.getCommentId(), allComments));
+        }
+        if (listChild.size() == 0) {
+            return null;
+        }
+        return listChild;
+    }
+
 
 }

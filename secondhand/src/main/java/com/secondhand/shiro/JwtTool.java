@@ -118,6 +118,9 @@ public class JwtTool {
 
         User userEntity = iUserService.getOne(new QueryWrapper<User>().lambda().
                         eq(User::getUserName, strUserName), false);
+        if (userEntity==null){
+            return ApiResult.fail("用户不存在");
+        }
         if (userEntity != null) {
             pwd = ShiroUtils.sha256(pwd, userEntity.getSalt());
         }

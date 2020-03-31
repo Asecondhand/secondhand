@@ -38,7 +38,7 @@ dependencies {
     compile group: 'org.aspectj', name: 'aspectjweaver', version: '1.8.13'
 
     // https://mvnrepository.com/artifact/com.alibaba/druid-spring-boot-starter
-    compile group: 'com.alibaba', name: 'druid-spring-boot-starter', version: '1.1.21'
+    compile group: 'com.alibaba', name: 'druid-spring-boot-starter', version: '1.1.18'
 
     // https://mvnrepository.com/artifact/org.elasticsearch/elasticsearch
     compile group: 'org.elasticsearch', name: 'elasticsearch', version: '7.6.1'

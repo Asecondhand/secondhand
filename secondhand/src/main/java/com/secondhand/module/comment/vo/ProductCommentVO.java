@@ -14,4 +14,5 @@ public class ProductCommentVO {
     private ParentCommentVO ParentComments;
     //子级评论
     private List<ChildrenCommentVO> childrenComments;
+
 }
