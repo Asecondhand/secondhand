@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module external.linked.project.id="secondhand:main" external.linked.project.path="$MODULE_DIR$/../../secondhand" external.root.project.path="$MODULE_DIR$/../../secondhand" external.system.id="GRADLE" external.system.module.group="com.secondhand" external.system.module.type="sourceSet" external.system.module.version="0.0.18" type="JAVA_MODULE" version="4">
+<module external.linked.project.id="secondhand:main" external.linked.project.path="$MODULE_DIR$/../../secondhand" external.root.project.path="$MODULE_DIR$/../../secondhand" external.system.id="GRADLE" external.system.module.group="com.secondhand" external.system.module.type="sourceSet" external.system.module.version="0.0.19" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
     <facet type="Spring" name="Spring">
       <configuration />
@@ -29,7 +29,7 @@
     <orderEntry type="library" name="Gradle: org.apache.shiro:shiro-spring-boot-web-starter:1.4.1" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-aop:2.2.4.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: org.aspectj:aspectjweaver:1.8.13" level="project" />
-    <orderEntry type="library" name="Gradle: com.alibaba:druid-spring-boot-starter:1.1.21" level="project" />
+    <orderEntry type="library" name="Gradle: com.alibaba:druid-spring-boot-starter:1.1.18" level="project" />
     <orderEntry type="library" name="Gradle: org.elasticsearch.client:elasticsearch-rest-high-level-client:7.6.1" level="project" />
     <orderEntry type="library" name="Gradle: org.elasticsearch:elasticsearch:7.6.1" level="project" />
     <orderEntry type="library" name="Gradle: org.elasticsearch.client:elasticsearch-rest-client:7.6.1" level="project" />
@@ -57,7 +57,7 @@
     <orderEntry type="library" name="Gradle: org.apache.shiro:shiro-spring-boot-starter:1.4.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: mysql:mysql-connector-java:8.0.19" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-autoconfigure:2.2.4.RELEASE" level="project" />
-    <orderEntry type="library" name="Gradle: com.alibaba:druid:1.1.21" level="project" />
+    <orderEntry type="library" name="Gradle: com.alibaba:druid:1.1.18" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.kafka:kafka-clients:2.3.1" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.data:spring-data-redis:2.2.4.RELEASE" level="project" />
     <orderEntry type="library" name="Gradle: com.zaxxer:HikariCP:3.4.2" level="project" />

@@ -7,6 +7,8 @@ import org.aspectj.lang.annotation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -23,6 +25,8 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 public class webLog {
 
+    @Autowired
+    private KafkaTemplate kafkaTemplate;
     private final static Logger logger = LoggerFactory.getLogger(webLog.class);
 
     /** 以 controller 包下定义的所有请求为切入点 */
@@ -51,6 +55,7 @@ public class webLog {
         // 打印请求的 IP
         logger.info("IP             : {}", request.getRemoteAddr());
         // 打印请求入参
+        kafkaTemplate.send("log", request.getRequestURL().toString()+JSONObject.toJSONString(joinPoint.getArgs()));
         logger.info("Request Args   : {}", JSONObject.toJSONString(joinPoint.getArgs()));
     }
 
