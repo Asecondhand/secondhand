@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Gradle: com.alibaba:druid-spring-boot-starter:1.1.18">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/alibaba/druid-spring-boot-starter/1.1.18/druid-spring-boot-starter-1.1.18.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

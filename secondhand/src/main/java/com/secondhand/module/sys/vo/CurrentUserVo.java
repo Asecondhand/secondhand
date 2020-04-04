@@ -31,5 +31,6 @@ public class CurrentUserVo extends User implements Serializable {
         this.setDeptId(user.getDeptId());
         this.setUserType(user.getUserType());
         this.setActualName(user.getActualName());
+        this.setHeaderPicture(user.getHeaderPicture());
     }
 }
