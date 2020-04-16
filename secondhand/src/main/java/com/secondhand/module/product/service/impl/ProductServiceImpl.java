@@ -90,7 +90,6 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
             }catch (Exception ex){
                 throw new ServiceException("添加商品失败");
             }
-
             String[] productPic = productDTO.getProductPic();
             List<ProductPic> list = new ArrayList<>();
             for (String s : productPic) {

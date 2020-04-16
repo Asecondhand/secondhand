@@ -44,7 +44,7 @@ public class ProductComment implements Serializable {
     /**
      * 留言用户id
      */
-    private Integer uid;
+    private Long uid;
 
     /**
      * 留言用户姓名
@@ -69,7 +69,7 @@ public class ProductComment implements Serializable {
     /**
      * 上一级留言id
      */
-    private Integer commentPid;
+    private Long commentPid;
 
     /**
      * 是否删除 0是 1否

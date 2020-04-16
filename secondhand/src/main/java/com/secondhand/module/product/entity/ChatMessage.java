@@ -13,7 +13,7 @@ public class ChatMessage {
     /**
      * 聊天消息
      */
-    @TableId(value = "id", type = IdType.INPUT)
+    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
     /**
@@ -35,6 +35,12 @@ public class ChatMessage {
     private String message;
 
     /**
+     * 0-未读，1-已读
+     */
+    @TableField(value = "status")
+    private Integer status;
+
+    /**
      * 创建时间
      */
     @TableField(value = "create_time")
@@ -47,6 +53,8 @@ public class ChatMessage {
     public static final String COL_TO_UID = "to_uid";
 
     public static final String COL_MESSAGE = "message";
+
+    public static final String COL_STATUS = "status";
 
     public static final String COL_CREATE_TIME = "create_time";
 }

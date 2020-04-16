@@ -44,7 +44,7 @@ public class LeaveMessageServiceImpl extends ServiceImpl<LeaveMessageMapper, Lea
         BeanUtils.copyProperties(leaveMessage, leaveMessage1);
         leaveMessage1.setUid(currentUserVo.getUserId().intValue());
         leaveMessage1.setUname(currentUserVo.getUserName());
-        leaveMessage1.setIcon(currentUserVo.getHeaderPicture());
+        leaveMessage1.setIcon(currentUserVo.getIcon());
         return this.save(leaveMessage1);
     }
 

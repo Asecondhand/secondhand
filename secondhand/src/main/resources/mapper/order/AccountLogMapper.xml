@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.secondhand.module.order.mapper.AccountLogMapper">
+  <resultMap id="BaseResultMap" type="com.secondhand.module.order.entity.AccountLog">
+    <!--@mbg.generated-->
+    <!--@Table account_log-->
+    <id column="log_id" jdbcType="INTEGER" property="logId" />
+    <result column="amount" jdbcType="INTEGER" property="amount" />
+    <result column="timestamp" jdbcType="TIMESTAMP" property="timestamp" />
+    <result column="from_system" jdbcType="INTEGER" property="fromSystem" />
+    <result column="from_system_transaction_number" jdbcType="INTEGER" property="fromSystemTransactionNumber" />
+    <result column="from_account" jdbcType="INTEGER" property="fromAccount" />
+    <result column="to_system" jdbcType="INTEGER" property="toSystem" />
+    <result column="to_system_transaction_number" jdbcType="INTEGER" property="toSystemTransactionNumber" />
+    <result column="to_account" jdbcType="INTEGER" property="toAccount" />
+    <result column="transaction_type" jdbcType="INTEGER" property="transactionType" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    log_id, amount, `timestamp`, from_system, from_system_transaction_number, from_account, 
+    to_system, to_system_transaction_number, to_account, transaction_type
+  </sql>
+</mapper>

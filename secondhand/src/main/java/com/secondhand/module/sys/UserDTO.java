@@ -24,7 +24,7 @@ public class UserDTO {
 
     String mobile;
 
-    String headPicture;
+    String icon;
 
 
 }

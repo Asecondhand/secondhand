@@ -87,8 +87,8 @@ public class LoginController {
         user.setSalt(stringBuilder.toString());
         user.setEmail(userDTO.getEmail());
         user.setMobile(userDTO.getMobile());
-        user.setHeaderPicture(userDTO.getHeadPicture()==null?"http://47.93.117.14:8080/second-hand/fileSystem/files/images.jpg":userDTO.getHeadPicture());
-//        user.setHeaderPicture(userDTO.getHeadPicture()==null?"http://localhost:9091/second-hand/fileSystem/files/1238390565725274112.jpg":userDTO.getHeadPicture());
+        user.setIcon(userDTO.getIcon()==null?"http://47.93.117.14:8080/second-hand/fileSystem/files/images.jpg":userDTO.getIcon());
+//        user.seticon(userDTO.getHeadPicture()==null?"http://localhost:9091/second-hand/fileSystem/files/1238390565725274112.jpg":userDTO.getHeadPicture());
         //添加 userattr 属性
         try {
             userService.save(user);

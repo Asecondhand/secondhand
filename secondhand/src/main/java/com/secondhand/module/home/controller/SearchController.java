@@ -25,7 +25,7 @@ public class SearchController {
      */
     @GetMapping
     public ApiResult SearchUserOrProductByKeyword(@RequestParam("keyword")String keyword){
-        return ApiResult.success(esSearchService.SearchUserOrProductByKeyword(keyword));
+        return ApiResult.success(esSearchService.searchUserOrProductByKeyword(keyword));
     }
     /**
      * 查询提示

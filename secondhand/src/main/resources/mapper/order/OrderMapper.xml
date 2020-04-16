@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.secondhand.module.order.mapper.OrderMapper">
+  <resultMap id="BaseResultMap" type="com.secondhand.module.order.entity.Order">
+    <!--@mbg.generated-->
+    <!--@Table order-->
+    <id column="orderid" jdbcType="VARCHAR" property="orderid" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="version" jdbcType="INTEGER" property="version" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    orderid, create_time, `status`, version
+  </sql>
+    <update id="updateOrder" parameterType="com.secondhand.module.order.dto.UpdateOrderDTO">
+      UPDATE `order` SET status=#{updateOrderDTO.status} , version=#{updateOrderDTO.version}+1
+      where orderId=#{param1.orderid} and version=#{updateOrderDTO.version}
+    </update>
+</mapper>

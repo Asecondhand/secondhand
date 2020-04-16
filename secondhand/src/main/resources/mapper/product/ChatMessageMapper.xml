@@ -8,10 +8,11 @@
     <result column="from_uid" jdbcType="INTEGER" property="fromUid" />
     <result column="to_uid" jdbcType="INTEGER" property="toUid" />
     <result column="message" jdbcType="VARCHAR" property="message" />
+    <result column="status" jdbcType="INTEGER" property="status" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
   <sql id="Base_Column_List">
     <!--@mbg.generated-->
-    id, from_uid, to_uid, message, create_time
+    id, from_uid, to_uid, message, `status`, create_time
   </sql>
 </mapper>

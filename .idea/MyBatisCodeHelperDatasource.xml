@@ -5,9 +5,9 @@
       <ProjectProfile>
         <option name="generateService" value="true" />
         <option name="generateServiceInterface" value="true" />
-        <option name="javaMapperPackage" value="com.secondhand.module.product.mapper" />
+        <option name="javaMapperPackage" value="com.secondhand.module.order.mapper" />
         <option name="javaMapperPath" value="$PROJECT_DIR$/secondhand/src/main/java" />
-        <option name="javaModelPackage" value="com.secondhand.module.product.entity" />
+        <option name="javaModelPackage" value="com.secondhand.module.order.entity" />
         <option name="javaModelPath" value="$PROJECT_DIR$/secondhand/src/main/java" />
         <option name="lastDatabaseCrudChooseModuleName" value="secondhand.main" />
         <option name="lombokDataAnnotation" value="true" />
@@ -16,15 +16,15 @@
             <entry key="secondhand.main">
               <value>
                 <UserPackageAndPathInfoByModule>
-                  <option name="javaMapperPackage" value="com.secondhand.module.product.mapper" />
+                  <option name="javaMapperPackage" value="com.secondhand.module.order.mapper" />
                   <option name="javaMapperPath" value="$PROJECT_DIR$/secondhand/src/main/java" />
-                  <option name="javaModelPacakge" value="com.secondhand.module.product.entity" />
+                  <option name="javaModelPacakge" value="com.secondhand.module.order.entity" />
                   <option name="javaModelPath" value="$PROJECT_DIR$/secondhand/src/main/java" />
-                  <option name="javaServiceInterfacePackage" value="com.secondhand.module.sys.service" />
+                  <option name="javaServiceInterfacePackage" value="com.secondhand.module.order.serivce" />
                   <option name="javaServiceInterfacePath" value="$PROJECT_DIR$/secondhand/src/main/java" />
-                  <option name="javaServicePackage" value="com.secondhand.module.product.service.impl" />
-                  <option name="javaServicePath" value="D:\finalTest\secondhand3\secondhand\src\main\java" />
-                  <option name="xmlPackage" value="mapper.product" />
+                  <option name="javaServicePackage" value="com.secondhand.module.order.serivce.impl" />
+                  <option name="javaServicePath" value="D:\finalTest\secondhand\secondhand\src\main\java" />
+                  <option name="xmlPackage" value="mapper.order" />
                   <option name="xmlPath" value="$PROJECT_DIR$/secondhand/src/main/resources" />
                 </UserPackageAndPathInfoByModule>
               </value>
@@ -33,6 +33,30 @@
         </option>
         <option name="tableGenerateConfigs">
           <map>
+            <entry key="secondhand:account_log">
+              <value>
+                <TableGenerateConfig>
+                  <option name="generatedKey" value="log_id" />
+                  <option name="javaModelName" value="AccountLog" />
+                  <option name="moduleName" value="secondhand.main" />
+                  <option name="sequenceColumn" value="" />
+                  <option name="sequenceId" value="" />
+                  <option name="useActualColumnName" value="false" />
+                </TableGenerateConfig>
+              </value>
+            </entry>
+            <entry key="secondhand:chat_message">
+              <value>
+                <TableGenerateConfig>
+                  <option name="generatedKey" value="id" />
+                  <option name="javaModelName" value="ChatMessage" />
+                  <option name="moduleName" value="secondhand.main" />
+                  <option name="sequenceColumn" value="" />
+                  <option name="sequenceId" value="" />
+                  <option name="useActualColumnName" value="false" />
+                </TableGenerateConfig>
+              </value>
+            </entry>
             <entry key="secondhand:graph">
               <value>
                 <TableGenerateConfig>
@@ -48,6 +72,30 @@
                 <TableGenerateConfig>
                   <option name="javaModelName" value="LeaveMessage" />
                   <option name="moduleName" value="secondhand.main" />
+                  <option name="useActualColumnName" value="false" />
+                </TableGenerateConfig>
+              </value>
+            </entry>
+            <entry key="secondhand:order">
+              <value>
+                <TableGenerateConfig>
+                  <option name="generatedKey" value="" />
+                  <option name="javaModelName" value="Order" />
+                  <option name="moduleName" value="secondhand.main" />
+                  <option name="sequenceColumn" value="" />
+                  <option name="sequenceId" value="" />
+                  <option name="useActualColumnName" value="false" />
+                </TableGenerateConfig>
+              </value>
+            </entry>
+            <entry key="secondhand:order_product">
+              <value>
+                <TableGenerateConfig>
+                  <option name="generatedKey" value="id" />
+                  <option name="javaModelName" value="OrderProduct" />
+                  <option name="moduleName" value="secondhand.main" />
+                  <option name="sequenceColumn" value="" />
+                  <option name="sequenceId" value="" />
                   <option name="useActualColumnName" value="false" />
                 </TableGenerateConfig>
               </value>
@@ -99,7 +147,7 @@
           </map>
         </option>
         <option name="userMybatisPlus" value="true" />
-        <option name="xmlMapperPackage" value="mapper.product" />
+        <option name="xmlMapperPackage" value="mapper.order" />
         <option name="xmlMapperPath" value="$PROJECT_DIR$/secondhand/src/main/resources" />
       </ProjectProfile>
     </option>

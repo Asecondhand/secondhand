@@ -15,7 +15,7 @@ public class UserAttr {
 
     public UserAttr(User user){
         this.uid = user.getUserId();
-        this.icon = user.getHeaderPicture();
+        this.icon = user.getIcon();
         this.uname = user.getUserName();
     }
     @TableId(value = "id", type = IdType.AUTO)

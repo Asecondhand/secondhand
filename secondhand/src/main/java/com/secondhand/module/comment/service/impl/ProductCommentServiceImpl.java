@@ -39,7 +39,7 @@ public class ProductCommentServiceImpl extends ServiceImpl<ProductCommentMapper,
         productComment.setCommentPid(ao.getCommentPid());
         productComment.setMessage(ao.getMessage());
         productComment.setUid(userVo.getUserId());
-        productComment.setIcon(userVo.getHeaderPicture());
+        productComment.setIcon(userVo.getIcon());
         productComment.setUname(userVo.getUserName());
         productComment.setIsDelete(0);
         return this.save(productComment) ? ApiResult.success("评论成功") : ApiResult.fail("评论失败");

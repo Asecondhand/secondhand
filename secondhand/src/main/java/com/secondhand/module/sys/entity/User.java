@@ -3,6 +3,8 @@ package com.secondhand.module.sys.entity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.io.Serializable;
 import java.util.Date;
@@ -48,6 +50,7 @@ public class User implements Serializable {
      */
     private String salt;
 
+    private BigDecimal  balance;
     /**
      * 邮箱
      */
@@ -91,7 +94,10 @@ public class User implements Serializable {
     /**
      * 头像
      */
-    private String headerPicture;
+    private String icon;
 
-
+    /**
+     * 流水id
+     */
+    private Integer logId;
 }

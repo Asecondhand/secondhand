@@ -76,10 +76,14 @@ public class WebSocketServer {
     public void onOpen(Session session, @PathParam("userId") String  userId) throws IOException {
         this.session  = session;
         this.userId = userId;
-        webSocketServerMap.put(userId,this);
-        addOnlineNum();
-        log.info("当前连接的人数"+getOnlineNum());
-        sendMessage("你已与服务器建立连接");
+        if(webSocketServerMap.get(userId) != null){
+            onError(session,new IOException("连接已经存在"));
+        }else {
+            webSocketServerMap.put(userId,this);
+            addOnlineNum();
+            log.info("当前连接的人数"+getOnlineNum());
+            sendMessage("你已与服务器建立连接");
+        }
     }
     @OnClose
     public void onClose() throws IOException {
@@ -102,10 +106,15 @@ public class WebSocketServer {
             log.info("收到来自"+session.getBasicRemote()+"的消息:"+message);
             JSONObject jsonObject = JSON.parseObject(message);
             String userId =jsonObject.getString("userId");
+            if(userId .equals(this.userId) ){
+                throw new ServiceException("不能给自己发送消息");
+            }
             //如果接受方的 列表没有发送方的信息，添加进去
             System.out.println(userId);
-            if(chatListService.getOne(new LambdaQueryWrapper<ChatList>().eq(ChatList::getToUid,this.userId).eq(ChatList::getUid,userId))==null){
-                ChatList chatList = new ChatList();
+            //保存用户聊天列表，可以使用消息队列去做
+            ChatList chatList =  chatListService.getOne(new LambdaQueryWrapper<ChatList>().eq(ChatList::getToUid,this.userId).eq(ChatList::getUid,userId));
+            if(chatList == null){
+                chatList = new ChatList();
                 UserAttr userAttr = userAttrService.getById(this.userId);
                 if(userAttr == null)
                     throw new ServiceException("查找的用户id不存在");
@@ -115,8 +124,15 @@ public class WebSocketServer {
                 chatList.setIcon(userAttr.getIcon());
                 chatListService.save(chatList);
             }
-            if(chatListService.getOne(new LambdaQueryWrapper<ChatList>().eq(ChatList::getToUid,userId).eq(ChatList::getUid,this.userId))==null){
-                ChatList chatList = new ChatList();
+            else {
+                UserAttr userAttr = userAttrService.getById(this.userId);
+                chatList.setName(userAttr.getUname());
+                chatList.setIcon(userAttr.getIcon());
+                chatListService.updateById(chatList);
+            }
+            chatList =chatListService.getOne(new LambdaQueryWrapper<ChatList>().eq(ChatList::getToUid,userId).eq(ChatList::getUid,this.userId));
+            if(chatList ==null){
+                chatList = new ChatList();
                 UserAttr userAttr = userAttrService.getById(userId);
                 if(userAttr == null)
                     throw new ServiceException("查找的用户id不存在");
@@ -126,14 +142,20 @@ public class WebSocketServer {
                 chatList.setIcon(userAttr.getIcon());
                 chatListService.save(chatList);
             }
-            if(userId!=null &&userId.length()>0 && webSocketServerMap.containsKey(userId)){
+            else {
+                UserAttr userAttr = userAttrService.getById(this.userId);
+                chatList.setName(userAttr.getUname());
+                chatList.setIcon(userAttr.getIcon());
+                chatListService.updateById(chatList);
+            }
+            if(userId.length() > 0 && webSocketServerMap.containsKey(userId)){
                 try {
                     webSocketServerMap.get(userId).sendMessage(jsonObject.toJSONString());
                 } catch (IOException e) {
                     log.error("发送消息出错"+e.getMessage());
                 }
             }else{
-                //保存到数据库中
+                //保存数据在未接受聊天消息中
                 log.info("请求的user不在线上"+userId);
             }
             sendMessage("发送成功");
@@ -155,6 +177,8 @@ public class WebSocketServer {
         chatMessage.setToUid(Integer.valueOf(userId));
         chatMessage.setFromUid(Integer.valueOf(this.userId));
         chatMessage.setMessage(message.getString("message"));
+        //默认为未读
+        chatMessage.setStatus(0);
         ChatMessageService chatMessageService =  SpringUtil.getBean(ChatMessageService.class);
         chatMessageService.save(chatMessage);
     }
