@@ -10,7 +10,7 @@ public enum ResultCode implements IResultCode {
 
         SUCCESS(200, "操作成功"),
         FAILURE(1, "业务异常"),
-        UN_AUTHORIZED(401, "请求未授权"),
+        UN_AUTHORIZED(401, "没有权限"),
         NOT_FOUND(404, "404 没找到请求"),
         MSG_NOT_READABLE(400, "消息不能读取"),
         METHOD_NOT_SUPPORTED(405, "不支持当前请求方法"),
@@ -33,7 +33,7 @@ public enum ResultCode implements IResultCode {
             return this.message;
         }
 
-        private ResultCode(int code, String message) {
+         ResultCode(int code, String message) {
             this.code = code;
             this.message = message;
         }

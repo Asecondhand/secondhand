@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.secondhand'
-version = '0.0.19'
+version = '0.0.21'
 sourceCompatibility = '1.8'
 
 configurations {
@@ -86,6 +86,11 @@ dependencies {
     runtimeOnly 'mysql:mysql-connector-java'
 //    compile group: 'com.alibaba', name: 'druid', version: '1.1.10'
 
+// https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.8.1'
+
+
+
     // web应用
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
@@ -108,7 +113,10 @@ dependencies {
     // 测试用例 lombok
     testAnnotationProcessor 'org.projectlombok:lombok'
     testCompileOnly 'org.projectlombok:lombok'
-    testCompile("org.springframework.boot:spring-boot-starter-test")
+
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
 
 }
 

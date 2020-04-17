@@ -1,5 +1,6 @@
 package com.secondhand.module.sys.service;
 
+import com.secondhand.common.basemethod.ApiResult;
 import com.secondhand.module.sys.entity.Menu;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -13,4 +14,12 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IMenuService extends IService<Menu> {
 
+    // 新增菜单
+    ApiResult addMenu(Menu menu);
+
+    ApiResult menuList();
+
+    ApiResult updateMenu(Menu menu);
+
+    ApiResult delMenu(Long menuId);
 }

@@ -26,6 +26,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
@@ -111,6 +112,15 @@ public class LoginController {
         }catch (IOException ex){
            throw new ServiceException("es添加失败");
         }
+    }
+
+    /**
+     * 退出
+     */
+    @RequestMapping("/logout")
+    public ApiResult logout() {
+        redisTool.clearUserInfo();
+        return ApiResult.success(null);
     }
 
 }

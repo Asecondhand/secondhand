@@ -33,7 +33,7 @@
             t2.product_status,
             t2.user_id,
             t2.user_name,
-            t4.header_picture,
+            t4.icon,
             t2.user_address
         FROM
             product t2

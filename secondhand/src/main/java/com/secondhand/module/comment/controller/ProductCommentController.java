@@ -23,7 +23,7 @@ public class ProductCommentController {
     private IProductCommentService iProductCommentService;
 
     //添加评论  -- 一级评论 id = 0 二级评论 传上一级id
-    @GetMapping("/addProductComment")
+    @PostMapping("/addProductComment")
     public ApiResult addProductComment(@RequestBody @Validated  ProductCommentAO ao){
         return iProductCommentService.addProductComment(ao);
     }

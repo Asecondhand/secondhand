@@ -70,7 +70,7 @@ public class ShiroRealm extends AuthorizingRealm {
             List<Menu> menuList = iMenuService.list();
             permsList = new ArrayList<>(menuList.size());
             for (Menu menu : menuList) {
-                permsList.add(menu.getPerms());
+                permsList.add(menu.getPermission());
             }
         } else {
             permsList = iUserService.queryAllPerms(userId);

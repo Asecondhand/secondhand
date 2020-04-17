@@ -1,7 +1,6 @@
 package com.secondhand.util.fileUtil;
+import com.secondhand.common.exception.RRException;
 import com.secondhand.module.product.controller.FileController;
-import com.secondhand.module.product.controller.ProductController;
-import com.secondhand.util.exception.RRException;
 import com.secondhand.util.exception.ServiceException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -11,12 +10,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 @Service
 public class FileService {

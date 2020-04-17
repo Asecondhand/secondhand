@@ -2,4 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.secondhand.module.sys.mapper.MenuMapper">
 
+    <select id="getMenuList" resultType="com.secondhand.module.sys.vo.MenuVo">
+        SELECT
+            t3.*
+        FROM
+            sys_user_role t1
+            LEFT JOIN sys_role_menu t2 ON t1.role_id = t2.role_id
+            LEFT JOIN sys_menu t3 ON t2.menu_id = t3.menu_id
+        WHERE
+            t1.user_id = #{userId}
+            AND t3.type !=2
+            and is_delete = 0
+    </select>
+    <select id="Allmenulist" resultType="com.secondhand.module.sys.vo.MenuVo">
+        SELECT
+            *
+        FROM
+            sys_menu
+        WHERE
+            type !=2
+            and  is_delete = 0
+    </select>
 </mapper>
