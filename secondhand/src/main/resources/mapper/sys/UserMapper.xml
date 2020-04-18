@@ -10,16 +10,29 @@
     </select>
     <select id="findAllUser" resultType="com.secondhand.module.sys.vo.SysUserVo">
         SELECT
-            *
+           	user_id,
+	user_name AS nickName,
+	email,
+	status,
+	mobile,
+	user_type,
+	actual_name as username
         FROM
             sys_user
         WHERE
         status = 0
         and user_type = 2
+                order by edit_time desc
     </select>
     <select id="findAllUser1" resultType="com.secondhand.module.sys.vo.SysUserVo">
         SELECT
-            *
+            	user_id,
+	user_name AS nickName,
+	email,
+	status,
+	mobile,
+	user_type,
+	actual_name as username
         FROM
             sys_user
         WHERE
@@ -30,26 +43,41 @@
             OR
             actual_name LIKE  concat('%',#{ao.value},'%')
         )
+                order by edit_time desc
     </select>
     <select id="findUserByUsername" resultType="com.secondhand.module.sys.vo.SysUserVo">
         SELECT
-            *
+            	user_id,
+	user_name AS nickName,
+	email,
+	status,
+	mobile,
+	user_type,
+	actual_name as username
         FROM
             sys_user
         WHERE
         status = 0
         and user_type = 2
         and actual_name   LIKE concat('%',#{ao.value},'%')
+                order by edit_time desc
     </select>
     <select id="findUserBynickName" resultType="com.secondhand.module.sys.vo.SysUserVo">
         SELECT
-            *
+           	user_id,
+	user_name AS nickName,
+	email,
+	status,
+	mobile,
+	user_type,
+	actual_name as username
         FROM
             sys_user
         WHERE
         status = 0
         and user_type = 2
         and user_name  LIKE concat('%',#{ao.value},'%')
+        order by edit_time desc
     </select>
 
 </mapper>

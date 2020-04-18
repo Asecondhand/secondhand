@@ -113,8 +113,16 @@ public class UserController {
         return iUserService.addSysUser(ao);
     }
     //查找用户
-    @PostMapping("/find")
-    public PageApiResult findSysUser(@RequestBody FindUserAo ao){
+    @GetMapping("/find")
+    public PageApiResult findSysUser(    String key,
+           String value,
+           Integer pageIndex,
+            Integer pageSize){
+        FindUserAo ao = new FindUserAo();
+        ao.setPageIndex(pageIndex);
+        ao.setKey(key);
+        ao.setPageSize(pageSize);
+        ao.setValue(value);
         return iUserService.findSysUser(ao);
     }
 

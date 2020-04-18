@@ -90,6 +90,8 @@ public class Product {
     @TableField(value = "is_deleted")
     private Integer isDeleted;
 
+    private Integer tagId;
+
     public static final String COL_ID = "id";
 
     public static final String COL_USER_NAME = "user_name";
@@ -115,4 +117,6 @@ public class Product {
     public static final String COL_UPDATE_TIME = "update_time";
 
     public static final String COL_IS_DELETED = "is_deleted";
+
+    public static final String COL_TAG_ID = "tag_id";
 }

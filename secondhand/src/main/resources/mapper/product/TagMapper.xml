@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.secondhand.module.product.mapper.TagMapper">
+
+    <select id="findTag" resultType="com.secondhand.module.product.vo.TagVo">
+        SELECT
+            tag_id,
+            tag_name
+        FROM
+            product_tag
+        <where>
+            is_delete =0
+            <if test=" keyWord!=null and keyWord !='' ">
+               and  tag_name like concat('%',#{keyWord},'%')
+            </if>
+        </where>
+
+    </select>
+</mapper>

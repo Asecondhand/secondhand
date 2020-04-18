@@ -84,3 +84,4 @@ mybatis-plus:
 resources:
     path: /file/secondhand
     productsPath: images/products
+    noticePath: images/notice

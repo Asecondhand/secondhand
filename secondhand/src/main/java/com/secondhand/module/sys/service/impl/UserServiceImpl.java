@@ -98,13 +98,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         if (StringUtils.isBlank(ao.getValue())) {
             iPage = baseMapper.findAllUser(page, ao);
         }
-        if (ao.getKey().equals("all")) {
+        if (StringUtils.isNotBlank(ao.getValue()) && ao.getKey().equals("all")) {
             iPage = baseMapper.findAllUser1(page, ao);
         }
-        if (ao.getKey().equals("username")) {
+        if (StringUtils.isNotBlank(ao.getValue()) && ao.getKey().equals("username")) {
             iPage = baseMapper.findUserByUsername(page, ao);
         }
-        if (ao.getKey().equals("nickName")) {
+        if (StringUtils.isNotBlank(ao.getValue()) && ao.getKey().equals("nickName")) {
             iPage = baseMapper.findUserBynickName(page, ao);
         }
         return new PageApiResult(iPage);
@@ -129,7 +129,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         }
         User userEntity = this.getOne(new QueryWrapper<User>().lambda().
                 eq(User::getUserName, ao.getNickName()));
-        if (userEntity != null) {
+        if (userEntity != null && !userEntity.getUserId().equals(ao.getUserId())) {
             return ApiResult.fail("用户已存在");
         }
         if (ao.getUserId() == null) {
@@ -143,8 +143,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
             user.setUserPassword(ShiroUtils.sha256(ao.getPassword(), user.getSalt()));
         }
         user.setUserId(ao.getUserId());
-        user.setUserName(ao.getNickName());
-        user.setActualName(ao.getUsername());
+        if (StringUtils.isNotBlank(ao.getNickName())) {
+            user.setUserName(ao.getNickName());
+        }
+        if (StringUtils.isNotBlank(ao.getUsername())) {
+            user.setActualName(ao.getUsername());
+        }
+        user.setEditTime(new Date());
         return this.updateById(user) ? ApiResult.success("成功") : ApiResult.fail("失败");
     }
 
