@@ -99,6 +99,13 @@ public class UserAttr {
     @TableField(value = "update_time",fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
 
+
+    /**
+     * 粉丝数量
+     */
+    @TableField(value = "view_num")
+    private Integer viewNum;
+
     public static final String COL_ID = "id";
 
     public static final String COL_UID = "uid";
@@ -128,4 +135,6 @@ public class UserAttr {
     public static final String COL_CREATE_TIME = "create_time";
 
     public static final String COL_UPDATE_TIME = "update_time";
+
+    public static final String COL_VIEW_NUM = "view_num";
 }

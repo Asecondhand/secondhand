@@ -164,5 +164,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
         return ApiResult.success(list);
     }
 
+    @Override
+    public ApiResult getUserInfoAfter() {
+        return null;
+    }
+
 
 }

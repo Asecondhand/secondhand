@@ -5,12 +5,14 @@ import com.secondhand.common.basemethod.ApiResult;
 import com.secondhand.common.basemethod.PageApiResult;
 import com.secondhand.common.constant.Constant;
 import com.secondhand.common.permissions.Permission;
+import com.secondhand.module.mime.vo.UserInfoVO;
 import com.secondhand.module.sys.ao.AddUserAO;
 import com.secondhand.module.sys.ao.FindUserAo;
 import com.secondhand.module.sys.entity.Menu;
 import com.secondhand.module.sys.entity.User;
 import com.secondhand.module.sys.service.IMenuService;
 import com.secondhand.module.sys.service.IUserService;
+import com.secondhand.module.sys.vo.AfterUserInfoVo;
 import com.secondhand.module.sys.vo.CurrentUserVo;
 import com.secondhand.module.sys.vo.UserVo;
 import com.secondhand.redis.RedisTool;
@@ -21,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.sound.midi.Soundbank;
 import java.util.*;
 
 /**
@@ -139,5 +142,11 @@ public class UserController {
         return iUserService.delSysUser(userId);
     }
 
-
+    @GetMapping("/get/userInfo")
+    public ApiResult getUserInfoAfter(){
+        CurrentUserVo currentUserVo = (CurrentUserVo) SecurityUtils.getSubject().getPrincipal();
+        AfterUserInfoVo vo = new AfterUserInfoVo();
+        BeanUtils.copyProperties(currentUserVo, vo);
+        return ApiResult.success(vo);
+    }
 }

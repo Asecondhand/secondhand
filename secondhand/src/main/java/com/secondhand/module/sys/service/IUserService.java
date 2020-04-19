@@ -36,4 +36,6 @@ public interface IUserService extends IService<User> {
     ApiResult updateSysUser(AddUserAO ao);
 
     ApiResult listSysUser();
+
+    ApiResult getUserInfoAfter();
 }

@@ -100,4 +100,9 @@ public class User implements Serializable {
      * 流水id
      */
     private Integer logId;
+
+    /**
+     * 流水id
+     */
+    private Integer viewNum;
 }

@@ -24,9 +24,9 @@ public class GeneratorCode {
         //模块名
         String packageName = "com.secondhand.module";
         // 包名
-        String moduleName = "product";
+        String moduleName = "sys";
         //包名,模块名,表名"sp_sys_user","sp_fault_bill_tbl" 同时生成多张表
-        generateByTables(packageName, moduleName, "product_tag");
+        generateByTables(packageName, moduleName, "notice","feedback");
         System.out.println("代码生成完成");
     }
 
