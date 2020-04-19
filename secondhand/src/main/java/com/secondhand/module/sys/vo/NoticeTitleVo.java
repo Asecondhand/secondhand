@@ -17,7 +17,7 @@ public class NoticeTitleVo {
     private String title;
 
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
-    private Date creatTime;
+    private Date createTime;
 
     private String content;
     private Integer type; // 是否发布 0 未发布 1 已发布

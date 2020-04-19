@@ -29,12 +29,11 @@ public class NoticeController {
         return iNoticeService.addNoticeList(ao);
     }
 
-
     //展示公告
     @GetMapping("/list")
     public PageApiResult getNoticeList(String keyWord,Integer pageIndex, Integer pageSize) {
         Page page = new Page<>(pageIndex, pageSize);
-        return iNoticeService.getNoticeList(keyWord,page);
+        return iNoticeService.getNoticeList(page,keyWord);
     }
 
     @GetMapping("/detail/{noticeId}")

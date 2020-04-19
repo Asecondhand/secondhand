@@ -142,11 +142,5 @@ public class UserController {
         return iUserService.delSysUser(userId);
     }
 
-    @GetMapping("/get/userInfo")
-    public ApiResult getUserInfoAfter(){
-        CurrentUserVo currentUserVo = (CurrentUserVo) SecurityUtils.getSubject().getPrincipal();
-        AfterUserInfoVo vo = new AfterUserInfoVo();
-        BeanUtils.copyProperties(currentUserVo, vo);
-        return ApiResult.success(vo);
-    }
+
 }
