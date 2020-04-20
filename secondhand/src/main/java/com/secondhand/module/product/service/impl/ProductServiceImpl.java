@@ -231,7 +231,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         Long allNum = baseMapper.personalDynamicAllNum(userId);
         if (list.size() > 0) {
             for (DynamicVO vo : list) {
-                List<ProductInfoVo> productInfoVoList = baseMapper.getProductInfoByTime(vo.getTime());
+                List<ProductInfoVo> productInfoVoList = baseMapper.getProductInfoByTime(vo.getTime(),userId);
                 if (productInfoVoList.size() > 0) {
                     DynamicVO entity = new DynamicVO();
                     entity.setNum(vo.getNum());
