@@ -14,6 +14,8 @@ import com.secondhand.module.sys.vo.NoticeTitleVo;
 import com.secondhand.module.sys.vo.TagSumVo;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -35,7 +37,7 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
     }
 
     @Override
-    public PageApiResult getNoticeList(Page page,String keyWord) {
+    public PageApiResult getNoticeList(Page page, String keyWord) {
         IPage<NoticeTitleVo> iPage = baseMapper.getNoticeList(page, keyWord);
         return new PageApiResult(iPage);
     }
@@ -66,6 +68,14 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
     @Override
     public ApiResult getProductList() {
         List<TagSumVo> list = baseMapper.getProductList();
+        Double sum = 0.0;
+        for (int i = 0; i < list.size(); i++) {
+            sum += list.get(i).getTotal();
+        }
+        for (int i = 0; i < list.size(); i++) {
+            list.get(i).setTotal( new BigDecimal(list.get(i).getTotal()/sum)
+                    .setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+        }
         return ApiResult.success(list);
     }
 

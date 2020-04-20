@@ -9,5 +9,5 @@ import lombok.Data;
 @Data
 public class TagSumVo {
     private String label;
-    private Integer total;
+    private Double total;
 }
