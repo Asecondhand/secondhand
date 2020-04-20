@@ -87,7 +87,7 @@
             FROM
                 product t1
             WHERE
-                user_id = 1
+                user_id = #{userId}
             GROUP BY
                 DATE_FORMAT( t1.create_time, '%Y-%m-%d' )
             ) pt
