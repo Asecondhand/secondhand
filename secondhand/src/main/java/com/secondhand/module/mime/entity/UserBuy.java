@@ -45,5 +45,6 @@ public class UserBuy implements Serializable {
      * 0 是 1否
      */
     private Integer status;
+    private Integer saleId;
 
 }
