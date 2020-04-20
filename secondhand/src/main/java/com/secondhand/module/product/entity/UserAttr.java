@@ -100,11 +100,6 @@ public class UserAttr {
     private Date updateTime;
 
 
-    /**
-     * 粉丝数量
-     */
-    @TableField(value = "view_num")
-    private Integer viewNum;
 
     public static final String COL_ID = "id";
 
@@ -136,5 +131,4 @@ public class UserAttr {
 
     public static final String COL_UPDATE_TIME = "update_time";
 
-    public static final String COL_VIEW_NUM = "view_num";
 }
