@@ -3,10 +3,81 @@
 <mapper namespace="com.secondhand.module.sys.mapper.UserMapper">
 
     <select id="queryAllPerms" resultType="java.lang.String">
-          select m.perms from sys_user_role ur
+          select m.permission from sys_user_role ur
 	LEFT JOIN sys_role_menu rm on ur.role_id = rm.role_id
 	LEFT JOIN sys_menu m on rm.menu_id = m.menu_id
 	where ur.user_id = #{userId}
+    </select>
+    <select id="findAllUser" resultType="com.secondhand.module.sys.vo.SysUserVo">
+        SELECT
+           	user_id,
+	user_name AS nickName,
+	email,
+	status,
+	mobile,
+	user_type,
+	actual_name as username
+        FROM
+            sys_user
+        WHERE
+        status = 0
+        and user_type = 2
+                order by edit_time desc
+    </select>
+    <select id="findAllUser1" resultType="com.secondhand.module.sys.vo.SysUserVo">
+        SELECT
+            	user_id,
+	user_name AS nickName,
+	email,
+	status,
+	mobile,
+	user_type,
+	actual_name as username
+        FROM
+            sys_user
+        WHERE
+        status = 0
+        and user_type = 2
+        and (
+            user_name LIKE concat('%',#{ao.value},'%')
+            OR
+            actual_name LIKE  concat('%',#{ao.value},'%')
+        )
+                order by edit_time desc
+    </select>
+    <select id="findUserByUsername" resultType="com.secondhand.module.sys.vo.SysUserVo">
+        SELECT
+            	user_id,
+	user_name AS nickName,
+	email,
+	status,
+	mobile,
+	user_type,
+	actual_name as username
+        FROM
+            sys_user
+        WHERE
+        status = 0
+        and user_type = 2
+        and actual_name   LIKE concat('%',#{ao.value},'%')
+                order by edit_time desc
+    </select>
+    <select id="findUserBynickName" resultType="com.secondhand.module.sys.vo.SysUserVo">
+        SELECT
+           	user_id,
+	user_name AS nickName,
+	email,
+	status,
+	mobile,
+	user_type,
+	actual_name as username
+        FROM
+            sys_user
+        WHERE
+        status = 0
+        and user_type = 2
+        and user_name  LIKE concat('%',#{ao.value},'%')
+        order by edit_time desc
     </select>
 
 </mapper>

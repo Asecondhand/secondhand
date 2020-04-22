@@ -1,7 +1,7 @@
 package com.secondhand.util.shiro;
 
+import com.secondhand.common.exception.RRException;
 import com.secondhand.module.sys.entity.User;
-import com.secondhand.util.exception.RRException;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.session.Session;

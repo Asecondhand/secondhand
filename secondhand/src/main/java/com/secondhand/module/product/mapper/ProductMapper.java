@@ -18,7 +18,7 @@ public interface ProductMapper extends BaseMapper<Product> {
 
     List<DynamicVO> personalDynamic(@Param("userId") Long userId);
 
-    List<ProductInfoVo> getProductInfoByTime(@Param("time") String time);
+    List<ProductInfoVo> getProductInfoByTime(@Param("time") String time,@Param("userId") Long userId);
 
     Long personalDynamicAllNum(@Param("userId") Long userId);
 

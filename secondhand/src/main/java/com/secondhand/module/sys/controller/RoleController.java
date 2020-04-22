@@ -1,9 +1,11 @@
 package com.secondhand.module.sys.controller;
 
 
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import org.springframework.web.bind.annotation.RestController;
+import com.secondhand.common.basemethod.ApiResult;
+import com.secondhand.module.sys.entity.Role;
+import com.secondhand.module.sys.service.IRoleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
@@ -14,7 +16,34 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2020-02-15
  */
 @RestController
-@RequestMapping("/sys/role")
+@RequestMapping("/api/sysRole")
 public class RoleController {
+
+    @Autowired
+    private IRoleService iRoleService;
+
+   //新增  名字和备注
+    @PostMapping("/add")
+    public ApiResult addRole(@RequestBody Role role){
+        return iRoleService.addRole(role);
+    }
+
+    // 删除
+    @DeleteMapping("/del/{roleId}")
+    public ApiResult delRole(@PathVariable Long roleId){
+        return iRoleService.delRole(roleId);
+    }
+
+    //编辑
+    @PostMapping("/update")
+    public ApiResult updateRole(@RequestBody Role role){
+        return iRoleService.updateRole(role);
+    }
+
+    //查找 名字
+    @GetMapping("/find")
+    public ApiResult findRole( String keyword){
+        return iRoleService.findRole(keyword);
+    }
 
 }

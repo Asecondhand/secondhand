@@ -24,5 +24,5 @@ public class ProductInfoVo {
     private String productCreateTime;
     private String userName;
     private Integer userId;  // 用户id
-    private String usericon;  // 头像
+    private String icon;  // 头像
 }

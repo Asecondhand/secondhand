@@ -99,6 +99,8 @@ public class UserAttr {
     @TableField(value = "update_time",fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
 
+
+
     public static final String COL_ID = "id";
 
     public static final String COL_UID = "uid";
@@ -128,4 +130,5 @@ public class UserAttr {
     public static final String COL_CREATE_TIME = "create_time";
 
     public static final String COL_UPDATE_TIME = "update_time";
+
 }

@@ -55,7 +55,7 @@ public class webLog {
         // 打印请求的 IP
         logger.info("IP             : {}", request.getRemoteAddr());
         // 打印请求入参
-//        kafkaTemplate.send("log", "requestUrl:"+request.getRequestURL().toString()+",data:"+JSONObject.toJSONString(joinPoint.getArgs()));
+        // kafkaTemplate.send("log", "requestUrl:"+request.getRequestURL().toString()+",data:"+JSONObject.toJSONString(joinPoint.getArgs()));
         logger.info("Request Args   : {}", JSONObject.toJSONString(joinPoint.getArgs()));
     }
 

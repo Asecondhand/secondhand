@@ -85,18 +85,20 @@ public class ProductCommentServiceImpl extends ServiceImpl<ProductCommentMapper,
             // 排序逆序
             // Collections.reverse(childVos);
             // 日期倒序
-            Collections.sort(childVos, new Comparator<ChildrenCommentVO>() {
-                @Override
-                public int compare(ChildrenCommentVO o1, ChildrenCommentVO o2) {
-                    Date date1 = o1.getCreateTime();
-                    Date date2 = o2.getCreateTime();
-                    // 倒序after 升序before
-                    if (date1.after(date2)) {
-                        return 1;
+            if (CollectionUtils.isNotEmpty(childVos)) {
+                Collections.sort(childVos, new Comparator<ChildrenCommentVO>() {
+                    @Override
+                    public int compare(ChildrenCommentVO o1, ChildrenCommentVO o2) {
+                        Date date1 = o1.getCreateTime();
+                        Date date2 = o2.getCreateTime();
+                        // 倒序after 升序before
+                        if (date1.after(date2)) {
+                            return 1;
+                        }
+                        return -1;
                     }
-                    return -1;
-                }
-            });
+                });
+            }
             productCommentVO.setChildrenComments(childVos);
 
             vos.add(productCommentVO);

@@ -1,31 +1,29 @@
 package com.secondhand.module.sys.controller;
 
 
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.JSONPObject;
 import com.secondhand.common.basemethod.ApiResult;
 import com.secondhand.common.basemethod.PageApiResult;
 import com.secondhand.common.constant.Constant;
-import com.secondhand.module.sys.ao.LoginAo;
+import com.secondhand.common.permissions.Permission;
+import com.secondhand.module.mime.vo.UserInfoVO;
+import com.secondhand.module.sys.ao.AddUserAO;
+import com.secondhand.module.sys.ao.FindUserAo;
 import com.secondhand.module.sys.entity.Menu;
 import com.secondhand.module.sys.entity.User;
 import com.secondhand.module.sys.service.IMenuService;
 import com.secondhand.module.sys.service.IUserService;
-import com.secondhand.module.sys.service.impl.MenuServiceImpl;
-import com.secondhand.module.sys.service.impl.UserServiceImpl;
+import com.secondhand.module.sys.vo.AfterUserInfoVo;
 import com.secondhand.module.sys.vo.CurrentUserVo;
 import com.secondhand.module.sys.vo.UserVo;
 import com.secondhand.redis.RedisTool;
-import com.secondhand.shiro.JwtTool;
 import com.secondhand.shiro.ShiroRealm;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.sound.midi.Soundbank;
 import java.util.*;
 
 /**
@@ -57,8 +55,9 @@ public class UserController {
         return ApiResult.success(iUserService.test1());
     }
 
-    @RequestMapping("/api/sys/user/test2")
+    @RequestMapping("/test2")
     // @RequiresPermissions("user:delete")
+    @Permission("user:delete")
     public PageApiResult test2() {
         Integer pageNum = 1;
         Integer PageSize = 10;
@@ -77,7 +76,7 @@ public class UserController {
             List<Menu> menuList = iMenuService.list();
             permsList = new ArrayList<>(menuList.size());
             for (Menu menu : menuList) {
-                permsList.add(menu.getPerms());
+                permsList.add(menu.getPermission());
             }
         } else {
             permsList = iUserService.queryAllPerms(user.getUserId());
@@ -106,13 +105,42 @@ public class UserController {
         return ApiResult.success(uservo);
     }
 
-    /**
-     * 退出
-     */
-    @RequestMapping("/logout")
-    public ApiResult logout() {
-        redisTool.clearUserInfo();
-        return ApiResult.success(null);
+    @GetMapping("/list")
+    public ApiResult listSysUser(){
+        return iUserService.listSysUser();
     }
+
+    //新增用户
+    @PostMapping("/add")
+    public ApiResult addSysUser(@RequestBody AddUserAO ao){
+        return iUserService.addSysUser(ao);
+    }
+    //查找用户
+    @GetMapping("/find")
+    public PageApiResult findSysUser(    String key,
+           String value,
+           Integer pageIndex,
+            Integer pageSize){
+        FindUserAo ao = new FindUserAo();
+        ao.setPageIndex(pageIndex);
+        ao.setKey(key);
+        ao.setPageSize(pageSize);
+        ao.setValue(value);
+        return iUserService.findSysUser(ao);
+    }
+
+    // 编辑用户
+    @PostMapping("/update")
+    public ApiResult updateSysUser(@RequestBody AddUserAO ao){
+        return  iUserService.updateSysUser(ao);
+         // ApiResult.success("成功");
+    }
+
+    // 删除用户
+    @DeleteMapping("/del/{userId}")
+    public ApiResult delSysUser(@PathVariable("userId") Long userId){
+        return iUserService.delSysUser(userId);
+    }
+
 
 }

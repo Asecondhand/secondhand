@@ -1,9 +1,13 @@
 package com.secondhand.module.sys.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.secondhand.common.basemethod.ApiResult;
 import com.secondhand.common.basemethod.PageApiResult;
+import com.secondhand.module.sys.ao.AddUserAO;
+import com.secondhand.module.sys.ao.FindUserAo;
 import com.secondhand.module.sys.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.secondhand.module.sys.vo.UserVo;
+import com.secondhand.module.sys.vo.SysUserVo;
 
 import java.util.List;
 
@@ -22,4 +26,16 @@ public interface IUserService extends IService<User> {
     PageApiResult test2(Integer pageNum, Integer pageSize);
 
     List<String> queryAllPerms(Long userId);
+
+    ApiResult addSysUser(AddUserAO ao);
+
+    PageApiResult findSysUser(FindUserAo keyword);
+
+    ApiResult delSysUser(Long userId);
+
+    ApiResult updateSysUser(AddUserAO ao);
+
+    ApiResult listSysUser();
+
+    ApiResult getUserInfoAfter();
 }

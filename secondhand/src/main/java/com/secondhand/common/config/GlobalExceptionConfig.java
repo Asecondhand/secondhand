@@ -2,8 +2,9 @@ package com.secondhand.common.config;
 
 import com.secondhand.common.basemethod.ApiResult;
 import com.secondhand.common.exception.ExceptionCode;
+import com.secondhand.common.exception.RRException;
+import com.secondhand.common.permissions.PermissionException;
 import com.secondhand.util.exception.ServiceException;
-import freemarker.template.utility.NullArgumentException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -73,4 +74,18 @@ public class GlobalExceptionConfig {
         log.warn("ConstraintViolationException:", ex);
         return ApiResult.fail(ExceptionCode.LOAD_RESOURCES_ERROR.getCode(), ex.getMessage()).setPath(request.getRequestURI());
     }
+
+    @ExceptionHandler(PermissionException.class)
+    public ApiResult permissionException(PermissionException ex,HttpServletRequest request){
+        log.warn("PermissionException:",ex);
+        return ApiResult.fail(ex.getCode(),ex.getMessage());
+    }
+
+
+    @ExceptionHandler(RRException.class)
+    public ApiResult RRException(RRException ex,HttpServletRequest request){
+        log.warn("PermissionException:",ex);
+        return ApiResult.fail(ex.getCode(),ex.getMessage());
+    }
+
 }

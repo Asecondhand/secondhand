@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.secondhand.module.sys.mapper.NoticeMapper">
+
+    <select id="getNoticeList" resultType="com.secondhand.module.sys.vo.NoticeTitleVo">
+        select * from notice
+        <where>
+            is_delete = 0
+            <if test="keyWord != null  and keyWord !='' ">
+                and title like concat('%',#{keyWord},'%')
+            </if>
+        </where>
+        order by create_time desc
+    </select>
+    <select id="getViewNum" resultType="java.lang.Integer">
+        SELECT sum(view_num) as viewNum FROM sys_user
+    </select>
+    <select id="getNoticeNum" resultType="java.lang.Integer">
+        SELECT count(*) as noticeNum  FROM feedback WHERE is_delete = 0
+    </select>
+    <select id="getProductNum" resultType="java.lang.Integer">
+        SELECT
+            count(*) as productNum
+        FROM
+            product
+    </select>
+    <select id="getTagList" resultType="com.secondhand.module.sys.vo.TagSumVo">
+        SELECT
+        product_tag as label,
+        count(*) as total
+        FROM
+        product
+        <where>
+            <if test="ao.startTime != null and ao.startTime">
+                create_time >= #{ao.startTime}
+            </if>
+            <if test="ao.endTime != null and ao.endTime">
+                AND create_time &lt;=#{ao.endTime}
+            </if>
+        </where>
+        GROUP BY
+        product_tag
+        ORDER BY
+        count(*) DESC
+    </select>
+    <select id="getProductList" resultType="com.secondhand.module.sys.vo.TagSumVo">
+        SELECT
+        product_tag as label,
+        count(*) as total
+        FROM
+        product
+        GROUP BY
+        product_tag
+        ORDER BY
+        count(*) DESC
+    </select>
+</mapper>

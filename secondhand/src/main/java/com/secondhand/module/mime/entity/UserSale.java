@@ -51,4 +51,6 @@ public class UserSale implements Serializable {
      */
     private Integer status;
 
+
+
 }

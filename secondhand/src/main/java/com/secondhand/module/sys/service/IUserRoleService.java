@@ -3,6 +3,8 @@ package com.secondhand.module.sys.service;
 import com.secondhand.module.sys.entity.UserRole;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务类
@@ -13,4 +15,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IUserRoleService extends IService<UserRole> {
 
+    void addUserRole(List<Long> roleId);
 }

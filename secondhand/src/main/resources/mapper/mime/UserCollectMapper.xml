@@ -15,7 +15,7 @@
 		    t2.product_create_time,
             t2.user_id AS userId,
             t2.user_name AS userName,
-            t4.header_picture AS usericon
+            t4.icon AS icon
         FROM
             user_collect t1
             LEFT JOIN product t2 ON t1.product_id = t2.id
