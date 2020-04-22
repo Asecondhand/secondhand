@@ -26,7 +26,7 @@
     </select>
     <select id="getTagList" resultType="com.secondhand.module.sys.vo.TagSumVo">
         SELECT
-        product_tag as lable,
+        product_tag as label,
         count(*) as total
         FROM
         product
