@@ -150,7 +150,9 @@ public class EsSearchServiceImpl implements EsSearchService {
         SearchRequest searchRequest = new SearchRequest(index);
         //查询条件的创建
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(QueryBuilders.matchQuery(filed,keyword));
+        if(keyword != null && keyword.length()!=0){
+            searchSourceBuilder.query(QueryBuilders.matchQuery(filed,keyword));
+        }
         searchRequest.source(searchSourceBuilder);
          return restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
         }
@@ -158,7 +160,10 @@ public class EsSearchServiceImpl implements EsSearchService {
     private SearchResponse productSendRequest(String index,String keyword,String filed) throws IOException {
         SearchRequest searchRequest = new SearchRequest(index);
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(QueryBuilders.boolQuery().should(QueryBuilders.matchQuery(filed,keyword)).should(QueryBuilders.matchQuery("productTag",keyword)));
+        if(keyword!=null && keyword.length()!=0){
+            searchSourceBuilder.query(QueryBuilders.boolQuery().should(QueryBuilders.matchQuery(filed,keyword)).should(QueryBuilders.matchQuery("productTag",keyword)));
+
+        }
         searchRequest.source(searchSourceBuilder);
         return restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
     }

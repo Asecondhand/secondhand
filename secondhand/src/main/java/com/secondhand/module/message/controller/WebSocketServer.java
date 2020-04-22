@@ -89,7 +89,7 @@ public class WebSocketServer {
     public void onClose() throws IOException {
         webSocketServerMap.remove(this.userId);
         subOnlineNum();
-        log.info("当前连接的人数"+getOnlineNum());
+        log.info(this.session+"关闭连接"+getOnlineNum());
         sendMessage("你已与服务器关闭连接");
     }
     @OnError
@@ -113,11 +113,12 @@ public class WebSocketServer {
             System.out.println(userId);
             //保存用户聊天列表，可以使用消息队列去做
             ChatList chatList =  chatListService.getOne(new LambdaQueryWrapper<ChatList>().eq(ChatList::getToUid,this.userId).eq(ChatList::getUid,userId));
+            UserAttr userAttr = userAttrService.getOne(new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getUid,this.userId));
             if(chatList == null){
                 chatList = new ChatList();
-                UserAttr userAttr = userAttrService.getById(this.userId);
                 if(userAttr == null)
                     throw new ServiceException("查找的用户id不存在");
+
                 chatList.setToUid(Integer.valueOf(this.userId));
                 chatList.setUid(Integer.valueOf(userId));
                 chatList.setName(userAttr.getUname());
@@ -125,25 +126,25 @@ public class WebSocketServer {
                 chatListService.save(chatList);
             }
             else {
-                UserAttr userAttr = userAttrService.getById(this.userId);
                 chatList.setName(userAttr.getUname());
                 chatList.setIcon(userAttr.getIcon());
                 chatListService.updateById(chatList);
             }
             chatList =chatListService.getOne(new LambdaQueryWrapper<ChatList>().eq(ChatList::getToUid,userId).eq(ChatList::getUid,this.userId));
+            userAttr = userAttrService.getOne(new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getUid,userId));
             if(chatList ==null){
                 chatList = new ChatList();
-                UserAttr userAttr = userAttrService.getById(userId);
                 if(userAttr == null)
                     throw new ServiceException("查找的用户id不存在");
+                //接收人 this.userid为发送方
                 chatList.setToUid(Integer.valueOf(userId));
+                //发送方  userid为接受方
                 chatList.setUid(Integer.valueOf(this.userId));
                 chatList.setName(userAttr.getUname());
                 chatList.setIcon(userAttr.getIcon());
                 chatListService.save(chatList);
             }
             else {
-                UserAttr userAttr = userAttrService.getById(this.userId);
                 chatList.setName(userAttr.getUname());
                 chatList.setIcon(userAttr.getIcon());
                 chatListService.updateById(chatList);
