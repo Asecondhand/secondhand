@@ -25,5 +25,12 @@ public class AccountController {
     public ApiResult credit(@RequestBody AccountDTO accountDTO){
         return ApiResult.success(accountService.credit(accountDTO.getAmount()));
     }
-
+    @PostMapping("/debit")
+    public ApiResult debit(@RequestBody AccountDTO accountDTO){
+        return ApiResult.success(accountService.debit(accountDTO.getAmount()));
+    }
+    @PostMapping("/transfer")
+    public ApiResult transfer(@RequestBody AccountDTO accountDTO){
+        return ApiResult.success(accountService.transfer(accountDTO.getAmount(),accountDTO.getFromAccountId(),accountDTO.getToAccountId()));
+    }
 }

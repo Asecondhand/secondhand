@@ -87,13 +87,16 @@ public class WebSocketServer {
     }
     @OnClose
     public void onClose() throws IOException {
-        webSocketServerMap.remove(this.userId);
-        subOnlineNum();
-        log.info(this.session+"关闭连接"+getOnlineNum());
-        sendMessage("你已与服务器关闭连接");
+        if(webSocketServerMap.get(this.userId) !=null){
+            webSocketServerMap.remove(this.userId);
+            subOnlineNum();
+            log.info(this.session+"关闭连接"+getOnlineNum());
+            sendMessage("你已与服务器关闭连接");
+        }
     }
     @OnError
     public void onError(Session session, Throwable error) throws IOException {
+        //会报错
         log.error("用户错误:"+this.userId+",原因:"+error.getMessage());
         error.printStackTrace();
         sendMessage("出现错误 ："+error.getMessage());
@@ -136,9 +139,9 @@ public class WebSocketServer {
                 chatList = new ChatList();
                 if(userAttr == null)
                     throw new ServiceException("查找的用户id不存在");
-                //接收人 this.userid为发送方
+                //接收人  touid为接受方
                 chatList.setToUid(Integer.valueOf(userId));
-                //发送方  userid为接受方
+                //发送方  this.userid为发送方
                 chatList.setUid(Integer.valueOf(this.userId));
                 chatList.setName(userAttr.getUname());
                 chatList.setIcon(userAttr.getIcon());

@@ -38,6 +38,7 @@ public class RedisTemp {
         redisTemplate.afterPropertiesSet();
         redisTemplate.setHashKeySerializer(new StringRedisSerializer());
         redisTemplate.setHashValueSerializer(jackson2JsonRedisSerializer);
+        redisTemplate.setEnableTransactionSupport(true);
         return redisTemplate;
     }
 

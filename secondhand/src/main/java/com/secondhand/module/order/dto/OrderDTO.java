@@ -22,6 +22,6 @@ public class OrderDTO {
     @TableId(value = "orderId", type = IdType.INPUT)
     private String orderid;
 
-
+    private Integer productid;
 
 }

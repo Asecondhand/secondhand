@@ -13,10 +13,11 @@ public interface AccountService {
     /**
      * 提现功能
      */
-    void debit();
+    boolean debit(Integer amount);
 
     /**
      * 转账功能
+     * @return
      */
-    void transfer();
+    boolean transfer(Integer amount , Integer fromAccountId,Integer toAccountId);
 }

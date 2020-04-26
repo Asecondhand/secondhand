@@ -11,4 +11,8 @@ import lombok.Data;
 @Data
 public class AccountDTO {
     Integer amount;
+
+    Integer fromAccountId;
+
+    Integer toAccountId;
 }

@@ -46,6 +46,19 @@ public class OrderController {
     }
 
     /**
+     * 查询订单
+     * @return
+     */
+    /**
+     * 支付订单
+     * @return
+     */
+//    @PostMapping
+//    public ApiResult payOrder(@RequestBody OrderDTO orderDTO ){
+//
+//
+//    }
+    /**
      * 更新订单
      * @return
      */

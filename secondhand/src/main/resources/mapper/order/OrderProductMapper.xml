@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.secondhand.module.order.mapper.OrderProductMapper">
+  <resultMap id="BaseResultMap" type="com.secondhand.module.order.entity.OrderProduct">
+    <!--@mbg.generated-->
+    <!--@Table order_product-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="orderId" jdbcType="VARCHAR" property="orderid" />
+    <result column="productId" jdbcType="INTEGER" property="productid" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, orderId, productId
+  </sql>
+</mapper>
