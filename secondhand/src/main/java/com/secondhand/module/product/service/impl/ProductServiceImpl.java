@@ -37,6 +37,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.TransactionManager;
@@ -67,11 +69,15 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 
     @Autowired
     KafkaTemplate<String, String> kafkaTemplate;
+    @Autowired
+    @Resource(name = "SerializableRedisTemplate")
+    RedisTemplate redisTemplate;
 
     private static BloomFilter bloomFilter = BloomFilter.create(Funnels.integerFunnel(), 1000000);
 
     /**
      * 需要在es中删除
+     *
      * @param productDTO
      * @return
      */
@@ -92,9 +98,13 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
             BeanUtils.copyProperties(productDTO, product);
             try {
                 this.save(product);
-            }catch (Exception ex){
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
                 throw new ServiceException("添加商品失败");
             }
+            //向缓存添加商品数量
+            HashOperations hashOperations = redisTemplate.opsForHash();
+            hashOperations.put("productNum", String.valueOf(product.getId()), String.valueOf(product.getProductNum()));
             String[] productPic = productDTO.getProductPic();
             List<ProductPic> list = new ArrayList<>();
             for (String s : productPic) {
@@ -236,7 +246,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         Long allNum = baseMapper.personalDynamicAllNum(userId);
         if (list.size() > 0) {
             for (DynamicVO vo : list) {
-                List<ProductInfoVo> productInfoVoList = baseMapper.getProductInfoByTime(vo.getTime(),userId);
+                List<ProductInfoVo> productInfoVoList = baseMapper.getProductInfoByTime(vo.getTime(), userId);
                 if (productInfoVoList.size() > 0) {
                     DynamicVO entity = new DynamicVO();
                     entity.setNum(vo.getNum());
@@ -278,6 +288,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         }
     }
 }
+
 
 
 

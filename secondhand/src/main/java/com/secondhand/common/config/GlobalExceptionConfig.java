@@ -37,11 +37,11 @@ public class GlobalExceptionConfig {
      * @param httpServletRequest
      * @return
      */
-    @ExceptionHandler(NullPointerException.class)
-    public ApiResult nullPointerException(NullPointerException ex, HttpServletRequest httpServletRequest){
-        log.warn("NullPointerException :" +ex);
-        return ApiResult.fail(ExceptionCode.NULL_POINT_EX.getCode(),ExceptionCode.NULL_POINT_EX.getMessage()).setPath(httpServletRequest.getRequestURI());
-    }
+//    @ExceptionHandler(NullPointerException.class)
+//    public ApiResult nullPointerException(NullPointerException ex, HttpServletRequest httpServletRequest){
+//        log.warn("NullPointerException :" +ex);
+//        return ApiResult.fail(ExceptionCode.NULL_POINT_EX.getCode(),ExceptionCode.NULL_POINT_EX.getMessage()).setPath(httpServletRequest.getRequestURI());
+//    }
 
     /**
      * sql运行异常

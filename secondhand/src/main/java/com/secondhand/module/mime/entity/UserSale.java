@@ -43,7 +43,7 @@ public class UserSale implements Serializable {
     /**
      * 订单id
      */
-    private Integer orderId;
+    private String orderId;
 
     /**
      * 是否删除

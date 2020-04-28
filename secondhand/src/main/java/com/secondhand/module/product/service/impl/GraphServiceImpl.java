@@ -1,30 +1,25 @@
 package com.secondhand.module.product.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.secondhand.module.product.DTO.GraphStatusDTO;
 import com.secondhand.module.product.entity.Graph;
-import com.secondhand.module.product.entity.UserAttr;
 import com.secondhand.module.product.mapper.GraphMapper;
 import com.secondhand.module.product.service.GraphService;
 import com.secondhand.module.product.vo.FollowUserVo;
 import com.secondhand.module.sys.entity.User;
+import com.secondhand.module.sys.entity.UserAttr;
 import com.secondhand.module.sys.service.UserAttrService;
 import com.secondhand.redis.RedisTool;
-import lombok.Getter;
-import org.apache.catalina.security.SecurityUtil;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.core.BoundListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -120,7 +115,7 @@ public class GraphServiceImpl extends ServiceImpl<GraphMapper, Graph> implements
         userAttrs.forEach(userAttr -> {
             FollowUserVo followUserVo = new FollowUserVo();
             BeanUtils.copyProperties(userAttr,followUserVo);
-            followUserVo.setId(userAttr.getId());
+            followUserVo.setId(userAttr.getId().longValue());
             followUserVos.add(followUserVo);
             listOperation.leftPush(followUserVo);
         });
@@ -140,7 +135,7 @@ public class GraphServiceImpl extends ServiceImpl<GraphMapper, Graph> implements
         userAttrs.forEach(userAttr -> {
             FollowUserVo followUserVo = new FollowUserVo();
             BeanUtils.copyProperties(userAttr,followUserVo);
-            followUserVo.setId(userAttr.getId());
+            followUserVo.setId(userAttr.getId().longValue());
             followUserVos.add(followUserVo);
             listOperation.leftPush(followUserVo);
         });

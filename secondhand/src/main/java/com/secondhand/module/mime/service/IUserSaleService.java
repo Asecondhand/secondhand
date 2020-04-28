@@ -16,6 +16,7 @@ import java.util.List;
  */
 public interface IUserSaleService extends IService<UserSale> {
 
+    Boolean addSaleProduct(Long userId, Integer productId,String orderId,Long buyId);
     ApiResult getUserSaleByUserId(Long userId);
 
     ApiResult deleteUserSale(Long saleId);

@@ -147,14 +147,14 @@ public class AccountServiceImpl implements AccountService {
             accountLog.setToAccount(toAccountId);
             accountLog.setTimestamp(new Date());
             accountLogService.save(accountLog);
-            BigDecimal afterBalance =fromAccount.getBalance().divide(BigDecimal.valueOf(amount));
+            BigDecimal afterBalance =fromAccount.getBalance().subtract(BigDecimal.valueOf(amount));
             if(afterBalance.compareTo(BigDecimal.ZERO) == -1){
                 transactionManager.rollback(status);
                 throw  new ServiceException("当前余额小于0");
             }
-            fromAccount.setBalance(fromAccount.getBalance().divide(BigDecimal.valueOf(amount)));
+            fromAccount.setBalance(fromAccount.getBalance().subtract(BigDecimal.valueOf(amount)));
             fromAccount.setLogId(accountLog.getLogId());
-            result = userService.update(fromAccount,new LambdaUpdateWrapper<User>().eq(User::getUserId,fromAccount.getUserId()).eq(User::getLogId,fromAccountLogId));
+            result = userService.getBaseMapper().update(fromAccount, new LambdaQueryWrapper<User>().eq(User::getUserId, fromAccount.getUserId()).eq(User::getLogId, fromAccountLogId)) == 1;
             toAccount.setBalance(toAccount.getBalance().add(BigDecimal.valueOf(amount)));
             toAccount.setLogId(accountLog.getLogId());
             result = result && userService.update(toAccount,new LambdaUpdateWrapper<User>().eq(User::getUserId,toAccount.getUserId()).eq(User::getLogId,toAccountLogId));

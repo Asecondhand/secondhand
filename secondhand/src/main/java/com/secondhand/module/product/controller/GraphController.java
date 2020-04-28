@@ -1,14 +1,10 @@
 package com.secondhand.module.product.controller;
 
 import com.secondhand.common.basemethod.ApiResult;
-import com.secondhand.module.product.DTO.GraphStatusDTO;
 import com.secondhand.module.product.entity.Graph;
-import com.secondhand.module.product.entity.UserAttr;
 import com.secondhand.module.product.service.GraphService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * @program: secondhand3

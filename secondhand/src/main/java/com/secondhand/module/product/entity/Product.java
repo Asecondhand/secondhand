@@ -90,6 +90,22 @@ public class Product {
     @TableField(value = "is_deleted")
     private Integer isDeleted;
 
+    /**
+     * 商品版本
+     */
+    @TableField(value = "version")
+    private Integer version;
+
+    /**
+     * 商品数量
+     */
+    @TableField(value = "product_num")
+    private Integer productNum;
+
+    /**
+     * 商品标签id
+     */
+    @TableField(value = "tag_id")
     private Integer tagId;
 
     public static final String COL_ID = "id";

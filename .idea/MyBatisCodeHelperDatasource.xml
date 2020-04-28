@@ -5,9 +5,9 @@
       <ProjectProfile>
         <option name="generateService" value="true" />
         <option name="generateServiceInterface" value="true" />
-        <option name="javaMapperPackage" value="com.secondhand.module.order.mapper" />
+        <option name="javaMapperPackage" value="com.secondhand.module.sys.mapper" />
         <option name="javaMapperPath" value="$PROJECT_DIR$/secondhand/src/main/java" />
-        <option name="javaModelPackage" value="com.secondhand.module.order.entity" />
+        <option name="javaModelPackage" value="com.secondhand.module.sys.entity" />
         <option name="javaModelPath" value="$PROJECT_DIR$/secondhand/src/main/java" />
         <option name="lastDatabaseCrudChooseModuleName" value="secondhand.main" />
         <option name="lombokDataAnnotation" value="true" />
@@ -16,15 +16,15 @@
             <entry key="secondhand.main">
               <value>
                 <UserPackageAndPathInfoByModule>
-                  <option name="javaMapperPackage" value="com.secondhand.module.order.mapper" />
+                  <option name="javaMapperPackage" value="com.secondhand.module.sys.mapper" />
                   <option name="javaMapperPath" value="$PROJECT_DIR$/secondhand/src/main/java" />
-                  <option name="javaModelPacakge" value="com.secondhand.module.order.entity" />
+                  <option name="javaModelPacakge" value="com.secondhand.module.sys.entity" />
                   <option name="javaModelPath" value="$PROJECT_DIR$/secondhand/src/main/java" />
-                  <option name="javaServiceInterfacePackage" value="com.secondhand.module.order.serivce" />
+                  <option name="javaServiceInterfacePackage" value="com.secondhand.module.sys.service" />
                   <option name="javaServiceInterfacePath" value="$PROJECT_DIR$/secondhand/src/main/java" />
-                  <option name="javaServicePackage" value="com.secondhand.module.order.serivce.impl" />
+                  <option name="javaServicePackage" value="com.secondhand.module.sys.service.impl" />
                   <option name="javaServicePath" value="D:\finalTest\secondhand\secondhand\src\main\java" />
-                  <option name="xmlPackage" value="mapper.order" />
+                  <option name="xmlPackage" value="mapper.sys" />
                   <option name="xmlPath" value="$PROJECT_DIR$/secondhand/src/main/resources" />
                 </UserPackageAndPathInfoByModule>
               </value>
@@ -147,7 +147,7 @@
           </map>
         </option>
         <option name="userMybatisPlus" value="true" />
-        <option name="xmlMapperPackage" value="mapper.order" />
+        <option name="xmlMapperPackage" value="mapper.sys" />
         <option name="xmlMapperPath" value="$PROJECT_DIR$/secondhand/src/main/resources" />
       </ProjectProfile>
     </option>

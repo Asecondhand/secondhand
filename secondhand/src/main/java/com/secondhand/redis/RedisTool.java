@@ -7,9 +7,11 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.util.Assert;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.BoundListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +33,8 @@ public class RedisTool {
     @Value("${security.token_ttl:43200}")//12小时
     private int ttl;
 
+    @Autowired
+    StringRedisTemplate stringRedisTemplate;
     // redis
     @Getter
     @Resource(name = "SerializableRedisTemplate")
@@ -96,4 +100,6 @@ public class RedisTool {
     public boolean expire(String key,long timeout, TimeUnit timeUnit){
         return redis.expire(key,timeout,timeUnit);
     }
+
+
 }

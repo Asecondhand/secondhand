@@ -65,5 +65,9 @@ public class ProductDTO {
     @TableField(value = "product_status")
     private Integer productStatus;
 
+    private Integer productNum;
+
+    private Integer tagId;
+
     private String[] productPic;
 }

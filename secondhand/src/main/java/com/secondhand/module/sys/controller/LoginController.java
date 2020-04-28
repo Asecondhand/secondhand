@@ -4,10 +4,10 @@ import com.alibaba.fastjson.JSONObject;
 
 import com.secondhand.common.basemethod.ApiResult;
 import com.secondhand.common.es.EsIndex;
-import com.secondhand.module.product.entity.UserAttr;
 import com.secondhand.module.sys.UserDTO;
 import com.secondhand.module.sys.ao.LoginAo;
 import com.secondhand.module.sys.entity.User;
+import com.secondhand.module.sys.entity.UserAttr;
 import com.secondhand.module.sys.service.IUserService;
 import com.secondhand.module.sys.service.UserAttrService;
 import com.secondhand.module.sys.vo.CurrentUserVo;
@@ -108,7 +108,10 @@ public class LoginController {
             return ApiResult.fail(1, "用户名重复，请检查输入");
         }
         BulkRequest request = new BulkRequest();
-        UserAttr userAttr = new UserAttr(user);
+        UserAttr userAttr = new UserAttr();
+        userAttr.setIcon(user.getIcon());
+        userAttr.setUname(user.getUserName());
+        userAttr.setUid(Math.toIntExact(user.getUserId()));
         //默认男
         userAttr.setUserSex(0);
         //个人简介

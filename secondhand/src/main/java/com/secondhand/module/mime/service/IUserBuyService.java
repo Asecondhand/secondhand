@@ -14,8 +14,14 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IUserBuyService extends IService<UserBuy> {
 
+    /**
+     * 添加用户购买
+     * @param userId
+     * @return
+     */
+//    Boolean addBuyProduct(Long userId, Integer productId,String orderId);
 
-   ApiResult getUserBuyByUserId(Long userId);
+    ApiResult getUserBuyByUserId(Long userId);
 
     ApiResult deleteUserBuy(Long buyId);
 }

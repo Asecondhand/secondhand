@@ -1,11 +1,14 @@
 package com.secondhand.module.mime.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.secondhand.common.basemethod.ApiResult;
 import com.secondhand.module.mime.entity.UserBuy;
 import com.secondhand.module.mime.mapper.UserBuyMapper;
 import com.secondhand.module.mime.service.IUserBuyService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.secondhand.module.sys.entity.UserAttr;
+import com.secondhand.module.sys.service.UserAttrService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -18,6 +21,10 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UserBuyServiceImpl extends ServiceImpl<UserBuyMapper, UserBuy> implements IUserBuyService {
+
+    @Autowired
+    UserAttrService userAttrService;
+
 
     @Override
     public ApiResult getUserBuyByUserId(Long userId) {

@@ -21,11 +21,12 @@ public interface ProductService extends IService<Product> {
 
     //根据用户id查找商品
     ProductVo search(Long id);
+
     boolean changeStatus(int status, Long productId);
 
-    IPage<Product> getProductPageByUserId(Long userId , Page page);
+    IPage<Product> getProductPageByUserId(Long userId, Page page);
 
-    ApiResult  getSoldOutByUserId(Long userId);
+    ApiResult getSoldOutByUserId(Long userId);
 
     ApiResult updateProductById(Long id);
 
@@ -35,5 +36,6 @@ public interface ProductService extends IService<Product> {
 
     ApiResult getUserRelease(Long userId);
 }
+
 
 

@@ -1,10 +1,14 @@
 package com.secondhand.module.mime.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.secondhand.common.basemethod.ApiResult;
 import com.secondhand.module.mime.entity.UserSale;
 import com.secondhand.module.mime.mapper.UserSaleMapper;
 import com.secondhand.module.mime.service.IUserSaleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.secondhand.module.sys.entity.UserAttr;
+import com.secondhand.module.sys.service.UserAttrService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,6 +21,25 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UserSaleServiceImpl extends ServiceImpl<UserSaleMapper, UserSale> implements IUserSaleService {
+
+    @Autowired
+    UserAttrService userAttrService;
+    @Override
+    public Boolean addSaleProduct(Long userId, Integer productId,String orderId,Long buyId) {
+        UserSale userSale = new UserSale();
+        userSale.setBuyerId(Math.toIntExact(buyId));
+        userSale.setOrderId(orderId);
+        userSale.setProductId(productId);
+        userSale.setStatus(1);
+        //卖家id
+        userSale.setUid(Math.toIntExact(userId));
+        this.save(userSale);
+        UserAttr userAttr = userAttrService.getOne(new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getUid,userId));
+//        UserAttr userAttr=userAttrService.getUserAttrByuid(userId);
+        Integer sellNum = userAttr.getSellNum();
+        userAttr.setSellNum(sellNum+1);
+        return userAttrService.update(userAttr,new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getSellNum,sellNum));
+    }
 
     @Override
     public ApiResult getUserSaleByUserId(Long userId) {

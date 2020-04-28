@@ -23,6 +23,13 @@ public interface OrderService extends IService<Order> {
      * 更新订单
      */
     Boolean updateOrder(UpdateOrderDTO updateOrderDTO);
+
+    /**
+     * 支付订单
+     * @param orderDTO
+     * @return
+     */
+    Boolean payOrder(OrderDTO orderDTO);
 }
 
 

@@ -38,13 +38,14 @@ public class UserBuy implements Serializable {
     /**
      * 订单id
      */
-    private Integer orderId;
+    private String orderId;
 
     /**
      * 是否删除
      * 0 是 1否
      */
     private Integer status;
+
     private Integer saleId;
 
 }

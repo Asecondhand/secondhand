@@ -41,9 +41,10 @@ public class OrderController {
      * @return
      */
     @PostMapping
-    public ApiResult createOrder(@RequestBody OrderDTO orderDTO){
+    public ApiResult createOrderc(@RequestBody OrderDTO orderDTO){
         return ApiResult.success(orderService.createOrder(orderDTO));
     }
+
 
     /**
      * 查询订单
@@ -53,17 +54,16 @@ public class OrderController {
      * 支付订单
      * @return
      */
-//    @PostMapping
-//    public ApiResult payOrder(@RequestBody OrderDTO orderDTO ){
-//
-//
-//    }
+    @PostMapping("/pay")
+    public ApiResult payOrderc(@RequestBody OrderDTO orderDTO ){
+        return  ApiResult.success(orderService.payOrder(orderDTO));
+    }
     /**
      * 更新订单
      * @return
      */
     @PutMapping
-    public ApiResult updateOrder(@RequestBody UpdateOrderDTO updateOrderDTO){
+    public ApiResult updateOrderc(@RequestBody UpdateOrderDTO updateOrderDTO){
         return ApiResult.success(orderService.updateOrder(updateOrderDTO));
     }
     /**

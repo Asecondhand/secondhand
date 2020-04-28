@@ -1,28 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.secondhand.module.product.mapper.ProductMapper">
-    <resultMap id="BaseResultMap" type="com.secondhand.module.product.entity.Product">
-        <!--@mbg.generated-->
-        <!--@Table product-->
-        <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
-        <result column="user_address" jdbcType="VARCHAR" property="userAddress"/>
-        <result column="user_id" jdbcType="INTEGER" property="userId"/>
-        <result column="product_name" jdbcType="VARCHAR" property="productName"/>
-        <result column="product_price" jdbcType="DECIMAL" property="productPrice"/>
-        <result column="product_content" jdbcType="VARCHAR" property="productContent"/>
-        <result column="product_tag" jdbcType="VARCHAR" property="productTag"/>
-        <result column="product_create_time" jdbcType="TIMESTAMP" property="productCreateTime"/>
-        <result column="product_status" jdbcType="TINYINT" property="productStatus"/>
-        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
-        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
-        <result column="is_deleted" jdbcType="INTEGER" property="isDeleted"/>
-    </resultMap>
-    <sql id="Base_Column_List">
-        <!--@mbg.generated-->
-        id, user_name, user_address, user_id, product_name, product_price, product_content,
-        product_tag, product_create_time, product_status, create_time, update_time, is_deleted
-    </sql>
+  <resultMap id="BaseResultMap" type="com.secondhand.module.product.entity.Product">
+    <!--@mbg.generated-->
+    <!--@Table product-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="user_address" jdbcType="VARCHAR" property="userAddress" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="product_name" jdbcType="VARCHAR" property="productName" />
+    <result column="product_price" jdbcType="DECIMAL" property="productPrice" />
+    <result column="product_content" jdbcType="VARCHAR" property="productContent" />
+    <result column="product_tag" jdbcType="VARCHAR" property="productTag" />
+    <result column="product_create_time" jdbcType="TIMESTAMP" property="productCreateTime" />
+    <result column="product_status" jdbcType="TINYINT" property="productStatus" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="is_deleted" jdbcType="INTEGER" property="isDeleted" />
+    <result column="version" jdbcType="INTEGER" property="version" />
+    <result column="product_num" jdbcType="INTEGER" property="productNum" />
+    <result column="tag_id" jdbcType="INTEGER" property="tagId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, user_name, user_address, user_id, product_name, product_price, product_content, 
+    product_tag, product_create_time, product_status, create_time, update_time, is_deleted, 
+    version, product_num, tag_id
+  </sql>
     <select id="getProductInfoByUserId" resultType="com.secondhand.module.mime.vo.ProductInfoVo">
         SELECT
             t2.id,

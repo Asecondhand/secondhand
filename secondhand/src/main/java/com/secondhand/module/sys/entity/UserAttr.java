@@ -1,31 +1,23 @@
-package com.secondhand.module.product.entity;
+package com.secondhand.module.sys.entity;
 
-import com.baomidou.mybatisplus.annotation.*;
-
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import java.util.Date;
-
-import com.secondhand.module.sys.entity.User;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @TableName(value = "user_attr")
-@NoArgsConstructor
 public class UserAttr {
-
-    public UserAttr(User user){
-        this.uid = user.getUserId();
-        this.icon = user.getIcon();
-        this.uname = user.getUserName();
-    }
     @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
+    private Integer id;
 
     /**
      * 用户id
      */
     @TableField(value = "uid")
-    private Long uid;
+    private Integer uid;
 
     /**
      * 用户性别 0-男 1-女
@@ -52,7 +44,7 @@ public class UserAttr {
     private Integer followNum;
 
     /**
-     * 粉丝数量
+     * 粉丝数量 
      */
     @TableField(value = "fans_num")
     private Integer fansNum;
@@ -93,13 +85,11 @@ public class UserAttr {
     @TableField(value = "uname")
     private String uname;
 
-    @TableField(value = "create_time",fill = FieldFill.INSERT)
+    @TableField(value = "create_time")
     private Date createTime;
 
-    @TableField(value = "update_time",fill = FieldFill.INSERT_UPDATE)
+    @TableField(value = "update_time")
     private Date updateTime;
-
-
 
     public static final String COL_ID = "id";
 
@@ -130,5 +120,4 @@ public class UserAttr {
     public static final String COL_CREATE_TIME = "create_time";
 
     public static final String COL_UPDATE_TIME = "update_time";
-
 }

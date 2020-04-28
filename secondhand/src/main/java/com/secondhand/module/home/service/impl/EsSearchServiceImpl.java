@@ -1,23 +1,17 @@
 package com.secondhand.module.home.service.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.core.JsonParser;
 import com.secondhand.common.es.EsIndex;
 import com.secondhand.module.home.service.EsSearchService;
 import com.secondhand.module.home.vo.SearchVo;
 import com.secondhand.module.home.vo.TipsVo;
-import com.secondhand.module.product.entity.UserAttr;
-import com.secondhand.module.product.vo.UserVo;
 import com.secondhand.util.exception.ServiceException;
-import jdk.nashorn.internal.parser.JSONParser;
 import org.apache.lucene.search.TotalHits;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
@@ -28,11 +22,9 @@ import org.elasticsearch.search.suggest.SuggestBuilder;
 import org.elasticsearch.search.suggest.SuggestBuilders;
 import org.elasticsearch.search.suggest.SuggestionBuilder;
 import org.elasticsearch.search.suggest.completion.CompletionSuggestion;
-import org.elasticsearch.search.suggest.term.TermSuggestion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.naming.directory.SearchResult;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;

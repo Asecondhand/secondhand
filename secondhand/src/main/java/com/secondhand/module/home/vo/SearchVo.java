@@ -1,7 +1,5 @@
 package com.secondhand.module.home.vo;
 
-import com.secondhand.module.product.entity.Product;
-import com.secondhand.module.product.entity.UserAttr;
 import lombok.Data;
 
 import java.util.ArrayList;
