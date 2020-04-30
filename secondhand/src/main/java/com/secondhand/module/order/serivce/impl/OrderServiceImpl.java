@@ -187,14 +187,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
                 userBuy.setOrderId(orderDTO.getOrderid());
                 userBuy.setProductId(orderDTO.getProductid());
                 iUserBuyService.save(userBuy);
-                userAttr = userAttrService.getOne(new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getUid,Long.valueOf(orderDTO.getUid())));
                 Integer buyNum = userAttr.getBuyNum();
                 userAttr.setBuyNum(buyNum+1);
                 userAttrService.update(userAttr,new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getBuyNum,buyNum));
             }
         }
-
-
         //更新余额时，带余额限制
         //更新卖家余额
         //更新订单状态

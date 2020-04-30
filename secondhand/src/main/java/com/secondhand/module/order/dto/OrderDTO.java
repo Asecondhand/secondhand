@@ -27,4 +27,6 @@ public class OrderDTO {
 
     //购买者id
     private Integer uid;
+
+    private String userAddress;
 }
