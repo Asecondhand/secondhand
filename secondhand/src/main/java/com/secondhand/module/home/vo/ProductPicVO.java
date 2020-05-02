@@ -14,5 +14,7 @@ import java.util.List;
  **/
 @Data
 public class ProductPicVO  extends Product {
+
     List<ProductPic> picList;
+
 }

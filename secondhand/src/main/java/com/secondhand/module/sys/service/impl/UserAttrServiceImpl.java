@@ -34,6 +34,8 @@ public class UserAttrServiceImpl extends ServiceImpl<UserAttrMapper, UserAttr> i
         UserAttrDTO userAttrDTO = new UserAttrDTO();
         BeanUtils.copyProperties(userAttr, userAttrDTO);
         userAttrDTO.setBalance(user.getBalance());
+        userAttrDTO.setId(Long.valueOf(userAttr.getId()));
+        userAttrDTO.setUid(Long.valueOf(userAttr.getUid()));
         return userAttrDTO;
     }
 

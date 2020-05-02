@@ -34,5 +34,6 @@ public class CurrentUserVo extends User implements Serializable {
         this.setIcon(user.getIcon());
         this.setEditTime(user.getEditTime());
         this.setViewNum(user.getViewNum());
+        this.setBalance(user.getBalance());
     }
 }

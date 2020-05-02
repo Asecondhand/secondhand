@@ -96,6 +96,9 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
             Integer status = productDTO.getProductStatus() == 1 ? 1 : 0;
             productDTO.setProductStatus(status);
             BeanUtils.copyProperties(productDTO, product);
+            if(product.getProductNum() == null ){
+                product.setProductNum(1);
+            }
             try {
                 this.save(product);
             } catch (Exception ex) {
