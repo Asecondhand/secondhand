@@ -61,9 +61,6 @@ public class ProductCommentServiceImpl extends ServiceImpl<ProductCommentMapper,
             List<ProductCommentsVO> listChild = getChild(item.getCommentId(), allComments);
             item.setChildren(listChild);
         }
-        // return ApiResult.success(parentComments);
-
-        // 整合成只有两层
         List<ProductCommentVO> vos = mergeComments(parentComments);
         return ApiResult.success(vos);
 
@@ -108,7 +105,8 @@ public class ProductCommentServiceImpl extends ServiceImpl<ProductCommentMapper,
 
     private List<ChildrenCommentVO> mergeChild(ProductCommentsVO vo, List<ChildrenCommentVO> childVos) {
         // List<ChildrenCommentVO> vos =  new ArrayList<>();
-        if (vo.getChildren().size() > 0) {
+        //空指针异常
+        if (CollectionUtils.isNotEmpty(childVos)) {
             for (ProductCommentsVO item : vo.getChildren()) {
                 ChildrenCommentVO entity = new ChildrenCommentVO();
                 BeanUtils.copyProperties(item, entity);
