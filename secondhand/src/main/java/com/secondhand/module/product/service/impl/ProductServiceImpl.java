@@ -24,8 +24,10 @@ import com.secondhand.module.product.service.ProductService;
 import com.secondhand.module.product.vo.ProductVo;
 import com.secondhand.module.product.vo.UserProductVO;
 import com.secondhand.module.sys.entity.User;
+import com.secondhand.module.sys.entity.UserAttr;
 import com.secondhand.module.sys.service.IUserService;
 import com.secondhand.module.sys.service.ProductPicService;
+import com.secondhand.module.sys.service.UserAttrService;
 import com.secondhand.module.sys.vo.CurrentUserVo;
 import com.secondhand.util.exception.ServiceException;
 import org.apache.shiro.SecurityUtils;
@@ -72,6 +74,8 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     @Autowired
     @Resource(name = "SerializableRedisTemplate")
     RedisTemplate redisTemplate;
+    @Autowired
+    UserAttrService userAttrService;
 
     private static BloomFilter bloomFilter = BloomFilter.create(Funnels.integerFunnel(), 1000000);
 
@@ -106,6 +110,16 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
                 throw new ServiceException("添加商品失败");
             }
             //向缓存添加商品数量
+            UserAttr userAttr = userAttrService.getOne(new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getUid,user.getUserId()));
+            if(userAttr == null){
+                throw new ServiceException("个人商品数量添加失败");
+            }
+            Integer publishNum = userAttr.getPublishNum();
+            userAttr.setPublishNum(userAttr.getPublishNum()+1);
+            boolean success = userAttrService.update(userAttr,new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getPublishNum,publishNum));
+            if(!success){
+                throw new ServiceException("个人商品数量添加失败");
+            }
             HashOperations hashOperations = redisTemplate.opsForHash();
             hashOperations.put("productNum", String.valueOf(product.getId()), String.valueOf(product.getProductNum()));
             String[] productPic = productDTO.getProductPic();
