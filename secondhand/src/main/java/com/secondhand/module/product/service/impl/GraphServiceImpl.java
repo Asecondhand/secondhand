@@ -41,6 +41,7 @@ public class GraphServiceImpl extends ServiceImpl<GraphMapper, Graph> implements
     public boolean follow(Graph graph) {
         //检验下 graph中的uid是否存在
         //需要用户验证
+        Integer status = -1;
         String key = "uidList:"+graph.getUid();
         //关注列表
         String key2 = "followList:"+graph.getFollowid();
@@ -49,18 +50,64 @@ public class GraphServiceImpl extends ServiceImpl<GraphMapper, Graph> implements
             redis.delete(key2);
         }
         User user = (User) SecurityUtils.getSubject().getPrincipal();
-        if (graph.getFollowid().equals(user.getUserId())) {
             Graph graph1 = this.getOne(new LambdaQueryWrapper<Graph>().eq(Graph::getUid,graph.getUid()).eq(Graph::getFollowid,graph.getFollowid()));
             if(graph1!=null){
+                status = graph1.getStatus();
                 graph1.setStatus(graph.getStatus());
+                if(!status.equals(graph.getStatus()) && status != -1){
+                    //等于1取关
+                    List<UserAttr> userAttr = userAttrService.list(new LambdaQueryWrapper<UserAttr>().in(UserAttr::getUid,graph.getUid(),graph.getFollowid()));
+                    for (UserAttr userAttr1: userAttr) {
+                        if(userAttr1.getUid().intValue()==graph.getUid()){
+                            //被关注
+                            Integer fansNum = userAttr1.getFansNum();
+                            if(status == 1){
+                                userAttr1.setFansNum(userAttr1.getFansNum()-1);
+                            } else{
+                                userAttr1.setFansNum(userAttr1.getFansNum()+1);
+                            }
+                            userAttrService.update(userAttr1,new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getFansNum,fansNum));
+                        }else{
+                            //关注
+                            Integer followNum = userAttr1.getFollowNum();
+                            if(status == 1){
+                                userAttr1.setFansNum(userAttr1.getFollowNum()-1);
+                            } else{
+                                userAttr1.setFansNum(userAttr1.getFollowNum()+1);
+                            }
+                            userAttrService.update(userAttr1,new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getFollowNum,followNum));
+                        }
+                    }
+                }
                 return this.saveOrUpdate(graph1);
             }else{
+                List<UserAttr> userAttr = userAttrService.list(new LambdaQueryWrapper<UserAttr>().in(UserAttr::getUid,graph.getUid(),graph.getFollowid()));
+                for (UserAttr userAttr1: userAttr) {
+                    status = graph.getStatus();
+                    if(userAttr1.getUid().intValue()==graph.getUid()){
+                        //被关注
+                        Integer fansNum = userAttr1.getFansNum();
+                        if(status == 1){
+                            userAttr1.setFansNum(userAttr1.getFansNum()-1);
+                            break;
+                        } else{
+                            userAttr1.setFansNum(userAttr1.getFansNum()+1);
+                        }
+                        userAttrService.update(userAttr1,new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getFansNum,fansNum));
+                    }else{
+                        //关注
+                        Integer followNum = userAttr1.getFollowNum();
+                        if(status == 1){
+                            userAttr1.setFansNum(userAttr1.getFollowNum()-1);
+                            break;
+                        } else{
+                            userAttr1.setFansNum(userAttr1.getFollowNum()+1);
+                        }
+                        userAttrService.update(userAttr1,new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getFollowNum,followNum));
+                    }
+                }
                return this.save(graph);
             }
-        }
-        return false;
-
-
     }
 
     /**
