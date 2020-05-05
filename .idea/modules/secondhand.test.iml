@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module external.linked.project.id="secondhand:test" external.linked.project.path="$MODULE_DIR$/../../secondhand" external.root.project.path="$MODULE_DIR$/../../secondhand" external.system.id="GRADLE" external.system.module.group="com.secondhand" external.system.module.type="sourceSet" external.system.module.version="0.0.31" type="JAVA_MODULE" version="4">
+<module external.linked.project.id="secondhand:test" external.linked.project.path="$MODULE_DIR$/../../secondhand" external.root.project.path="$MODULE_DIR$/../../secondhand" external.system.id="GRADLE" external.system.module.group="com.secondhand" external.system.module.type="sourceSet" external.system.module.version="0.0.33" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
     <facet type="Spring" name="Spring">
       <configuration />
@@ -199,9 +199,9 @@
     <orderEntry type="library" name="Gradle: org.junit.platform:junit-platform-commons:1.5.2" level="project" />
     <orderEntry type="library" name="Gradle: org.apiguardian:apiguardian-api:1.1.0" level="project" />
     <orderEntry type="library" name="Gradle: org.opentest4j:opentest4j:1.2.0" level="project" />
-    <orderEntry type="library" name="Gradle: org.ow2.asm:asm:5.0.4" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.projectlombok:lombok:1.18.10" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: org.junit.platform:junit-platform-engine:1.5.2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: org.projectlombok:lombok:1.18.10" level="project" />
+    <orderEntry type="library" name="Gradle: org.ow2.asm:asm:5.0.4" level="project" />
     <orderEntry type="library" name="Gradle: commons-collections:commons-collections:3.2.2" level="project" />
   </component>
   <component name="TestModuleProperties" production-module="secondhand.main" />

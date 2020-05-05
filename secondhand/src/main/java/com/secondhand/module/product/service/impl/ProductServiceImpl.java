@@ -30,6 +30,7 @@ import com.secondhand.module.sys.service.ProductPicService;
 import com.secondhand.module.sys.service.UserAttrService;
 import com.secondhand.module.sys.vo.CurrentUserVo;
 import com.secondhand.util.exception.ServiceException;
+import com.secondhand.util.shiro.ShiroUtils;
 import org.apache.shiro.SecurityUtils;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.client.RequestOptions;
@@ -88,9 +89,6 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public boolean issue(ProductDTO productDTO) {
-        if(productDTO.getProductPic().length == 0){
-            throw new ServiceException("图片不能为空");
-        }
         //检查userid 是否存在
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         //商品发布的时候，可以通知所有的follow
@@ -103,7 +101,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
             Integer status = productDTO.getProductStatus() == 1 ? 1 : 0;
             productDTO.setProductStatus(status);
             BeanUtils.copyProperties(productDTO, product);
-            if(product.getProductNum() == null ){
+            if (product.getProductNum() == null) {
                 product.setProductNum(1);
             }
             try {
@@ -113,14 +111,14 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
                 throw new ServiceException("添加商品失败");
             }
             //向缓存添加商品数量
-            UserAttr userAttr = userAttrService.getOne(new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getUid,user.getUserId()));
-            if(userAttr == null){
+            UserAttr userAttr = userAttrService.getOne(new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getUid, user.getUserId()));
+            if (userAttr == null) {
                 throw new ServiceException("个人商品数量添加失败");
             }
             Integer publishNum = userAttr.getPublishNum();
-            userAttr.setPublishNum(userAttr.getPublishNum()+1);
-            boolean success = userAttrService.update(userAttr,new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getPublishNum,publishNum).eq(UserAttr::getUid,userAttr.getUid()));
-            if(!success){
+            userAttr.setPublishNum(userAttr.getPublishNum() + 1);
+            boolean success = userAttrService.update(userAttr, new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getPublishNum, publishNum));
+            if (!success) {
                 throw new ServiceException("个人商品数量添加失败");
             }
             HashOperations hashOperations = redisTemplate.opsForHash();
@@ -141,7 +139,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 //            kafkaTemplate.send(KafkaTopic.PRODUCT_TOPIC, JSON.toJSONString(productDTO));
             return productPicService.saveBatch(list);
         }
-        throw new ServiceException("用户验证出现错误,productId与实际用户登录不符");
+        throw new ServiceException("用户验证出现错误,无法登录");
     }
 
     /**
@@ -193,6 +191,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
      * @return
      */
     @Override
+    @Transactional
     public boolean changeStatus(int status, Long productId) {
         Product product = this.getById(productId);
         if (product == null) {
@@ -207,6 +206,19 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         }
         status = status == 1 ? 1 : 0;
         product.setProductStatus(status);
+        Long userId = ShiroUtils.getUserId();
+
+        //下架商品
+        UserAttr userAttr = userAttrService.getOne(new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getUid, userId));
+        Integer num = userAttr.getPublishNum();
+        Integer num2 = userAttr.getSoldNum();
+        if (num >= 1) {
+            userAttr.setPublishNum(num - 1);
+        } else {
+            userAttr.setPublishNum(0);
+        }
+        userAttr.setSoldNum(num2 + 1);
+        userAttrService.updateById(userAttr);
         return this.updateById(product);
     }
 
@@ -233,11 +245,28 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
      * @param id
      */
     @Override
+    @Transactional
     public ApiResult updateProductById(Long id) {
         QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(Product::getId, id);
         // return  this.remove(queryWrapper)?ApiResult.success("删除代码成功"):ApiResult.fail("商品已删除");
         boolean update = this.remove(queryWrapper);
+        Long userId = ShiroUtils.getUserId();
+        //删除商品
+        UserAttr userAttr = userAttrService.getOne(new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getUid, userId));
+        Integer num = userAttr.getPublishNum();
+        Integer num2 = userAttr.getSoldNum();
+        if (num >= 1) {
+            userAttr.setPublishNum(num - 1);
+        } else {
+            userAttr.setPublishNum(0);
+        }
+        if (num2 >= 1) {
+            userAttr.setSoldNum(num2 - 1);
+        } else {
+            userAttr.setSoldNum(0);
+        }
+        userAttrService.updateById(userAttr);
         if (update == false) {
             return ApiResult.fail("操作失败");
         }
