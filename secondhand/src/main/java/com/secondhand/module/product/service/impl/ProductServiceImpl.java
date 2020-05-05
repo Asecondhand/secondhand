@@ -131,7 +131,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
             try {
                 //向es索引添加数据
                 restHighLevelClient.index(new IndexRequest(EsIndex.PRODUCTINDEX.getIndexName())
-                        .source(JSON.toJSONString(product), XContentType.JSON), RequestOptions.DEFAULT);
+                        .source(JSON.toJSONString(productDTO), XContentType.JSON), RequestOptions.DEFAULT);
                 //通过kafka向消息系统发送数
             } catch (IOException e) {
                 throw new ServiceException("es添加失败");
