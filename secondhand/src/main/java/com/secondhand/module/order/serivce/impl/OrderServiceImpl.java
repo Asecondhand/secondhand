@@ -174,13 +174,13 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
                 userSale.setBuyerId((int) orderDTO.getUid().longValue());
                 userSale.setOrderId(orderDTO.getOrderid());
                 userSale.setProductId(product.getId());
-                userSale.setStatus(1);
+                userSale.setStatus(0);
                 //卖家id
                 userSale.setUid(Math.toIntExact(product.getUserId().longValue()));
                 iUserSaleService.save(userSale);
                 Integer sellNum = userAttr.getSellNum();
                 userAttr.setSellNum(sellNum+1);
-                userAttrService.update(userAttr,new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getSellNum,sellNum));
+                userAttrService.update(userAttr,new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getSellNum,sellNum).eq(UserAttr::getUid,userAttr.getUid()));
             }else {
                 UserBuy userBuy = new UserBuy();
                 userBuy.setUid(Math.toIntExact(Long.valueOf(orderDTO.getUid())));
@@ -189,7 +189,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
                 iUserBuyService.save(userBuy);
                 Integer buyNum = userAttr.getBuyNum();
                 userAttr.setBuyNum(buyNum+1);
-                userAttrService.update(userAttr,new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getBuyNum,buyNum));
+                userAttrService.update(userAttr,new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getBuyNum,buyNum).eq(UserAttr::getUid,userAttr.getUid()));
             }
         }
         //更新余额时，带余额限制

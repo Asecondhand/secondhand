@@ -117,7 +117,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
             }
             Integer publishNum = userAttr.getPublishNum();
             userAttr.setPublishNum(userAttr.getPublishNum() + 1);
-            boolean success = userAttrService.update(userAttr, new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getPublishNum, publishNum));
+            boolean success = userAttrService.update(userAttr, new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getPublishNum, publishNum).eq(UserAttr::getUid,userAttr.getUid()));
             if (!success) {
                 throw new ServiceException("个人商品数量添加失败");
             }

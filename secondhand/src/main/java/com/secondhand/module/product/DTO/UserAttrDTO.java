@@ -89,5 +89,6 @@ public class UserAttrDTO {
     @TableField(value = "uname")
     private String uname;
 
+    private Integer soldNum;
     private BigDecimal balance;
 }
