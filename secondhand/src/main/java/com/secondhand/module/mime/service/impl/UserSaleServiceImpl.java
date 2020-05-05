@@ -8,8 +8,10 @@ import com.secondhand.module.mime.service.IUserSaleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.secondhand.module.sys.entity.UserAttr;
 import com.secondhand.module.sys.service.UserAttrService;
+import com.secondhand.util.shiro.ShiroUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * <p>
@@ -47,10 +49,17 @@ public class UserSaleServiceImpl extends ServiceImpl<UserSaleMapper, UserSale> i
     }
 
     @Override
+    @Transactional
     public ApiResult deleteUserSale(Long saleId) {
         UserSale userSale = new UserSale();
         userSale.setSaleId(Math.toIntExact(saleId));
         userSale.setStatus(1);
+        // 我卖出的
+        Long userId = ShiroUtils.getUserId();
+        UserAttr userAttr = userAttrService.getOne(new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getUid,userId));
+        Integer saleNum = userAttr.getSellNum();
+        userAttr.setSellNum(saleNum-1);
+        userAttrService.updateById(userAttr);
         return this.updateById(userSale) ? ApiResult.success("操作成功") : ApiResult.fail("操作失败");
     }
 }

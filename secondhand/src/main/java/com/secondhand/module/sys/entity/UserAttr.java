@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.util.Date;
+
 import lombok.Data;
 
 @Data
@@ -44,7 +46,7 @@ public class UserAttr {
     private Integer followNum;
 
     /**
-     * 粉丝数量 
+     * 粉丝数量
      */
     @TableField(value = "fans_num")
     private Integer fansNum;
@@ -56,7 +58,7 @@ public class UserAttr {
     private Integer publishNum;
 
     /**
-     * 我卖出的 
+     * 我卖出的
      */
     @TableField(value = "sell_num")
     private Integer sellNum;
@@ -91,6 +93,11 @@ public class UserAttr {
     @TableField(value = "update_time")
     private Date updateTime;
 
+
+    @TableField(value = "sold_num")
+    private Integer soldNum;
+
+
     public static final String COL_ID = "id";
 
     public static final String COL_UID = "uid";
@@ -110,6 +117,7 @@ public class UserAttr {
     public static final String COL_SELL_NUM = "sell_num";
 
     public static final String COL_BUY_NUM = "buy_num";
+    public static final String COL_SOLD_NUM = "sold_num";
 
     public static final String COL_COLLECT_NUM = "collect_num";
 
