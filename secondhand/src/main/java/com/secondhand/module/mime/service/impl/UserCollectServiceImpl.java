@@ -63,7 +63,6 @@ public class UserCollectServiceImpl extends ServiceImpl<UserCollectMapper, UserC
             UserAttr userAttr = userAttrService.getOne(new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getUid, userId));
             Integer num = userAttr.getCollectNum();
             userAttr.setCollectNum(num + 1);
-            userAttr.setCollectNum(0);
             userAttrService.updateById(userAttr);
         } else {
             QueryWrapper<UserCollect> queryWrapper = new QueryWrapper<>();
