@@ -33,4 +33,6 @@ public interface NoticeMapper extends BaseMapper<Notice> {
 
     List<TagSumVo> getProductList();
 
+    List<Notice> getNotice();
+
 }

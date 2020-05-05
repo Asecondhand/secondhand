@@ -31,4 +31,5 @@ public interface INoticeService extends IService<Notice> {
 
     ApiResult getTagList(TimeAo ao);
 
+    ApiResult getNotice();
 }

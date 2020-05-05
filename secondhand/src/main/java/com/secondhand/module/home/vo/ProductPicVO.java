@@ -11,8 +11,7 @@ import java.util.List;
  * @description:
  * @author: zangjan
  * @create: 2020-04-30 14:37
- **/
-@Data
+ **/@Data
 public class ProductPicVO  extends Product {
 
     List<String> picList;

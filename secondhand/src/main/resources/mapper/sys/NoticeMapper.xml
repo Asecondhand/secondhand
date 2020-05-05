@@ -54,4 +54,16 @@
         ORDER BY
         count(*) DESC
     </select>
+    <select id="getNotice" resultType="com.secondhand.module.sys.entity.Notice">
+        SELECT
+            *
+        FROM
+            notice
+        WHERE
+            is_delete = 0
+            AND type = 1
+        ORDER BY
+            edit_time DESC
+            LIMIT 3
+    </select>
 </mapper>

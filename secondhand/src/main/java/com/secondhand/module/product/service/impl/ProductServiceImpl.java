@@ -191,7 +191,6 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
      * @return
      */
     @Override
-    @Transactional
     public boolean changeStatus(int status, Long productId) {
         Product product = this.getById(productId);
         if (product == null) {
@@ -206,19 +205,6 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         }
         status = status == 1 ? 1 : 0;
         product.setProductStatus(status);
-        Long userId = ShiroUtils.getUserId();
-
-        //下架商品
-        UserAttr userAttr = userAttrService.getOne(new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getUid, userId));
-        Integer num = userAttr.getPublishNum();
-        Integer num2 = userAttr.getSoldNum();
-        if (num >= 1) {
-            userAttr.setPublishNum(num - 1);
-        } else {
-            userAttr.setPublishNum(0);
-        }
-        userAttr.setSoldNum(num2 + 1);
-        userAttrService.updateById(userAttr);
         return this.updateById(product);
     }
 
@@ -327,6 +313,30 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         // }
         List<UserProductVO> vos = baseMapper.getUserRelease(userId);
         return ApiResult.success(vos);
+    }
+
+    @Override
+    @Transactional
+    public ApiResult changeProductStatus(Long id) {
+        Product product = this.getById(id);
+        if (product == null) {
+            return ApiResult.fail("找不到商品");
+        }
+        product.setProductStatus(1);
+        this.updateById(product);
+        Long userId = ShiroUtils.getUserId();
+        //下架商品
+        UserAttr userAttr = userAttrService.getOne(new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getUid, userId));
+        Integer num = userAttr.getPublishNum();
+        Integer num2 = userAttr.getSoldNum();
+        if (num >= 1) {
+            userAttr.setPublishNum(num - 1);
+        } else {
+            userAttr.setPublishNum(0);
+        }
+        userAttr.setSoldNum(num2 + 1);
+        userAttrService.updateById(userAttr);
+        return ApiResult.success("操作成功");
     }
 
 
