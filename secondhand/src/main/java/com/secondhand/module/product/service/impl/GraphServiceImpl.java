@@ -66,7 +66,7 @@ public class GraphServiceImpl extends ServiceImpl<GraphMapper, Graph> implements
                             } else{
                                 userAttr1.setFansNum(userAttr1.getFansNum()+1);
                             }
-                            userAttrService.update(userAttr1,new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getFansNum,fansNum));
+                            userAttrService.update(userAttr1,new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getFansNum,fansNum).eq(UserAttr::getUid,userAttr1.getUid()));
                         }else{
                             //关注
                             Integer followNum = userAttr1.getFollowNum();
@@ -75,7 +75,7 @@ public class GraphServiceImpl extends ServiceImpl<GraphMapper, Graph> implements
                             } else{
                                 userAttr1.setFansNum(userAttr1.getFollowNum()+1);
                             }
-                            userAttrService.update(userAttr1,new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getFollowNum,followNum));
+                            userAttrService.update(userAttr1,new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getFollowNum,followNum).eq(UserAttr::getUid,userAttr1.getUid()));
                         }
                     }
                 }
@@ -93,17 +93,17 @@ public class GraphServiceImpl extends ServiceImpl<GraphMapper, Graph> implements
                         } else{
                             userAttr1.setFansNum(userAttr1.getFansNum()+1);
                         }
-                        userAttrService.update(userAttr1,new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getFansNum,fansNum));
+                        userAttrService.update(userAttr1,new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getFansNum,fansNum).eq(UserAttr::getUid,userAttr1.getUid()));
                     }else{
                         //关注
                         Integer followNum = userAttr1.getFollowNum();
                         if(status == 1){
-                            userAttr1.setFansNum(userAttr1.getFollowNum()-1);
+                            userAttr1.setFollowNum(userAttr1.getFollowNum()-1);
                             break;
                         } else{
-                            userAttr1.setFansNum(userAttr1.getFollowNum()+1);
+                            userAttr1.setFollowNum(userAttr1.getFollowNum()+1);
                         }
-                        userAttrService.update(userAttr1,new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getFollowNum,followNum));
+                         userAttrService.update(userAttr1,new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getFollowNum,followNum).eq(UserAttr::getUid,userAttr1.getUid()));
                     }
                 }
                return this.save(graph);
@@ -163,6 +163,7 @@ public class GraphServiceImpl extends ServiceImpl<GraphMapper, Graph> implements
             FollowUserVo followUserVo = new FollowUserVo();
             BeanUtils.copyProperties(userAttr,followUserVo);
             followUserVo.setId(userAttr.getId().longValue());
+            followUserVo.setUid(Long.valueOf(userAttr.getUid()));
             followUserVos.add(followUserVo);
             listOperation.leftPush(followUserVo);
         });
@@ -182,6 +183,7 @@ public class GraphServiceImpl extends ServiceImpl<GraphMapper, Graph> implements
         userAttrs.forEach(userAttr -> {
             FollowUserVo followUserVo = new FollowUserVo();
             BeanUtils.copyProperties(userAttr,followUserVo);
+            followUserVo.setUid(Long.valueOf(userAttr.getUid()));
             followUserVo.setId(userAttr.getId().longValue());
             followUserVos.add(followUserVo);
             listOperation.leftPush(followUserVo);

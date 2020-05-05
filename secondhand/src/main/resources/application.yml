@@ -23,11 +23,11 @@ spring:
   redis:
     database: 0
 #    host: 47.93.117.14
-#    host: 172.17.0.3
+    host: 172.17.0.3
     port: 6379
-#    password: root
-    host : localhost
-    password:
+    password: root
+#    host : localhost
+#    password:
     timeout: 10000ms  # 连接超时时长（毫秒）
     jedis:
       pool:

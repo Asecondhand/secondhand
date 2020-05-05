@@ -16,6 +16,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,9 +38,11 @@ public class HomeServiceImpl implements HomeService {
         HomeVo homeVo = new HomeVo();
         IPage<ProductPicVO> productPicVOIPage = product.convert(product1 -> {
            List<ProductPic> picList = productPicService.list(new LambdaQueryWrapper<ProductPic>().eq(ProductPic::getPid,product1.getId()));
+           List<String> picString = new ArrayList<>();
+            picList.forEach(productPic -> picString.add(productPic.getProductPic()));
            ProductPicVO productPicVO1 = new ProductPicVO();
             BeanUtils.copyProperties(product1,productPicVO1);
-            productPicVO1.setPicList(picList);
+            productPicVO1.setPicList(picString);
             return productPicVO1;
         });
         homeVo.setProduct(productPicVOIPage);

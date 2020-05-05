@@ -88,6 +88,9 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public boolean issue(ProductDTO productDTO) {
+        if(productDTO.getProductPic().length == 0){
+            throw new ServiceException("图片不能为空");
+        }
         //检查userid 是否存在
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         //商品发布的时候，可以通知所有的follow
@@ -116,7 +119,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
             }
             Integer publishNum = userAttr.getPublishNum();
             userAttr.setPublishNum(userAttr.getPublishNum()+1);
-            boolean success = userAttrService.update(userAttr,new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getPublishNum,publishNum));
+            boolean success = userAttrService.update(userAttr,new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getPublishNum,publishNum).eq(UserAttr::getUid,userAttr.getUid()));
             if(!success){
                 throw new ServiceException("个人商品数量添加失败");
             }
@@ -138,7 +141,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 //            kafkaTemplate.send(KafkaTopic.PRODUCT_TOPIC, JSON.toJSONString(productDTO));
             return productPicService.saveBatch(list);
         }
-        throw new ServiceException("用户验证出现错误,无法登录");
+        throw new ServiceException("用户验证出现错误,productId与实际用户登录不符");
     }
 
     /**

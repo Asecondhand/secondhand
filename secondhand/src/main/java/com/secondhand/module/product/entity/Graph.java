@@ -25,7 +25,7 @@ public class Graph {
     private Long followid;
 
     /**
-     *  0-已关注 1-未关注
+     *  0关注  1 取消关注
      */
     @TableField(value = "status")
     private Integer status;

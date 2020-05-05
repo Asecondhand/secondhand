@@ -100,12 +100,13 @@ public class LoginController {
         user.setEmail(userDTO.getEmail());
         user.setMobile(userDTO.getMobile());
         user.setIcon(userDTO.getIcon() == null ? "http://47.93.117.14:8080/second-hand/fileSystem/files/images.jpg" : userDTO.getIcon());
+
 //        user.seticon(userDTO.getHeadPicture()==null?"http://localhost:9091/second-hand/fileSystem/files/1238390565725274112.jpg":userDTO.getHeadPicture());
         //添加 userattr 属性
         try {
             userService.save(user);
         } catch (Exception ignored) {
-            return ApiResult.fail(1, "用户名重复，请检查输入");
+            return ApiResult.fail(1, ignored.getMessage());
         }
         BulkRequest request = new BulkRequest();
         UserAttr userAttr = new UserAttr();
