@@ -56,7 +56,7 @@ public class UserPraiseServiceImpl extends ServiceImpl<UserPraiseMapper, UserPra
             //点赞
             UserAttr userAttr = userAttrService.getOne(new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getUid, userId));
             Integer num = userAttr.getStarNum();
-            userAttr.setSellNum(num + 1);
+            userAttr.setStarNum(num + 1);
             userAttrService.updateById(userAttr);
 
         } else {
