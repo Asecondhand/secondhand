@@ -341,6 +341,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     }
 
     @Override
+    @Transactional
     public ApiResult republish(Long id) {
         Product product = this.getById(id);
         if (product == null) {
