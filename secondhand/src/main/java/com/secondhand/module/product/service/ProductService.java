@@ -37,6 +37,8 @@ public interface ProductService extends IService<Product> {
     ApiResult getUserRelease(Long userId);
 
     ApiResult changeProductStatus(Long id);
+
+    ApiResult republish(Long id);
 }
 
 

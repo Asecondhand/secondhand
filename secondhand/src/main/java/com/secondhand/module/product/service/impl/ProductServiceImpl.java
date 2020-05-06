@@ -117,7 +117,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
             }
             Integer publishNum = userAttr.getPublishNum();
             userAttr.setPublishNum(userAttr.getPublishNum() + 1);
-            boolean success = userAttrService.update(userAttr, new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getPublishNum, publishNum).eq(UserAttr::getUid,userAttr.getUid()));
+            boolean success = userAttrService.update(userAttr, new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getPublishNum, publishNum).eq(UserAttr::getUid, userAttr.getUid()));
             if (!success) {
                 throw new ServiceException("个人商品数量添加失败");
             }
@@ -233,10 +233,11 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     @Override
     @Transactional
     public ApiResult updateProductById(Long id) {
-        QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(Product::getId, id);
+        // QueryWrapper<Product> queryWrapper = new QueryWrapper<>();
+        // queryWrapper.lambda().eq(Product::getId, id);
         // return  this.remove(queryWrapper)?ApiResult.success("删除代码成功"):ApiResult.fail("商品已删除");
-        boolean update = this.remove(queryWrapper);
+        // boolean update = this.remove(queryWrapper);
+        boolean update = this.removeById(id);
         Long userId = ShiroUtils.getUserId();
         //删除商品
         UserAttr userAttr = userAttrService.getOne(new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getUid, userId));
@@ -335,6 +336,29 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
             userAttr.setPublishNum(0);
         }
         userAttr.setSoldNum(num2 + 1);
+        userAttrService.updateById(userAttr);
+        return ApiResult.success("操作成功");
+    }
+
+    @Override
+    public ApiResult republish(Long id) {
+        Product product = this.getById(id);
+        if (product == null) {
+            return ApiResult.fail("找不到商品");
+        }
+        product.setProductStatus(0);
+        this.updateById(product);
+        Long userId = ShiroUtils.getUserId();
+        //上架商品  发布数量+1 下架数量-1
+        UserAttr userAttr = userAttrService.getOne(new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getUid, userId));
+        Integer num = userAttr.getPublishNum();
+        Integer num2 = userAttr.getSoldNum();
+        if (num2 >= 1) {
+            userAttr.setSoldNum(num2 - 1);
+        } else {
+            userAttr.setSoldNum(0);
+        }
+        userAttr.setPublishNum(num + 1);
         userAttrService.updateById(userAttr);
         return ApiResult.success("操作成功");
     }
