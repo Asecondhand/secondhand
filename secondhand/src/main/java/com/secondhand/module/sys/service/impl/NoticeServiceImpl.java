@@ -1,5 +1,6 @@
 package com.secondhand.module.sys.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.secondhand.common.basemethod.ApiResult;
@@ -82,6 +83,12 @@ public class NoticeServiceImpl extends ServiceImpl<NoticeMapper, Notice> impleme
     @Override
     public ApiResult getTagList(TimeAo ao) {
         List<TagSumVo> list = baseMapper.getTagList(ao);
+        return ApiResult.success(list);
+    }
+
+    @Override
+    public ApiResult getNotice() {
+        List<Notice> list = baseMapper.getNotice();
         return ApiResult.success(list);
     }
 }

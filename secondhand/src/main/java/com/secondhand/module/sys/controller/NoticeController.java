@@ -47,5 +47,11 @@ public class NoticeController {
     }
 
 
+    //展示公告
+    @GetMapping("/query")
+    public ApiResult getNotice() {
+        return iNoticeService.getNotice();
+    }
+
 
 }

@@ -35,6 +35,10 @@ public interface ProductService extends IService<Product> {
     ApiResult personalDynamic(Long userId);
 
     ApiResult getUserRelease(Long userId);
+
+    ApiResult changeProductStatus(Long id);
+
+    ApiResult republish(Long id);
 }
 
 

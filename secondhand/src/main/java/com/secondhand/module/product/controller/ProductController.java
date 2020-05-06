@@ -59,6 +59,20 @@ public class ProductController {
     public ApiResult<Boolean> changeStatus(@RequestParam("status") int status, @RequestParam("productId") Long productId) {
         return ApiResult.success(productService.changeStatus(status, productId));
     }
+
+    // 下架商品
+    @GetMapping("/changeStatus/{id}")
+    public ApiResult changeProductStatus(@PathVariable Long id){
+        return productService.changeProductStatus(id);
+    }
+
+    //重新发布
+    @GetMapping("/republish/{id}")
+    public ApiResult republish(@PathVariable Long id){
+        return productService.republish(id);
+    }
+
+
     /**
      * 查询用户发布的商品
      * @param userId
