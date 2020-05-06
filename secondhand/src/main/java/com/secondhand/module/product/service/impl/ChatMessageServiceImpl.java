@@ -32,7 +32,11 @@ public class ChatMessageServiceImpl extends ServiceImpl<ChatMessageMapper, ChatM
         if(user == null) {
             throw new ServiceException("用户不存在");
         }
-        return this.list(new LambdaQueryWrapper<ChatMessage>().eq(ChatMessage::getToUid,id).eq(ChatMessage::getFromUid,user.getUserId()).orderByDesc(ChatMessage::getCreateTime));
+        if(user.getUserId().equals(id)){
+            throw new ServiceException("发送方与接受方id不能相同");
+        }
+        List ids = Arrays.asList(id,user.getUserId());
+        return this.list(new LambdaQueryWrapper<ChatMessage>().in(ChatMessage::getToUid,ids).in(ChatMessage::getFromUid,ids).orderByDesc(ChatMessage::getCreateTime));
     }
 
     @Override

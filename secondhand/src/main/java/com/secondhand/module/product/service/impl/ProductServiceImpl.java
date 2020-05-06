@@ -163,8 +163,10 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         List<LeaveMessage> leaveMessageList = leaveMessageService.searchByProductIdAndPage(Long.valueOf(id));
         List<ProductPic> productPicList = productPicService.list(new LambdaQueryWrapper<ProductPic>().eq(ProductPic::getPid, id));
         BeanUtils.copyProperties(product, productVo);
+        User user = iUserService.getById(product.getUserId());
         productVo.setLeaveMessages(leaveMessageList);
         productVo.setProductPics(productPicList);
+        productVo.setIcon(user.getIcon());
         return productVo;
     }
 

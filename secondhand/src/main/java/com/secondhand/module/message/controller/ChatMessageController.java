@@ -1,8 +1,12 @@
 package com.secondhand.module.message.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.secondhand.common.basemethod.ApiResult;
+import com.secondhand.module.product.entity.ChatList;
 import com.secondhand.module.product.service.ChatListService;
 import com.secondhand.module.product.service.ChatMessageService;
+import com.secondhand.module.sys.entity.User;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,5 +47,10 @@ public class ChatMessageController {
     @PostMapping("/read/{uid}")
     public ApiResult updateMessageToread(@PathVariable Long uid){
         return ApiResult.success(chatMessageService.updateMessageToRead(uid));
+    }
+    @GetMapping("/chatList")
+    public ApiResult getChatList(){
+        User user = (User) SecurityUtils.getSubject().getPrincipal();
+        return ApiResult.success(chatListService.list(new LambdaQueryWrapper<ChatList>().eq(ChatList::getUid,user.getUserId()).orderByDesc(ChatList::getUpdateTime)));
     }
 }
