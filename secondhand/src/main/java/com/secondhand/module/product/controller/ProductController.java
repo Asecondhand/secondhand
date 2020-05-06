@@ -67,7 +67,7 @@ public class ProductController {
     }
 
     //重新发布
-    @GetMapping("/republish /{id}")
+    @GetMapping("/republish/{id}")
     public ApiResult republish(@PathVariable Long id){
         return productService.republish(id);
     }
