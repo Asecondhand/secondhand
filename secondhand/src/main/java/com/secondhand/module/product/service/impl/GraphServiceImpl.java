@@ -1,6 +1,7 @@
 package com.secondhand.module.product.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.secondhand.module.product.DTO.GraphStatusDTO;
 import com.secondhand.module.product.entity.Graph;
@@ -149,6 +150,17 @@ public class GraphServiceImpl extends ServiceImpl<GraphMapper, Graph> implements
             return this.save(graph);
         }
         return false;
+    }
+
+    @Override
+    public List<Graph> getState(Long uid, Long followid) {
+        //查找已关注的列表
+        QueryWrapper<Graph> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(Graph::getFollowid,followid)
+                .eq(Graph::getUid,uid)
+                .eq(Graph::getStatus,0);
+        List<Graph> list = this.list(queryWrapper);
+        return list;
     }
 
     private   List<FollowUserVo> getById(Long followId,String key){

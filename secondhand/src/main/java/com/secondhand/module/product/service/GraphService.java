@@ -26,4 +26,6 @@ public interface GraphService extends IService<Graph>{
     List<FollowUserVo> uList(Long uid);
 
     boolean updateStatus(Long id , GraphStatusDTO graphStatusDTO);
+
+    List<Graph> getState(Long userId, Long userId1);
 }
