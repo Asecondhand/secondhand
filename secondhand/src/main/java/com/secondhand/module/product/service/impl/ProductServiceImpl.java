@@ -15,10 +15,12 @@ import com.secondhand.module.mime.vo.DynamicVO;
 import com.secondhand.module.mime.vo.HomePageVO;
 import com.secondhand.module.mime.vo.ProductInfoVo;
 import com.secondhand.module.product.DTO.ProductDTO;
+import com.secondhand.module.product.entity.Graph;
 import com.secondhand.module.product.entity.LeaveMessage;
 import com.secondhand.module.product.entity.Product;
 import com.secondhand.module.product.entity.ProductPic;
 import com.secondhand.module.product.mapper.ProductMapper;
+import com.secondhand.module.product.service.GraphService;
 import com.secondhand.module.product.service.LeaveMessageService;
 import com.secondhand.module.product.service.ProductService;
 import com.secondhand.module.product.vo.ProductVo;
@@ -31,6 +33,7 @@ import com.secondhand.module.sys.service.UserAttrService;
 import com.secondhand.module.sys.vo.CurrentUserVo;
 import com.secondhand.util.exception.ServiceException;
 import com.secondhand.util.shiro.ShiroUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.SecurityUtils;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.client.RequestOptions;
@@ -64,6 +67,8 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     @Autowired
     IUserService iUserService;
 
+    @Autowired
+    private GraphService graphService;
     @Autowired
     ProductPicService productPicService;
 
@@ -268,6 +273,20 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         HomePageVO vo = new HomePageVO();
         vo.setMineNum(list.size());
         vo.setProductInfoVos(list);
+        // 当前用户id
+        Long userId1 = ShiroUtils.getUserId();
+        //userId 关注用户id userId1 当前用户id
+        List<Graph> list1 = graphService.getState(userId, userId1);
+        if (userId.equals(userId1)) {
+            vo.setState(2);
+        } else {
+            if (CollectionUtils.isEmpty(list1)) {
+                vo.setState(1);
+            } else {
+                vo.setState(0);
+            }
+        }
+
         return ApiResult.success(vo);
     }
 

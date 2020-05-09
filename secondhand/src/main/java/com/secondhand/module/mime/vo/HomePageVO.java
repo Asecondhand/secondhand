@@ -15,4 +15,5 @@ import java.util.List;
 public class HomePageVO  {
     private List<ProductInfoVo> productInfoVos;
     private Integer mineNum;
+    private Integer state;  //关注状态  0 已关注  1 未关注 2 本人
 }
