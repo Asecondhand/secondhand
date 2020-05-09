@@ -174,6 +174,7 @@ public class GraphServiceImpl extends ServiceImpl<GraphMapper, Graph> implements
         userAttrs.forEach(userAttr -> {
             FollowUserVo followUserVo = new FollowUserVo();
             BeanUtils.copyProperties(userAttr,followUserVo);
+            followUserVo.setIcon(userAttr.getIcon());
             followUserVo.setId(userAttr.getId().longValue());
             followUserVo.setUid(Long.valueOf(userAttr.getUid()));
             followUserVos.add(followUserVo);
@@ -195,6 +196,7 @@ public class GraphServiceImpl extends ServiceImpl<GraphMapper, Graph> implements
         userAttrs.forEach(userAttr -> {
             FollowUserVo followUserVo = new FollowUserVo();
             BeanUtils.copyProperties(userAttr,followUserVo);
+            followUserVo.setIcon(userAttr.getIcon());
             followUserVo.setUid(Long.valueOf(userAttr.getUid()));
             followUserVo.setId(userAttr.getId().longValue());
             followUserVos.add(followUserVo);

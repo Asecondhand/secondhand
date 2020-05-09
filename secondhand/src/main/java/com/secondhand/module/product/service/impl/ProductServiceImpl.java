@@ -115,6 +115,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
                 System.out.println(ex.getMessage());
                 throw new ServiceException("添加商品失败");
             }
+            productDTO.setProductId(product.getId());
             //向缓存添加商品数量
             UserAttr userAttr = userAttrService.getOne(new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getUid, user.getUserId()));
             if (userAttr == null) {
@@ -168,7 +169,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         List<LeaveMessage> leaveMessageList = leaveMessageService.searchByProductIdAndPage(Long.valueOf(id));
         List<ProductPic> productPicList = productPicService.list(new LambdaQueryWrapper<ProductPic>().eq(ProductPic::getPid, id));
         BeanUtils.copyProperties(product, productVo);
-        User user = iUserService.getById(product.getUserId());
+        UserAttr user = userAttrService.getOne(new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getUid,product.getUserId()));
         productVo.setLeaveMessages(leaveMessageList);
         productVo.setProductPics(productPicList);
         productVo.setIcon(user.getIcon());

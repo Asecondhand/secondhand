@@ -16,7 +16,10 @@ import java.util.Date;
 @Data
 public class ProductDTO {
 
+
+    private Integer productId;
     /**
+     *
      * 用户姓名
      */
     @TableField(value = "user_name")
