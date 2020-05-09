@@ -58,6 +58,7 @@ public class GraphMessage implements NotificationMessageService {
                 messageVO.setTimeDf(compTimeDiff(productVo.getCreateTime(),new Date()));
                 messageVO.setName(followUserVo.getUname());
                 messageVO.setImg(productVo.getProductPics().get(0).getProductPic());
+                messageVO.setProductId(productVo.getId());
                 graphMessageVO.add(messageVO);
             }
         });
