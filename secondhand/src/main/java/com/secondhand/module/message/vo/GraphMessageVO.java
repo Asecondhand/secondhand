@@ -26,4 +26,6 @@ public class GraphMessageVO {
     private String img;
     //时间单位
     private String timeUnit;
+
+    private Integer productId;
 }

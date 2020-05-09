@@ -180,7 +180,8 @@ public class WebSocketServer {
         //默认为未读
         chatMessage.setStatus(0);
         ChatMessageService chatMessageService =  SpringUtil.getBean(ChatMessageService.class);
-        chatMessageService.save(chatMessage);
+        boolean result =  chatMessageService.save(chatMessage);
+        System.out.println(result);
     }
 
 }

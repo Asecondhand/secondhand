@@ -69,7 +69,9 @@ public class ChatMessageServiceImpl extends ServiceImpl<ChatMessageMapper, ChatM
             //todo 拒绝自己给自己发消息
             //获得未读的消息
             List<ChatMessage> chatMessages  = this.list(new LambdaQueryWrapper<ChatMessage>().in(ChatMessage::getFromUid,ids).in(ChatMessage::getToUid,ids).eq(ChatMessage::getStatus,0));
-            map.put(String.valueOf(chatList.getToUid()),chatMessages);
+            if(chatMessages!=null && chatMessages.size()!=0){
+                map.put(String.valueOf(chatList.getToUid()),chatMessages);
+            }
         });
         return map;
     }
@@ -83,8 +85,8 @@ public class ChatMessageServiceImpl extends ServiceImpl<ChatMessageMapper, ChatM
         //将当前用户与 uid 所有的message status 都设置为 read 1
         //将 uid 发送给当前用户的所有message 都设为 已读
         //todo 使用异步去做
-        List<ChatMessage> chats = this.list(new LambdaQueryWrapper<ChatMessage>().eq(ChatMessage::getToUid,user.getUserId()).eq(ChatMessage::getFromUid,uid));
-        chats = chats.stream().peek(chatMessage -> chatMessage.setStatus(1)).collect(Collectors.toList());
-        return this.saveBatch(chats);
+        ChatMessage chatMessage =new ChatMessage();
+        chatMessage.setStatus(1);
+        return this.update(chatMessage,new LambdaQueryWrapper<ChatMessage>().eq(ChatMessage::getToUid,user.getUserId()).eq(ChatMessage::getFromUid,uid).eq(ChatMessage::getStatus,0));
     }
 }
