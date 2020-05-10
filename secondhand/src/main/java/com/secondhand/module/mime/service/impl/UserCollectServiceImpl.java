@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * <p>
  * 用户收藏的商品关联表 服务实现类
@@ -83,5 +85,15 @@ public class UserCollectServiceImpl extends ServiceImpl<UserCollectMapper, UserC
             // this.remove(queryWrapper);
         }
         return ApiResult.success("操作成功");
+    }
+
+    @Override
+    public List<UserCollect> getCollectStatus(Long userId, String id) {
+        QueryWrapper<UserCollect> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(UserCollect::getProductId,id)
+                .eq(UserCollect::getUid,userId)
+                .eq(UserCollect::getStatus,0);
+        List<UserCollect> list = this.list(queryWrapper);
+        return list;
     }
 }

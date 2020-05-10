@@ -20,4 +20,7 @@ public class ProductVo extends Product {
     private List<LeaveMessage> leaveMessages;
 
     private List<ProductPic> productPics;
+
+    private  Integer collectStatus;
+    private Integer praiseStatus;
 }
