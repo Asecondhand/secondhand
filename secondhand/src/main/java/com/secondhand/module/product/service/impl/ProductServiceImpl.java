@@ -11,6 +11,10 @@ import com.google.common.hash.Funnels;
 import com.secondhand.common.basemethod.ApiResult;
 import com.secondhand.common.es.EsIndex;
 import com.secondhand.common.kafka.KafkaTopic;
+import com.secondhand.module.mime.entity.UserCollect;
+import com.secondhand.module.mime.entity.UserPraise;
+import com.secondhand.module.mime.service.IUserCollectService;
+import com.secondhand.module.mime.service.IUserPraiseService;
 import com.secondhand.module.mime.vo.DynamicVO;
 import com.secondhand.module.mime.vo.HomePageVO;
 import com.secondhand.module.mime.vo.ProductInfoVo;
@@ -67,6 +71,10 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
     @Autowired
     IUserService iUserService;
 
+    @Autowired
+    private IUserCollectService userCollectService;
+    @Autowired
+    private IUserPraiseService userPraiseService;
     @Autowired
     private GraphService graphService;
     @Autowired
@@ -173,6 +181,28 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         productVo.setLeaveMessages(leaveMessageList);
         productVo.setProductPics(productPicList);
         productVo.setIcon(user.getIcon());
+        Long userId = ShiroUtils.getUserId();
+        if (product.getUserId().equals(userId)) {
+            productVo.setCollectStatus(2);
+            productVo.setPraiseStatus(2);
+        } else {
+            // 是否收藏
+            List<UserCollect> collects = userCollectService.getCollectStatus(userId, id);
+            // 是否点赞
+            List<UserPraise> praises = userPraiseService.getPraiseStatus(userId, id);
+            if (CollectionUtils.isEmpty(collects)) {
+                productVo.setCollectStatus(1);
+            } else {
+                productVo.setCollectStatus(0);
+            }
+            if (CollectionUtils.isEmpty(praises)){
+                productVo.setPraiseStatus(1);
+            }else {
+                productVo.setPraiseStatus(0);
+            }
+        }
+
+
         return productVo;
     }
 

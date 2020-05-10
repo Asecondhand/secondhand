@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * <p>
  * 用户点赞的商品关联表 服务实现类
@@ -77,5 +79,15 @@ public class UserPraiseServiceImpl extends ServiceImpl<UserPraiseMapper, UserPra
             userAttrService.updateById(userAttr);
         }
         return ApiResult.success("操作成功");
+    }
+
+    @Override
+    public List<UserPraise> getPraiseStatus(Long userId, String id) {
+        QueryWrapper<UserPraise> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(UserPraise::getProductId,id)
+                .eq(UserPraise::getStatus,0)
+                .eq(UserPraise::getUid,userId);
+        List<UserPraise> list = this.list(queryWrapper);
+        return list;
     }
 }
