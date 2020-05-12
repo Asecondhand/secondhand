@@ -31,8 +31,8 @@ public class OrderController {
      * 生成订单id
      */
     @GetMapping("/getId")
-    public ApiResult createOrderId(@PathParam("productId") String productId){
-        return ApiResult.success(createRandomId(productId));
+    public ApiResult createOrderId(@RequestBody OrderDTO orderDTO){
+        return ApiResult.success(createRandomId(orderDTO.getProductid().toString()));
     }
 
     /**

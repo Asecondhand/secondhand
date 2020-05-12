@@ -53,9 +53,8 @@ public class GraphServiceImpl extends ServiceImpl<GraphMapper, Graph> implements
         User user = (User) SecurityUtils.getSubject().getPrincipal();
             Graph graph1 = this.getOne(new LambdaQueryWrapper<Graph>().eq(Graph::getUid,graph.getUid()).eq(Graph::getFollowid,graph.getFollowid()));
             if(graph1!=null){
-                status = graph1.getStatus();
-                graph1.setStatus(graph.getStatus());
-                if(!status.equals(graph.getStatus()) && status != -1){
+                status = graph.getStatus();
+                if(!status.equals(graph1.getStatus()) && status != -1){
                     //等于1取关
                     List<UserAttr> userAttr = userAttrService.list(new LambdaQueryWrapper<UserAttr>().in(UserAttr::getUid,graph.getUid(),graph.getFollowid()));
                     for (UserAttr userAttr1: userAttr) {
@@ -72,14 +71,15 @@ public class GraphServiceImpl extends ServiceImpl<GraphMapper, Graph> implements
                             //关注
                             Integer followNum = userAttr1.getFollowNum();
                             if(status == 1){
-                                userAttr1.setFansNum(userAttr1.getFollowNum()-1);
+                                userAttr1.setFollowNum(userAttr1.getFollowNum()-1);
                             } else{
-                                userAttr1.setFansNum(userAttr1.getFollowNum()+1);
+                                userAttr1.setFollowNum(userAttr1.getFollowNum()+1);
                             }
                             userAttrService.update(userAttr1,new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getFollowNum,followNum).eq(UserAttr::getUid,userAttr1.getUid()));
                         }
                     }
                 }
+                graph1.setStatus(graph.getStatus());
                 return this.saveOrUpdate(graph1);
             }else{
                 List<UserAttr> userAttr = userAttrService.list(new LambdaQueryWrapper<UserAttr>().in(UserAttr::getUid,graph.getUid(),graph.getFollowid()));

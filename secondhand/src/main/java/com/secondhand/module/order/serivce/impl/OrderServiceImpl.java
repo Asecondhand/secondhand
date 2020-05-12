@@ -161,7 +161,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         }
         Integer productNum = product.getProductNum();
         product.setProductNum(productNum-1);
-        productService.update(product,new LambdaQueryWrapper<Product>().eq(Product::getProductNum,productNum));
+        productService.update(product,new LambdaQueryWrapper<Product>().eq(Product::getProductNum,productNum).eq(Product::getId,product.getId()));
         List<Integer> list = new ArrayList();
         //卖家
         list.add(product.getUserId());
@@ -179,7 +179,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
                 userSale.setUid(Math.toIntExact(product.getUserId().longValue()));
                 iUserSaleService.save(userSale);
                 Integer sellNum = userAttr.getSellNum();
-                userAttr.setSellNum(sellNum+1);
+                userAttr.
+                        setSellNum(sellNum+1);
                 userAttrService.update(userAttr,new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getSellNum,sellNum).eq(UserAttr::getUid,userAttr.getUid()));
             }else {
                 UserBuy userBuy = new UserBuy();

@@ -108,7 +108,7 @@ public class AccountServiceImpl implements AccountService {
             accountLog.setToAccount(36);
             accountLog.setTimestamp(new Date());
             accountLogService.save(accountLog);
-            currentUser.setBalance(currentUser.getBalance().divide(BigDecimal.valueOf(amount)));
+            currentUser.setBalance(currentUser.getBalance().subtract(BigDecimal.valueOf(amount)));
             currentUser.setLogId(accountLog.getLogId());
             result = userService.update(currentUser,new LambdaUpdateWrapper<User>().eq(User::getUserId,currentUser.getUserId()).eq(User::getLogId,logId));
             if(!result){
