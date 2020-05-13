@@ -26,8 +26,9 @@ public class UserSaleServiceImpl extends ServiceImpl<UserSaleMapper, UserSale> i
 
     @Autowired
     UserAttrService userAttrService;
+
     @Override
-    public Boolean addSaleProduct(Long userId, Integer productId,String orderId,Long buyId) {
+    public Boolean addSaleProduct(Long userId, Integer productId, String orderId, Long buyId) {
         UserSale userSale = new UserSale();
         userSale.setBuyerId(Math.toIntExact(buyId));
         userSale.setOrderId(orderId);
@@ -36,11 +37,11 @@ public class UserSaleServiceImpl extends ServiceImpl<UserSaleMapper, UserSale> i
         //卖家id
         userSale.setUid(Math.toIntExact(userId));
         this.save(userSale);
-        UserAttr userAttr = userAttrService.getOne(new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getUid,userId));
+        UserAttr userAttr = userAttrService.getOne(new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getUid, userId));
 //        UserAttr userAttr=userAttrService.getUserAttrByuid(userId);
         Integer sellNum = userAttr.getSellNum();
-        userAttr.setSellNum(sellNum+1);
-        return userAttrService.update(userAttr,new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getSellNum,sellNum));
+        userAttr.setSellNum(sellNum + 1);
+        return userAttrService.update(userAttr, new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getSellNum, sellNum));
     }
 
     @Override
@@ -56,9 +57,13 @@ public class UserSaleServiceImpl extends ServiceImpl<UserSaleMapper, UserSale> i
         userSale.setStatus(1);
         // 我卖出的
         Long userId = ShiroUtils.getUserId();
-        UserAttr userAttr = userAttrService.getOne(new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getUid,userId));
+        UserAttr userAttr = userAttrService.getOne(new LambdaQueryWrapper<UserAttr>().eq(UserAttr::getUid, userId));
         Integer saleNum = userAttr.getSellNum();
-        userAttr.setSellNum(saleNum-1);
+        if (saleNum > 0) {
+            userAttr.setSellNum(saleNum - 1);
+        } else {
+            userAttr.setSellNum(0);
+        }
         userAttrService.updateById(userAttr);
         return this.updateById(userSale) ? ApiResult.success("操作成功") : ApiResult.fail("操作失败");
     }

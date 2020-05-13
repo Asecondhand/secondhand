@@ -21,7 +21,7 @@ public class FileService {
 
     @Value("${resources.productsPath}")
     private String productsPath;
-    //request 不应该放任何配置路径的信息
+
     // 面向对象
     public String[] uploadFile(FileRequest request) throws Exception {
 
@@ -48,8 +48,6 @@ public class FileService {
              * relativeStoragePath：相对存储路径，/imgages/products/日期/文件名
              * absoluteStoragePath：绝对存储路径，带有当前环境的resoulce作为前缀
              */
-            //逻辑实在太零散了，一个rootPath在sevice下，一个request配置在request里面
-            //没有为后续获得路径做考虑
             String relativeStoragePath =  "/"+request.getStoragePath();
             String absoluteStoragePath = rootPath + relativeStoragePath;
             File dir = new File(absoluteStoragePath);

@@ -86,7 +86,7 @@ public class ShiroRealm extends AuthorizingRealm {
         return permsSet;
     }
 
-    //第三步
+
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
 
