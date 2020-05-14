@@ -27,7 +27,7 @@
     <select id="getTagList" resultType="com.secondhand.module.sys.vo.TagSumVo">
         SELECT
         product_tag as label,
-        count(*) as total
+        sum( product_num ) AS total
         FROM
         product
         <where>
@@ -46,7 +46,7 @@
     <select id="getProductList" resultType="com.secondhand.module.sys.vo.TagSumVo">
         SELECT
         product_tag as label,
-        count(*) as total
+        sum( product_num ) AS total
         FROM
         product
         GROUP BY

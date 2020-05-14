@@ -108,12 +108,11 @@ public class ProductCommentServiceImpl extends ServiceImpl<ProductCommentMapper,
     }
 
     private List<ChildrenCommentVO> mergeChild(ProductCommentsVO vo, List<ChildrenCommentVO> childVos) {
-        //空指针异常
             for (ProductCommentsVO item : vo.getChildren()) {
                 ChildrenCommentVO entity = new ChildrenCommentVO();
                 BeanUtils.copyProperties(item, entity);
                 childVos.add(entity);
-                // 空指针异常
+                // 防止空指针异常
                 if (CollectionUtils.isNotEmpty(item.getChildren())) {
                     mergeChild(item, childVos);
                 }
