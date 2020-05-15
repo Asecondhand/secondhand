@@ -41,7 +41,7 @@
         GROUP BY
         product_tag
         ORDER BY
-        count(*) DESC
+        sum( product_num ) DESC
     </select>
     <select id="getProductList" resultType="com.secondhand.module.sys.vo.TagSumVo">
         SELECT
