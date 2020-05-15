@@ -20,7 +20,7 @@
     </select>
     <select id="getProductNum" resultType="java.lang.Integer">
         SELECT
-            count(*) as productNum
+             sum( product_num ) as productNum
         FROM
             product
     </select>
